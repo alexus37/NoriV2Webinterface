@@ -1,0 +1,10 @@
+# git ignore
+*.*~
+*.pyc
+*.log
+app/bower_components/*
+app/data/*
+nori/build/*
+.idea/*
+app/.idea/*
+/build

@@ -1,0 +1,3 @@
+[submodule "NoriV2"]
+	path = NoriV2
+	url = https://github.com/mworchel/NoriV2.git
