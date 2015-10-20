@@ -30,10 +30,10 @@ git clone https://Alexus@bitbucket.org/Alexus/noriwebinterface.git
 
 This command creates after you entered your username and password the `noriwebinterface` directory in your current directory.
 
-Change your current directory to `noriwebinterface`.
+Change your current directory to `NoriV2Webinterface`.
 
 ```
-cd noriwebinterface
+cd NoriV2Webinterface
 ```
 
 All instructions, from now on, assume you are running all commands from the
@@ -70,9 +70,6 @@ This command reads webInterfaceNori `package.json` file and downloads the follow
 into the `node_modules` directory:
 
 - [Bower][bower] - client-side code package manager
-- [Http-Server][http-server] - simple local static web server
-- [Karma][karma] - unit test runner
-- [Protractor][protractor] - end to end (E2E) test runner
 
 Running `npm install` will also automatically use bower to download the Angular framework and the required extensions into the
  `app/bower_components` directory. 
@@ -114,7 +111,7 @@ If you want to extent the framework please make sure that all included python pa
 #### Linux / Mac OS X
 Begin by installing the [CMake][cmake] build system on your system. On Mac OS X, you will also need to install a reasonably up-to-date version of XCode along with the command line tools. On Linux, any reasonably recent version of GCC or Clang will work. Navigate to the Nori folder, create a build directory and start cmake-gui, like so:
 ```
-cd nori
+cd NoriV2
 mkdir build
 cd build
 cmake-gui ..
@@ -146,7 +143,7 @@ web browser, preferable google chrome.
 For more information on the nori web interface please contact me.
 
 
-[web-app]: https://bitbucket.org/Alexus/noriwebinterface
+[web-app]: https://github.com/mworchel/NoriV2Webinterface
 [git]: http://git-scm.com/
 [node]: http://nodejs.org/
 [cmake]: http://www.cmake.org/download/
