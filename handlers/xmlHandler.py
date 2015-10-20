@@ -97,7 +97,7 @@ class xmlHandler(BaseHandler):
 
         # return the rendered image url
         data = {
-            'imgUrl': userDir + "/img/" + pureFileName + '.png'
+            'imgUrl': '/app/data/' + user + "/img/" + pureFileName + '.png'
         }
         # serve the image
         # f = Image.open(pngPath)
