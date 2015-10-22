@@ -58,7 +58,7 @@ class xmlHandler(BaseHandler):
         """
         user = self.get_current_user()
 
-        print "New xml request from " + user
+        print("New xml request from " + user)
 
         # check if the user has a directory if not create it
         userDir  = BASE_DIR + '/../app/data/' + user
@@ -93,7 +93,9 @@ class xmlHandler(BaseHandler):
         # convert the exr file to an image
         pngPath = userDir + "/img/" + pureFileName + '.png'
         convComand = "convert " + srcPath + ' -gamma 2.2 ' + pngPath
-        os.system(convComand)
+
+        if os.system(convComand) != 0:
+            raise RuntimeError('convert failed to create the png image')
 
         # return the rendered image url
         data = {
