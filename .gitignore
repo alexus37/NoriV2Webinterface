@@ -8,3 +8,4 @@ nori/build/*
 .idea/*
 app/.idea/*
 /build
+node_modules/
