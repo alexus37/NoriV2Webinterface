@@ -2,7 +2,7 @@
   "name": "nori web interface",
   "description": "A web interface for the nori render",
   "version": "0.0.1",
-  "homepage": "TBD",
+  "homepage": "https://github.com/mworchel/NoriV2Webinterface",
   "license": "MIT",
   "private": false,
   "dependencies": {

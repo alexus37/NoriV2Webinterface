@@ -71,7 +71,7 @@ class xmlHandler(BaseHandler):
 
         # extract the query
         xmlQuery = json.loads(self.request.body)
-        filePath = "app/data/" + user + "/xml/" + xmlQuery['fileName']
+        filePath = userDir+ "/xml/" + xmlQuery['fileName']
         pureFileName = xmlQuery['fileName'].split('.')[0]
         sendMail = xmlQuery['sendMail']
 
@@ -86,12 +86,12 @@ class xmlHandler(BaseHandler):
 
         # move the file to exr directory
         exrFileName = pureFileName + '.exr'
-        destPath = "app/data/" + user + "/xml/" + exrFileName
-        srcPath = "app/data/" + user + "/exr/" + exrFileName
+        destPath = userDir + "/xml/" + exrFileName
+        srcPath = userDir + "/exr/" + exrFileName
         move(destPath, srcPath)
 
         # convert the exr file to an image
-        pngPath = "app/data/" + user + "/img/" + pureFileName + '.png'
+        pngPath = userDir + "/img/" + pureFileName + '.png'
         convComand = "convert " + srcPath + ' -gamma 2.2 ' + pngPath
 
         if os.system(convComand) != 0:
@@ -99,7 +99,7 @@ class xmlHandler(BaseHandler):
 
         # return the rendered image url
         data = {
-            'imgUrl': "data/" + user + "/img/" + pureFileName + '.png'
+            'imgUrl': '/app/data/' + user + "/img/" + pureFileName + '.png'
         }
         # serve the image
         # f = Image.open(pngPath)

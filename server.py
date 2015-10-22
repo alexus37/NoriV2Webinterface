@@ -13,13 +13,21 @@ from tornado import autoreload
 from handlers.xmlHandler import *
 from handlers.myStaticFile import *
 from handlers.login import *
+import os
 
+def init():
+    baseDir = 'app/data/'
+    if not os.path.exists(baseDir):
+        os.makedirs(baseDir)
 
 ################################################################################################
 # Main
 if __name__ == "__main__":
     tornado.options.parse_command_line()
     define("port", default=7001, help="run on the given port", type=int)
+
+    init()
+
     print("Started tornado on port: %d" % options.port)
 
     serverSettings = {
