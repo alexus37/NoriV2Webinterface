@@ -1,6 +1,5 @@
 from base import *
-import sys
-
+import os
 
 ################################################################################################
 # Main
@@ -33,6 +32,15 @@ class LoginHandler(BaseHandler):
         if cmp(username, "testUser") == 0 and cmp(password, "alex123") == 0:
             print("User(%s) logged in" % str(username))
             self.set_secure_cookie("user", username)
+
+            userDir  = self.getBasePath() + '/../app/data/' + str(username)
+            if not os.path.exists(userDir):
+                os.makedirs(userDir)
+                os.makedirs(userDir + '/img')
+                os.makedirs(userDir + '/xml')
+                os.makedirs(userDir + '/exr')
+                os.makedirs(userDir + '/obj')
+
             self.redirect(u"/app/index.html")
         else:
             self.redirect(u"/")

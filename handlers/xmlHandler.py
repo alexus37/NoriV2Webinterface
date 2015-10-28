@@ -11,10 +11,6 @@ from email.mime.image import MIMEImage
 from datetime import datetime
 
 
-BASE_DIR = os.path.dirname(os.path.realpath(__file__))
-
-
-
 ################################################################################################
 # xmlHandler
 # noinspeBASE_DIRction PyAbstractClass
@@ -61,14 +57,8 @@ class xmlHandler(BaseHandler):
         print "New xml request from " + user
 
         # check if the user has a directory if not create it
-        userDir  = BASE_DIR + '/../app/data/' + user
-        if not os.path.exists(userDir):
-            os.makedirs(userDir)
-            os.makedirs(userDir + '/img')
-            os.makedirs(userDir + '/xml')
-            os.makedirs(userDir + '/exr')
-            os.makedirs(userDir + '/obj')
-
+        userDir  = self.getUserDir()
+        
         # extract the query
         xmlQuery = json.loads(self.request.body)
         filePath = userDir+ "/xml/" + xmlQuery['fileName']

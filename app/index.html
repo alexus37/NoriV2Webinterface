@@ -26,6 +26,7 @@
 <body ng-controller="MainCtrl">
   <div class="btn-group">
       <label class="btn btn-primary" ng-model="viewModel" btn-radio="'view1'">view1</label>
+      <label class="btn btn-primary" ng-model="viewModel" btn-radio="'view2'">view2</label>
   </div>
 
   <hr>
@@ -35,6 +36,9 @@
   <script src="bower_components/jquery/dist/jquery.min.js"></script>
   <script src="bower_components/jquery-ui/ui/minified/jquery-ui.min.js"></script>
   
+  <script src="http://nervgh.github.io/js/es5-shim.min.js"></script>
+
+
   <script src="bower_components/angular/angular.js"></script>
  
   <script src="bower_components/angular-route/angular-route.js"></script>
@@ -45,12 +49,20 @@
   <script src="bower_components/angular-growl-v2/build/angular-growl.min.js"></script>
   <script src="bower_components/codemirror/lib/codemirror.js"></script>
   <script src="bower_components/codemirror/mode/xml/xml.js"></script>
+  <script src="bower_components/three.js/build/three.js"></script>
+  <script src="bower_components/angular-file-upload/dist/angular-file-upload.min.js"></script>
   <script type="text/javascript" src="bower_components/angular-ui-codemirror/ui-codemirror.js"></script>
 
 
 
   <script src="app.js"></script>
+  <!--SCRIPTS-->
+  <script src="view2/scripts/console-shame.js"></script>
+  <script src="view2/scripts/AssimpOBJLoader.js"></script>
+  <script src="view2/scripts/OrbitControls.js"></script>
+
   <!--DIRECTIVES-->
+  <script src="view2/directive/tjsModelViewer.js"></script>
 
   <!--SERVICES-->
   <script src="view1/service/communicationService.js"></script>
@@ -59,6 +71,7 @@
   
   <!--CONTROLLERS-->
   <script src="view1/view1.js"></script>
+  <script src="view2/view2.js"></script>
 
 </body>
 </html>

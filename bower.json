@@ -16,6 +16,8 @@
     "angular-dialog-service": "~5.2.6",
     "angular-loading-bar": "~0.7.1",
     "angular-growl-v2": "~0.7.4",
-    "angular-ui-codemirror": "~0.3.0"
+    "angular-ui-codemirror": "~0.3.0",
+    "angular-file-upload": "~2.2.0",
+    "three.js": "threejs#*"
   }
 }

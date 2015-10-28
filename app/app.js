@@ -14,7 +14,8 @@
  */
 angular.module('myApp', [
   'ngRoute',
-  'myApp.view1'
+  'myApp.view1',
+  'myApp.view2'
 ])
 
 .config(['$routeProvider', function($routeProvider) {
@@ -54,3 +55,15 @@ angular.module('myApp', [
  * Main view, does most of the computation, handles the charts and interaction with the leaflet map.
  */
 angular.module('myApp.view1', ['ngRoute', 'ui.bootstrap', 'angular-loading-bar', 'angular-growl', 'ui.codemirror']);
+/**
+ * @ngdoc overview
+ * @name myApp.view1
+ * @author Alexander Lelidis
+ * @requires ngRoute
+ * @requires ui.bootstrap
+ * @requires angular-loading-bar
+ * @requires angular-growl
+ * @description
+ * Main view, does most of the computation, handles the charts and interaction with the leaflet map.
+ */
+angular.module('myApp.view2', ['ngRoute', 'ui.bootstrap', 'angular-loading-bar', 'angular-growl', 'angularFileUpload', 'tjsModelViewer']);

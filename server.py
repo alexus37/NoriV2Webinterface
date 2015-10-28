@@ -13,6 +13,7 @@ from tornado import autoreload
 from handlers.xmlHandler import *
 from handlers.myStaticFile import *
 from handlers.login import *
+from handlers.objUpload import *
 import os
 
 def init():
@@ -38,6 +39,7 @@ if __name__ == "__main__":
 
     application = tornado.web.Application([
         (r"/", LoginHandler),
+        (r"/objUpload", objUploadHandler),
         (r"/xmlrequest", xmlHandler),
         (r"/app/(.*)", MyStaticFileHandler, dict(path=serverSettings['static_path']))
     ], debug=True, **serverSettings)
