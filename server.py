@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python2
 
 import base64
 import uuid
@@ -46,6 +46,6 @@ if __name__ == "__main__":
 
     application.listen(options.port)
     ioloop = tornado.ioloop.IOLoop().instance()
-    autoreload.start(ioloop)  
+    autoreload.start(ioloop)
     ioloop.start()
 
