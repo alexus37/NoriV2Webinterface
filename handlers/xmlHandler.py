@@ -58,7 +58,7 @@ class xmlHandler(BaseHandler):
 
         # check if the user has a directory if not create it
         userDir  = self.getUserDir()
-        
+
         # extract the query
         xmlQuery = json.loads(self.request.body)
         filePath = userDir+ "/xml/" + xmlQuery['fileName']

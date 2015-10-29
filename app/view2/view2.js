@@ -23,12 +23,13 @@ angular.module('myApp.view2')
     .controller('View2Ctrl', ["$scope", "growl", "communicationService", "FileUploader", 
         function ($scope, growl, communicationService, FileUploader) {
             // set up a communication service
-            var comServ = new communicationService('http://127.0.0.1:7001/objFileRequest');
-            var uploadedFiles = $scope.uploadedFiles = ["mesh_0.obj", "mesh_1.obj", "mesh_2.obj", "mesh_3.obj", "mesh_4.obj"];
+            var comServ = new communicationService('http://127.0.0.1:7001/objUpload');
+            var uploadedFiles = $scope.uploadedFiles = [];
             $scope.assimpModelUrl = "data/testUser/obj/mesh_3.obj";
             var uploader = $scope.uploader = new FileUploader({
                 url: '../objUpload'
-            });    
+            });
+
 
             uploader.filters.push({
                 name: 'customFilter',
@@ -43,8 +44,16 @@ angular.module('myApp.view2')
                 }
             });
 
+            function updateFileList(){                
+                var promise = comServ.httpGetRequest();
+                promise.success(function updateList(payload){
+                    $scope.uploadedFiles = uploadedFiles = payload;
+                });
+            }
+            updateFileList();
+
             $scope.loadObjModel = function(item) {
-                 $scope.assimpModelUrl = "data/testUser/obj/" + item;
+                $scope.assimpModelUrl = "data/testUser/obj/" + item;
             }
 
             // CALLBACKS
@@ -84,6 +93,7 @@ angular.module('myApp.view2')
                 }
             };
             uploader.onCompleteAll = function() {
+                updateFileList()
                 console.info('onCompleteAll');
             };
         }]);

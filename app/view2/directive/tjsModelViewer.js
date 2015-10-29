@@ -65,7 +65,7 @@ angular.module("tjsModelViewer", [])
 						geometry.computeFaceNormals();
 						geometry.computeVertexNormals();
 
-
+						camera.lookAt(geometry);
 
 						var faceABCD = "abcd";
 						var color, f, p, n, vertexIndex;

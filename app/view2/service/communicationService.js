@@ -45,8 +45,8 @@ module.service('communicationService', ['$http',  function($http){
      * @param {object} geoQuery The query, which is send to the url via http post.
      * @returns {HttpPromise} HttpPromise resolve with fetched data, or fails with error description.
      */
-    communicationService.prototype.httpGetRequest = function(Query){
-        return $http.get(this.url, Query);
+    communicationService.prototype.httpGetRequest = function(){
+        return $http.get(this.url);
     };
 
     return communicationService;

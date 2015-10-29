@@ -65,3 +65,26 @@ class objUploadHandler(BaseHandler):
         self.write(jsonData)
         self.set_header("Content-Type", "application/json")
         self.set_header("Access-Control-Allow-Origin", "*")
+
+    @tornado.web.authenticated
+    def get(self):
+    	"""
+        Handle http get requests.
+        """
+        user = self.get_current_user()
+
+        print "New files request from " + user
+
+        # get the user directory
+        userDir = self.getUserDir()
+
+        data = os.listdir(userDir + '/obj/')
+        print data
+
+        jsonData = escape.json_encode(data)
+
+        self.write(jsonData)
+        self.set_header("Content-Type", "application/json")
+        self.set_header("Access-Control-Allow-Origin", "*")
+
+
