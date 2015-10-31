@@ -15,7 +15,8 @@
 angular.module('myApp', [
   'ngRoute',
   'myApp.view1',
-  'myApp.view2'
+  'myApp.view2',
+  'myApp.view3'
 ])
 
 .config(['$routeProvider', function($routeProvider) {
@@ -52,9 +53,23 @@ angular.module('myApp', [
  * @requires angular-growl
  * @requires ui.codemirror
  * @description
- * Main view, does most of the computation, handles the charts and interaction with the leaflet map.
+ * Basic text editor 
  */
 angular.module('myApp.view1', ['ngRoute', 'ui.bootstrap', 'angular-loading-bar', 'angular-growl', 'ui.codemirror']);
+/**
+ * @ngdoc overview
+ * @name myApp.view2
+ * @author Alexander Lelidis
+ * @requires ngRoute
+ * @requires ui.bootstrap
+ * @requires angular-loading-bar
+ * @requires angular-growl
+ * @requires tjsModelViewer
+ * @description
+ * Obj uploader and viewer
+ */
+angular.module('myApp.view2', ['ngRoute', 'ui.bootstrap', 'angular-loading-bar', 'angular-growl', 'angularFileUpload', 'tjsModelViewer']);
+
 /**
  * @ngdoc overview
  * @name myApp.view1
@@ -64,6 +79,6 @@ angular.module('myApp.view1', ['ngRoute', 'ui.bootstrap', 'angular-loading-bar',
  * @requires angular-loading-bar
  * @requires angular-growl
  * @description
- * Main view, does most of the computation, handles the charts and interaction with the leaflet map.
+ * 
  */
-angular.module('myApp.view2', ['ngRoute', 'ui.bootstrap', 'angular-loading-bar', 'angular-growl', 'angularFileUpload', 'tjsModelViewer']);
+angular.module('myApp.view3', ['ngRoute', 'ui.bootstrap', 'angular-loading-bar', 'angular-growl', 'angularFileUpload']);

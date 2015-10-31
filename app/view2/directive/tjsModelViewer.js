@@ -14,6 +14,7 @@ angular.module("tjsModelViewer", [])
 					var previous;
 					var cube;
 					var controls;
+					var axis;
 					var geometryIndex = 0;
 
 					var createSomething = function( klass, args ) {
@@ -45,6 +46,39 @@ angular.module("tjsModelViewer", [])
 								addStuff();
 							});
 						}
+					}
+					function buildAxis( src, dst, colorHex, dashed ) {
+						var geom = new THREE.Geometry(),
+							mat; 
+
+						if(dashed) {
+							mat = new THREE.LineDashedMaterial({ linewidth: 3, color: colorHex, dashSize: 1, gapSize: 1});
+						} else {
+							mat = new THREE.LineBasicMaterial({ linewidth: 3, color: colorHex });
+						}
+
+						geom.vertices.push( src.clone() );
+						geom.vertices.push( dst.clone() );
+						geom.computeLineDistances(); // This one is SUPER important, otherwise dashed lines will appear as simple plain lines
+
+						var axis = new THREE.Line( geom, mat, THREE.LineSegments );
+
+						return axis;
+
+					}
+
+					function buildAxes( length ) {
+				        var axes = new THREE.Object3D();
+
+				        axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( length, 0, 0 ), 0xFF0000, false ) ); // +X
+				        axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( -length, 0, 0 ), 0xFF0000, true) ); // -X
+				        axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, length, 0 ), 0x00FF00, false ) ); // +Y
+				        axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, -length, 0 ), 0x00FF00, true ) ); // -Y
+				        axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, length ), 0x0000FF, false ) ); // +Z
+				        axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, -length ), 0x0000FF, true ) ); // -Z
+
+				        return axes;
+
 					}
 
 					loadModel(scope.assimpUrl);
@@ -116,7 +150,15 @@ angular.module("tjsModelViewer", [])
 						camera.position.z = 50;
 						
 						//create scene
-						scene = new THREE.Scene();						
+						scene = new THREE.Scene();
+
+						// add some axis
+						axis = buildAxes(10);
+						scene.add(axis);
+
+						var gridXZ = new THREE.GridHelper(10, 1);
+						scene.add(gridXZ);
+
 
 						// Lights
 						scene.add(new THREE.AmbientLight(0xcccccc));
@@ -126,6 +168,7 @@ angular.module("tjsModelViewer", [])
 						directionalLight.position.z = Math.random() - 0.5;
 						directionalLight.position.normalize();
 						scene.add(directionalLight);
+
 
 						
 
