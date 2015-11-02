@@ -21,6 +21,15 @@
   <link rel="stylesheet" type="text/css" href="bower_components/codemirror/lib/codemirror.css">
   <link rel="stylesheet" type="text/css" href="bower_components/codemirror/theme/twilight.css">
 
+  <link href="css/main.css" rel="stylesheet" />
+  <link id="theme" href="css/light.css" rel="stylesheet" />
+
+  <link rel="stylesheet" href="components/libs/codemirror/addon/dialog.css">
+  <link rel="stylesheet" href="components/libs/codemirror/addon/show-hint.css">
+  <link rel="stylesheet" href="components/libs/codemirror/addon/tern.css">
+  <link rel="stylesheet" href="components/libs/codemirror/codemirror.css">
+  <link rel="stylesheet" href="components/libs/codemirror/theme/monokai.css">
+  
 
 </head>
 <body ng-controller="MainCtrl">
@@ -56,6 +65,119 @@
 
   <script src="app.js"></script>
 
+  <!-- COMPONENTS -->
+
+    <script src="components/libs/system.min.js"></script>
+
+    <script src="components/controls/EditorControls.js"></script>
+    <script src="components/controls/TransformControls.js"></script>
+
+    <script src="components/libs/jszip.min.js"></script>
+    <script src="components/loaders/AMFLoader.js"></script>
+    <script src="components/loaders/AWDLoader.js"></script>
+    <script src="components/loaders/BabylonLoader.js"></script>
+    <script src="components/loaders/ColladaLoader.js"></script>
+    <script src="components/loaders/KMZLoader.js"></script>
+    <script src="components/loaders/MD2Loader.js"></script>
+    <script src="components/loaders/OBJLoader.js"></script>
+    <script src="components/loaders/PLYLoader.js"></script>
+    <script src="components/loaders/STLLoader.js"></script>
+    <script src="components/loaders/UTF8Loader.js"></script>
+    <script src="components/loaders/VRMLLoader.js"></script>
+    <script src="components/loaders/VTKLoader.js"></script>
+    <script src="components/loaders/ctm/lzma.js"></script>
+    <script src="components/loaders/ctm/ctm.js"></script>
+    <script src="components/loaders/ctm/CTMLoader.js"></script>
+    <script src="components/exporters/OBJExporter.js"></script>
+    <script src="components/exporters/STLExporter.js"></script>
+
+    <script src="components/loaders/deprecated/SceneLoader.js"></script>
+
+    <script src="components/renderers/Projector.js"></script>
+    <script src="components/renderers/CanvasRenderer.js"></script>
+    <script src="components/renderers/RaytracingRenderer.js"></script>
+    <script src="components/renderers/SoftwareRenderer.js"></script>
+    <script src="components/renderers/SVGRenderer.js"></script>
+
+    <!--<script src="components/libs/codemirror/codemirror.js"></script>-->
+
+    <script src="components/libs/codemirror/mode/javascript.js"></script>
+    <script src="components/libs/esprima.js"></script>
+    <script src="components/libs/jsonlint.js"></script>
+    <script src="components/libs/glslprep.min.js"></script>
+
+    <script src="components/libs/codemirror/mode/glsl.js"></script>
+
+
+    <script src="components/libs/codemirror/addon/dialog.js"></script>
+    <script src="components/libs/codemirror/addon/show-hint.js"></script>
+    <script src="components/libs/codemirror/addon/tern.js"></script>
+    <script src="components/libs/acorn/acorn.js"></script>
+    <script src="components/libs/acorn/acorn_loose.js"></script>
+    <script src="components/libs/acorn/walk.js"></script>
+    <script src="components/libs/ternjs/polyfill.js"></script>
+    <script src="components/libs/ternjs/signal.js"></script>
+    <script src="components/libs/ternjs/tern.js"></script>
+    <script src="components/libs/ternjs/def.js"></script>
+    <script src="components/libs/ternjs/comment.js"></script>
+    <script src="components/libs/ternjs/infer.js"></script>
+    <script src="components/libs/ternjs/doc_comment.js"></script>
+    <script src="components/libs/tern-threejs/threejs.js"></script>
+
+    <script src="components/libs/sortable.min.js"></script>
+    <script src="components/libs/signals.min.js"></script>
+    <script src="components/libs/ui.js"></script>
+    <script src="components/libs/ui.three.js"></script>
+
+    <script src="components/libs/app.js"></script>
+    <script src="components/Player.js"></script>
+    <script src="components/Script.js"></script>
+
+    <script src="components/effects/VREffect.js"></script>
+    <script src="components/controls/VRControls.js"></script>
+
+    <script src="components/Storage.js"></script>
+
+    <script src="components/Editor.js"></script>
+    <script src="components/Config.js"></script>
+    <script src="components/History.js"></script>
+    <script src="components/Loader.js"></script>
+    <script src="components/Menubar.js"></script>
+    <script src="components/Menubar.File.js"></script>
+    <script src="components/Menubar.Edit.js"></script>
+    <script src="components/Menubar.Add.js"></script>
+    <script src="components/Menubar.Play.js"></script>
+    <script src="components/Menubar.View.js"></script>
+    <script src="components/Menubar.Examples.js"></script>
+    <script src="components/Menubar.Help.js"></script>
+    <script src="components/Menubar.Status.js"></script>
+    <script src="components/Sidebar.js"></script>
+    <script src="components/Sidebar.Project.js"></script>
+    <script src="components/Sidebar.Scene.js"></script>
+    <script src="components/Sidebar.Object3D.js"></script>
+    <script src="components/Sidebar.Animation.js"></script>
+    <script src="components/Sidebar.Geometry.js"></script>
+    <script src="components/Sidebar.Geometry.Geometry.js"></script>
+    <script src="components/Sidebar.Geometry.BufferGeometry.js"></script>
+    <script src="components/Sidebar.Geometry.Modifiers.js"></script>
+    <script src="components/Sidebar.Geometry.BoxGeometry.js"></script>
+    <script src="components/Sidebar.Geometry.CircleGeometry.js"></script>
+    <script src="components/Sidebar.Geometry.CylinderGeometry.js"></script>
+    <script src="components/Sidebar.Geometry.IcosahedronGeometry.js"></script>
+    <script src="components/Sidebar.Geometry.PlaneGeometry.js"></script>
+    <script src="components/Sidebar.Geometry.SphereGeometry.js"></script>
+    <script src="components/Sidebar.Geometry.TorusGeometry.js"></script>
+    <script src="components/Sidebar.Geometry.TorusKnotGeometry.js"></script>
+    <script src="components/geometries/TeapotBufferGeometry.js"></script>
+    <script src="components/Sidebar.Geometry.TeapotBufferGeometry.js"></script>
+    <script src="components/Sidebar.Material.js"></script>
+    <script src="components/Sidebar.Script.js"></script>
+    <script src="components/Toolbar.js"></script>
+    <script src="components/Viewport.js"></script>
+    <script src="components/Viewport.Info.js"></script>
+
+
+
   <!--SCRIPTS-->
   <script src="view2/scripts/console-shame.js"></script>
   <script src="view2/scripts/AssimpOBJLoader.js"></script>
@@ -63,6 +185,7 @@
 
   <!--DIRECTIVES-->
   <script src="view2/directive/tjsModelViewer.js"></script>
+  <script src="view3/directive/tjsEditor.js"></script>
 
   <!--SERVICES-->
   <script src="view1/service/communicationService.js"></script>

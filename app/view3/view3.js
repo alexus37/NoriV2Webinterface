@@ -22,7 +22,7 @@ angular.module('myApp.view3')
      */
     .controller('View3Ctrl', ["$scope", "growl", "communicationService",
         function ($scope, growl, communicationService) {
-            // set up a communication service
+            $scope.parameter = "";
             
         }]);
 
