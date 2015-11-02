@@ -145,6 +145,104 @@ Sidebar.Project = function ( editor ) {
 
 	createRenderer( config.getKey( 'project/renderer' ), config.getKey( 'project/renderer/antialias' ), config.getKey( 'project/renderer/shadows' ) );
 
+	// SAMPLER
+	var samplerTypes = {
+		'independent': 'independent'
+	};
+	var samplerTypeRow = new UI.Panel();
+	var samplerType = new UI.Select().setOptions( samplerTypes ).setWidth( '150px' ).onChange( function () {
+
+		var value = this.getValue();
+
+		if ( value === 'independent' ) {
+
+			samplerPropertiesRow.setDisplay( '' );
+
+		} else {
+
+			samplerPropertiesRow.setDisplay( 'none' );
+
+		}
+
+		editor.sampler = value;
+		config.setKey( 'project/sampler', value );
+	} );
+
+	samplerTypeRow.add( new UI.Text( 'Sampler' ).setWidth( '90px' ) );
+	samplerTypeRow.add( samplerType );
+
+	container.add( samplerTypeRow );
+
+	// sampler properties
+	var samplerPropertiesRow = new UI.Panel();
+	samplerPropertiesRow.add( new UI.Text( 'Sample count' ).setWidth( '90px' ) );
+	samplerPropertiesRow.add( new UI.Integer( 64 )
+									.setRange( 1, Infinity )
+									.setWidth( '50px' )
+									.onChange( function() {
+			var value = this.getValue();
+			editor.samplerProps["sampleCount"] = value;
+			config.setKey( 'project/sampler/sampleCount', value );
+
+		}
+	));
+
+	container.add( samplerPropertiesRow );
+
+	//INTEGRATOR
+	var integratorTypes = {
+		'path_mis': 'Path tracer MIS',
+		'photonmapper':'Photon mapper'
+	};
+	var integratorTypeRow = new UI.Panel();
+	var integratorType = new UI.Select().setOptions( integratorTypes ).setWidth( '150px' ).onChange( function () {
+
+		var value = this.getValue();
+
+		if ( value === 'photonmapper' ) {
+
+			integratorPropertiesRow.setDisplay( '' );
+
+		} else {
+
+			integratorPropertiesRow.setDisplay( 'none' );
+
+		}
+		editor.integrator = value;
+		config.setKey( 'project/integrator', value );
+	} );
+
+	integratorTypeRow.add( new UI.Text( 'Integrator' ).setWidth( '90px' ) );
+	integratorTypeRow.add( integratorType );
+
+	container.add( integratorTypeRow );
+
+	// sampler properties
+	var integratorPropertiesRow = new UI.Panel();
+	integratorPropertiesRow.add( new UI.Text( '# Photons' ).setWidth( '90px' ) );
+	integratorPropertiesRow.add( new UI.Integer( 100000 )
+		.setRange( 1, Infinity )
+		.setWidth( '50px' )
+		.onChange( function() {
+			var value = this.getValue();
+			editor.integratorProps["photonCount"] = value;
+			config.setKey( 'project/integrator/photonCount', value );
+		}
+	));
+	integratorPropertiesRow.add( new UI.Text( 'Photonradius' ).setWidth( '90px' ) );
+	integratorPropertiesRow.add( new UI.Number( 1.0)
+		.setRange( 1, Infinity )
+		.setWidth( '50px' )
+		.onChange( function() {
+			var value = this.getValue();
+			editor.integratorProps["photonRadius"] = value;
+			config.setKey( 'project/integrator/photonRadius', value );
+		}
+	));
+
+	container.add( integratorPropertiesRow );
+
+
 	return container;
 
-}
+};

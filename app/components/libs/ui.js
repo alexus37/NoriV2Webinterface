@@ -172,7 +172,11 @@ UI.Panel = function () {
 
 	UI.Element.call( this );
 
+	//var dom = document.createElement( 'div' );
+	var parentElem = document.getElementById('tjsEditor');
 	var dom = document.createElement( 'div' );
+
+	parentElem.appendChild(dom);
 	dom.className = 'Panel';
 
 	this.dom = dom;

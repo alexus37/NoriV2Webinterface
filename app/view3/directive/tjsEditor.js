@@ -5,12 +5,14 @@ angular.module("tjsEditor", [])
 			return {
 				restrict: "E",
 				scope: {
-					editorParameter: "=editorParameter"
+					editor: "=editorParameter"
 				},
 				link: function (scope, elem, attr) {
+					/*
 					scope.$watch("parameter", function(newValue, oldValue) {
 						if (newValue != oldValue) console.log(newValue);
 					});
+					*/
 
 					window.URL = window.URL || window.webkitURL;
 					window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
@@ -18,7 +20,7 @@ angular.module("tjsEditor", [])
 						return this.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
 					};
 					//
-					var editor = new Editor();
+					editor = new Editor();
 					var viewport = new Viewport( editor );
 					elem[0].appendChild( viewport.dom );
 					var player = new Player( editor );

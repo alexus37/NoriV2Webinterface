@@ -21,14 +21,14 @@ angular.module("tjsModelViewer", [])
 
 						var F = function( klass, args ) {
 						    return klass.apply( this, args );
-						}
+						};
 						F.prototype = klass.prototype;
 
 						return new F( klass, args );
 					};
 
 					// Load jeep model using the AssimpOBJLoader
-					var loader1 = new THREE.OBJLoader();
+					var loader1 = new THREE.OBJLoaderAX();
 
 					scope.$watch("assimpUrl", function(newValue, oldValue) {
 						if (newValue != oldValue) loadModel(newValue);

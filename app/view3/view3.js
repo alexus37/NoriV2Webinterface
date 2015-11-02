@@ -22,7 +22,9 @@ angular.module('myApp.view3')
      */
     .controller('View3Ctrl', ["$scope", "growl", "communicationService",
         function ($scope, growl, communicationService) {
-            $scope.parameter = "";
+            $scope.editor = null;
+
+
             
         }]);
 

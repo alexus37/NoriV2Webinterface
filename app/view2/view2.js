@@ -24,7 +24,7 @@ angular.module('myApp.view2')
         function ($scope, growl, communicationService, FileUploader) {
             // set up a communication service
             var comServ = new communicationService('http://127.0.0.1:7001/objUpload');
-            var uploadedFiles = $scope.uploadedFiles = [];
+            $scope.uploadedFiles = [];
             $scope.assimpModelUrl = "data/testUser/obj/mesh_3.obj";
             var uploader = $scope.uploader = new FileUploader({
                 url: '../objUpload'
@@ -44,17 +44,31 @@ angular.module('myApp.view2')
                 }
             });
 
-            function updateFileList(){                
+            $scope.updateFileList = function (){
+                console.log("Loading files ..");
                 var promise = comServ.httpGetRequest();
                 promise.success(function updateList(payload){
-                    $scope.uploadedFiles = uploadedFiles = payload;
+                    var different = false;
+                    // check for changes
+                    for(var i = 0; i < payload.length; i++) {
+                        if (payload[i] != $scope.uploadedFiles[i]) {
+                            different = true;
+                        }
+                    }
+                    if (different){
+                        $scope.uploadedFiles = [];
+                        payload.forEach(function(fName) {
+                            $scope.uploadedFiles.push(fName);
+                        });
+                    }
                 });
-            }
-            updateFileList();
+            };
+
+
 
             $scope.loadObjModel = function(item) {
                 $scope.assimpModelUrl = "data/testUser/obj/" + item;
-            }
+            };
 
             // CALLBACKS
 
@@ -93,9 +107,14 @@ angular.module('myApp.view2')
                 }
             };
             uploader.onCompleteAll = function() {
-                updateFileList()
+                $scope.updateFileList();
                 console.info('onCompleteAll');
             };
+
+            $scope.$on('$viewContentLoaded', function(){
+                //Here your view content is fully loaded !!
+                $scope.updateFileList();
+            });
         }]);
 
 

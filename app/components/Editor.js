@@ -66,6 +66,7 @@ var Editor = function () {
 
 	};
 
+	this.xmlExporter = new XmlExporter();
 	this.config = new Config();
 	this.history = new History( this );
 	this.storage = new Storage();
@@ -80,7 +81,15 @@ var Editor = function () {
 	this.scene.name = 'Scene';
 
 	this.sceneHelpers = new THREE.Scene();
+	//AX
+	this.sampler = "independent";
+	this.samplerProps = {sampleCount: 64};
+	this.integrator = "path_mis";
+	this.integratorProps = {};
+	this.width = 800;
+	this.height = 600;
 
+	//AX end
 	this.object = {};
 	this.geometries = {};
 	this.materials = {};
@@ -169,6 +178,57 @@ Editor.prototype = {
 
 		this.signals.sceneGraphChanged.dispatch();
 
+	},
+
+	exportXML: function() {
+		var xmlOutPut = '<?xml version="1.0" encoding="utf-8"?>\n';
+		xmlOutPut += '<scene>\n';
+
+		//add the integrator
+		xmlOutPut += this.xmlExporter.integratorXML(this.integrator, this.integratorProps);
+
+		//add the sampler
+		xmlOutPut += this.xmlExporter.samplerXML(this.sampler, this.samplerProps);
+
+		var transposeCamMat = this.xmlExporter.transformMatrixList(this.camera.matrixWorld.elements);
+		//add the camera
+		var cameraProps = {
+			toWorld: transposeCamMat,
+			fov: this.camera.fov,
+			nearClip: this.camera.near,
+			farClip: this.camera.far,
+			width: this.width,
+			height: this.height
+		};
+
+		if(this.camera.type == "PerspectiveCamera"){
+			var camType = "perspective";
+		}
+
+		xmlOutPut += this.xmlExporter.cameraXML(camType, cameraProps);
+
+		for(var i = 0; i < this.scene.children.length; i++) {
+			if(this.scene.children[i].type == "Object3D") {
+				var meshType = "obj";
+				var bsdfType = "diffuse";
+				var bsdfParameters = {
+					albedo: [0.201901, 0.116948, 0.078615]
+				};
+				var meshProps = {
+					toWorld: this.xmlExporter.transformMatrixList(this.scene.children[i].children[0].matrixWorld.elements),
+					filename: '../obj/' + this.scene.children[i].name,
+					BSDFtype: bsdfType,
+					BSDFparameters: bsdfParameters
+				};
+				xmlOutPut += this.xmlExporter.meshXML(meshType, meshProps);
+			}
+		}
+
+		xmlOutPut += '</scene>';
+
+		console.log(xmlOutPut);
+
+		return xmlOutPut;
 	},
 
 	nameObject: function ( object, name ) {

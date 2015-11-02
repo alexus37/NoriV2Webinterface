@@ -92,23 +92,6 @@ Sidebar.Geometry = function ( editor ) {
 
 	container.add( new UI.Break() );
 
-	// uuid
-
-	var geometryUUIDRow = new UI.Panel();
-	var geometryUUID = new UI.Input().setWidth( '115px' ).setFontSize( '12px' ).setDisabled( true );
-	var geometryUUIDRenew = new UI.Button( '⟳' ).setMarginLeft( '7px' ).onClick( function () {
-
-		geometryUUID.setValue( THREE.Math.generateUUID() );
-
-		editor.selected.geometry.uuid = geometryUUID.getValue();
-
-	} );
-
-	geometryUUIDRow.add( new UI.Text( 'UUID' ).setWidth( '90px' ) );
-	geometryUUIDRow.add( geometryUUID );
-	geometryUUIDRow.add( geometryUUIDRenew );
-
-	container.add( geometryUUIDRow );
 
 	// name
 
@@ -152,7 +135,7 @@ Sidebar.Geometry = function ( editor ) {
 
 			geometryType.setValue( geometry.type );
 
-			geometryUUID.setValue( geometry.uuid );
+			//geometryUUID.setValue( geometry.uuid );
 			geometryName.setValue( geometry.name );
 
 			//
@@ -182,4 +165,4 @@ Sidebar.Geometry = function ( editor ) {
 
 	return container;
 
-}
+};

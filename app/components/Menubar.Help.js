@@ -23,19 +23,7 @@ Menubar.Help = function ( editor ) {
 	option.setTextContent( 'Source code' );
 	option.onClick( function () {
 
-		window.open( 'https://github.com/mrdoob/three.js/tree/master/editor', '_blank' )
-
-	} );
-	options.add( option );
-
-	// About
-
-	var option = new UI.Panel();
-	option.setClass( 'option' );
-	option.setTextContent( 'About' );
-	option.onClick( function () {
-
-		window.open( 'http://threejs.org', '_blank' );
+		window.open( 'https://github.com/alexus37/NoriV2Webinterface', '_blank' )
 
 	} );
 	options.add( option );
