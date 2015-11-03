@@ -58,6 +58,12 @@ The default Username/Password is: testUser/alex123
 
 Note that there is no data included for the default scene.
 
+# Structure
+
+- "server" contains the django server handling user and scene API as well as the connection to the renderer
+- "app" contains the angularjs client frontend
+- "NoriV2" contains the renderer
+
 # Contact
 
 For more information on the nori web interface please contact me.
