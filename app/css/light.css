@@ -31,7 +31,7 @@ input.Number {
 
 #viewport {
 	position: absolute;
-	top: 96px;
+	top: 160px;
 	left: 0px;
 	right: 300px;
 	bottom: 32px;
@@ -67,7 +67,7 @@ input.Number {
 	padding: 0px;
 	margin: 0px;
 	right: 0px;
-	top: 64px;
+	top: 128px;
 }
 
 	#menubar .menu {
@@ -126,7 +126,7 @@ input.Number {
 #sidebar {
 	position: absolute;
 	right: 0px;
-	top: 96px;
+	top: 128px;
 	bottom: 0px;
 	width: 300px;
 	background: #eee;

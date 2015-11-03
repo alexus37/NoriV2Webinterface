@@ -81,4 +81,4 @@ angular.module('myApp.view2', ['ngRoute', 'ui.bootstrap', 'angular-loading-bar',
  * @description
  * 
  */
-angular.module('myApp.view3', ['ngRoute', 'ui.bootstrap', 'angular-loading-bar', 'angular-growl', 'tjsEditor']);
+angular.module('myApp.view3', ['ngRoute', 'ui.bootstrap','ngAnimate', 'angular-loading-bar', 'angular-growl', 'tjsEditor']);

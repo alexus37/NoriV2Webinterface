@@ -1,4 +1,17 @@
 <div growl></div>
-<div id="tjsEditor">
-    <tjs-editor editor-parameter="editor"  class="ng-isolate-scope ng-scope"></tjs-editor>
+
+<button type="button" class="btn btn-default" ng-click="toggleEditor()">Toggle Editor</button>
+<button type="button" class="btn btn-default" ng-click="toggleImage()">Toggle Result</button>
+<hr>
+<div collapse="DOMVars.editorCollapsed">
+    <div id="tjsEditor">
+        <tjs-editor editor-parameter="editor"  editor-action="render()" class="ng-isolate-scope ng-scope"></tjs-editor>
+    </div>
 </div>
+<div collapse="DOMVars.imageCollapsed">
+    <img
+        ng-src="{{DOMVars.imageData}}"
+        alt="Nothing rendered!"
+        />
+</div>
+

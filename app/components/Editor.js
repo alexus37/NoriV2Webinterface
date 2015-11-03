@@ -82,6 +82,8 @@ var Editor = function () {
 
 	this.sceneHelpers = new THREE.Scene();
 	//AX
+	this.currentXML = "";
+	this.renderflag = -1;
 	this.sampler = "independent";
 	this.samplerProps = {sampleCount: 64};
 	this.integrator = "path_mis";
@@ -227,7 +229,8 @@ Editor.prototype = {
 		xmlOutPut += '</scene>';
 
 		console.log(xmlOutPut);
-
+        this.currentXML = xmlOutPut;
+        this.renderflag = 0;
 		return xmlOutPut;
 	},
 
