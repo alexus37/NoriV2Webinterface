@@ -5,14 +5,9 @@ angular.module("tjsEditor", [])
 			return {
 				restrict: "E",
 				scope: {
-					isolateEditor: "=editorParameter"
+                    renderFkt: "&renderFunction"
 				},
 				link: function (scope, elem, attr) {
-					/*
-					scope.$watch("parameter", function(newValue, oldValue) {
-						if (newValue != oldValue) console.log(newValue);
-					});
-					*/
 
 					window.URL = window.URL || window.webkitURL;
 					window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
@@ -20,50 +15,54 @@ angular.module("tjsEditor", [])
 						return this.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
 					};
 					//
-					scope.isolateEditor = new Editor();
-					var viewport = new Viewport( scope.isolateEditor );
+					var editor = new Editor();
+
+                    // set the render function for the editor
+
+                    editor.renderFunction = scope.renderFkt;
+					var viewport = new Viewport( editor );
 					elem[0].appendChild( viewport.dom );
-					var player = new Player( scope.isolateEditor );
+					var player = new Player( editor );
 					elem[0].appendChild( player.dom );
-					var script = new Script( scope.isolateEditor );
+					var script = new Script( editor );
 					elem[0].appendChild( script.dom );
-					var toolbar = new Toolbar( scope.isolateEditor );
+					var toolbar = new Toolbar( editor );
 					elem[0].appendChild( toolbar.dom );
-					var menubar = new Menubar( scope.isolateEditor );
+					var menubar = new Menubar( editor );
 					elem[0].appendChild( menubar.dom );
-					var sidebar = new Sidebar( scope.isolateEditor );
+					var sidebar = new Sidebar( editor );
 					elem[0].appendChild( sidebar.dom );
 					var modal = new UI.Modal();
 					elem[0].appendChild( modal.dom );
 					//
-					scope.isolateEditor.setTheme( scope.isolateEditor.config.getKey( 'theme' ) );
-					scope.isolateEditor.storage.init( function () {
-						scope.isolateEditor.storage.get( function ( state ) {
+					editor.setTheme( editor.config.getKey( 'theme' ) );
+					editor.storage.init( function () {
+						editor.storage.get( function ( state ) {
 							if ( state !== undefined ) {
-								scope.isolateEditor.fromJSON( state );
+								editor.fromJSON( state );
 							}
-							var selected = scope.isolateEditor.config.getKey( 'selected' );
+							var selected = editor.config.getKey( 'selected' );
 							if ( selected !== undefined ) {
-								scope.isolateEditor.selectByUuid( selected );
+								editor.selectByUuid( selected );
 							}
 						} );
 						//
 						var timeout;
 						function saveState( scene ) {
-							if ( scope.isolateEditor.config.getKey( 'autosave' ) === false ) {
+							if ( editor.config.getKey( 'autosave' ) === false ) {
 								return;
 							}
 							clearTimeout( timeout );
 							timeout = setTimeout( function () {
-								scope.isolateEditor.signals.savingStarted.dispatch();
+								editor.signals.savingStarted.dispatch();
 								timeout = setTimeout( function () {
-									scope.isolateEditor.storage.set( scope.isolateEditor.toJSON() );
-									scope.isolateEditor.signals.savingFinished.dispatch();
+									editor.storage.set( editor.toJSON() );
+									editor.signals.savingFinished.dispatch();
 								}, 100 );
 							}, 1000 );
 						}
 
-						var signals = scope.isolateEditor.signals;
+						var signals = editor.signals;
 						signals.geometryChanged.add( saveState );
 						signals.objectAdded.add( saveState );
 						signals.objectChanged.add( saveState );
@@ -83,23 +82,23 @@ angular.module("tjsEditor", [])
 					elem[0].addEventListener( 'drop', function ( event ) {
 						event.preventDefault();
 						if ( event.dataTransfer.files.length > 0 ) {
-							scope.isolateEditor.loader.loadFile( event.dataTransfer.files[ 0 ] );
+							editor.loader.loadFile( event.dataTransfer.files[ 0 ] );
 						}
 					}, false );
 					elem[0].addEventListener( 'keydown', function ( event ) {
 						switch ( event.keyCode ) {
 							case 8:
 								event.preventDefault(); // prevent browser back
-								var object = scope.isolateEditor.selected;
+								var object = editor.selected;
 								if ( confirm( 'Delete ' + object.name + '?' ) === false ) return;
 								var parent = object.parent;
-								scope.isolateEditor.removeObject( object );
-								scope.isolateEditor.select( parent );
+								editor.removeObject( object );
+								editor.select( parent );
 								break;
 						}
 					}, false );
 					function onWindowResize( event ) {
-						scope.isolateEditor.signals.windowResize.dispatch();
+						editor.signals.windowResize.dispatch();
 					}
 					window.addEventListener( 'resize', onWindowResize, false );
 					onWindowResize();
@@ -114,14 +113,14 @@ angular.module("tjsEditor", [])
 							loader.crossOrigin = '';
 							loader.load( file, function ( text ) {
 								var json = JSON.parse( text );
-								scope.isolateEditor.clear();
-								scope.isolateEditor.fromJSON( json );
+								editor.clear();
+								editor.fromJSON( json );
 							} );
 						}
 					}
 					window.addEventListener( 'message', function ( event ) {
-						scope.isolateEditor.clear();
-						scope.isolateEditor.fromJSON( event.data );
+						editor.clear();
+						editor.fromJSON( event.data );
 					}, false );
 
 					

@@ -109,7 +109,14 @@ var XmlExporter = function () {
 
             xml += ' \t </bsdf>\n';
             return xml;
-        }
+        },
+		emitterXML: function(eType, parameters) {
+			var xml = '\t<emitter type="point">\n';
+			xml += '\t \t<point name="position" value="7.232569,-10.756189,10.827317"/>\n';
+			xml += '\t \t<color name="power" value="500,250,250"/>\n';
+			xml += '\t</emitter>\n';
+			return xml;
+		}
 
 	}
 

@@ -83,7 +83,7 @@ var Editor = function () {
 	this.sceneHelpers = new THREE.Scene();
 	//AX
 	this.currentXML = "";
-	this.renderflag = -1;
+	this.renderFunction = null;
 	this.sampler = "independent";
 	this.samplerProps = {sampleCount: 64};
 	this.integrator = "path_mis";
@@ -209,6 +209,9 @@ Editor.prototype = {
 
 		xmlOutPut += this.xmlExporter.cameraXML(camType, cameraProps);
 
+		//TEMP ADD POINT LIGHT
+		xmlOutPut += this.xmlExporter.emitterXML("", "");
+
 		for(var i = 0; i < this.scene.children.length; i++) {
 			if(this.scene.children[i].type == "Object3D") {
 				var meshType = "obj";
@@ -228,9 +231,8 @@ Editor.prototype = {
 
 		xmlOutPut += '</scene>';
 
-		console.log(xmlOutPut);
-        this.currentXML = xmlOutPut;
-        this.renderflag = 0;
+		//console.log(xmlOutPut);
+        this.renderFunction({xml: xmlOutPut});
 		return xmlOutPut;
 	},
 

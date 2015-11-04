@@ -22,7 +22,6 @@ angular.module('myApp.view3')
      */
     .controller('View3Ctrl', ["$scope", "growl", "communicationService",
         function ($scope, growl, communicationService) {
-            $scope.editor = null;
             $scope.DOMVars = {
                     imageData: "images/testImage.png",
                     editorCollapsed: false,
@@ -46,21 +45,10 @@ angular.module('myApp.view3')
                     $scope.DOMVars.editorCollapsed = true;
                 }
             };
-
-            $scope.$watch("editor.renderflag", function() {
-                if($scope.editor != null) {
-                    if($scope.editor.renderflag > 0) {
-                        var xmlInput = $scope.editor.currentXML;
-                        var filename = "test.xml";
-                        var mailAddr = "bla@bla.de";
-                        if($scope.editor.renderflag == 0){
-                            sendRequest(false, xmlInput, filename, mailAddr);
-                        } else {
-                            sendRequest(true, xmlInput, filename, mailAddr);
-                        }
-                    }
-                }
-            }, true);
+            $scope.renderFkt = function(xmlInput) {
+                console.log(xmlInput);
+                sendRequest(false, xmlInput, "text.xml", "demo@demo.de")
+            };
 
             function sendRequest(sendMail, xmlInput, fileName, mailAddr){
                 var xmlQuery = {
