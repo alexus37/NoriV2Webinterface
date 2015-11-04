@@ -14,8 +14,8 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-FRONTEND_DIR = os.path.join(BASE_DIR, '../../app')
-RENDERER_DIR = os.path.join(BASE_DIR, '../../NoriV2')
+FRONTEND_DIR = os.path.join(BASE_DIR, '../app')
+RENDERER_DIR = os.path.join(BASE_DIR, '../NoriV2')
 
 
 # Quick-start development settings - unsuitable for production
@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'noriv2api'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -104,3 +105,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+
+AUTH_USER_MODEL = 'noriv2api.User'
