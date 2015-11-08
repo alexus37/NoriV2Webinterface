@@ -14,21 +14,24 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
 from django.conf.urls import include, url, patterns
-from django.contrib import admin
+from django.contrib import admin, auth
 from noriv2apiserver import settings
+from noriv2api import serializers
+
 
 urlpatterns = [
 # APIs go here!
+    url(r'^', include('noriv2api.urls')),
     url(r'^admin/', include(admin.site.urls)),
 ]
 
 if settings.DEBUG:
     urlpatterns.extend([
         url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-        patterns('django.contrib.staticfiles.views',
-                url(r'', 'serve', {
-                    'document_root': settings.FRONTEND_DIR,
-                    'path': '/index.html'}
-                ),
-        )
+        # patterns('django.contrib.staticfiles.views',
+        #         url(r'', 'serve', {
+        #             'document_root': settings.FRONTEND_DIR,
+        #             'path': '/index.html'}
+        #         ),
+        # )
     ])

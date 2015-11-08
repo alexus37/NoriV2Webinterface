@@ -14,8 +14,8 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-FRONTEND_DIR = os.path.join(BASE_DIR, '../app')
-RENDERER_DIR = os.path.join(BASE_DIR, '../NoriV2')
+FRONTEND_DIR = os.path.join(BASE_DIR, '../app/')
+RENDERER_DIR = os.path.join(BASE_DIR, '../NoriV2/')
 
 
 # Quick-start development settings - unsuitable for production
@@ -104,6 +104,21 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
-STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+    FRONTEND_DIR
+)
+STATIC_ROOT = ''
+STATIC_URL = '/'
+
+RENDERER_DATA_DIR =  os.path.join(BASE_DIR, 'static')
 
 AUTH_USER_MODEL = 'noriv2api.User'
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
