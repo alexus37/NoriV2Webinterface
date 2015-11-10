@@ -1,6 +1,7 @@
 import subprocess
 import uuid
 import os
+import json
 
 from noriv2api.models import Scene, User
 from noriv2api.serializers import SceneSerializer, UserSerializer
@@ -37,14 +38,16 @@ class RenderView(views.APIView):
     Renders an image and returns the path to a rendered image
     """
     #authentication_classes = (authentication.TokenAuthentication,)
-    #permission_classes = (permissions.IsAdminUser,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     def get(self, request, format=None):
-        input_file =  os.path.join(RENDERER_DATA_DIR, uuid.uuid4())+'.xml'
-        request_json = json.loads(request.data)  # TODO: use serializer
-        with open(input_file, 'w') as f:
-            f.write(request_json['xmlData'])
-        output_file = os.path.join(RENDERER_DATA_DIR, uuid.uuid4())+'.png'
+        raw_file_path =  os.path.join(RENDERER_DATA_DIR, str(uuid.uuid4()))
+        input_file = raw_file_path + '.xml'
+        output_file = raw_file_path + '.png'
+
+        import ipdb; ipdb.set_trace()
+        with open(input_file, 'x') as f:
+            f.write(request.data['xmlData'])
         subprocess.call([os.path.join(RENDERER_DIR, 'build/nori'), input_file, '0', '0'])
 
         return_object = {
