@@ -111,7 +111,8 @@ STATICFILES_DIRS = (
     RENDERER_DATA_DIR
 )
 STATIC_ROOT = ''
-STATIC_URL = '/'
+STATIC_URL = '/static/'
+
 
 
 AUTH_USER_MODEL = 'noriv2api.User'

@@ -4,7 +4,7 @@ import os
 
 from noriv2api.models import Scene, User
 from noriv2api.serializers import SceneSerializer, UserSerializer
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, views
 from noriv2api.permissions import IsOwnerOrReadOnly
 
 from noriv2apiserver.settings import RENDERER_DIR, RENDERER_DATA_DIR
@@ -32,10 +32,13 @@ class UserDetail(generics.RetrieveAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
-class RenderView(APIView):
+class RenderView(views.APIView):
     """
     Renders an image and returns the path to a rendered image
     """
+    #authentication_classes = (authentication.TokenAuthentication,)
+    #permission_classes = (permissions.IsAdminUser,)
+
     def get(self, request, format=None):
         input_file =  os.path.join(RENDERER_DATA_DIR, uuid.uuid4())+'.xml'
         request_json = json.loads(request.data)  # TODO: use serializer
