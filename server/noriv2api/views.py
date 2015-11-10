@@ -37,11 +37,16 @@ class RenderView(APIView):
     Renders an image and returns the path to a rendered image
     """
     def get(self, request, format=None):
-        file_path = os.path.join(RENDERER_DATA_DIR, uuid.uuid4())+'.png'
-        call([os.path.join(RENDERER_DIR, 'build/nori'), file_path, '0', '0'])
+        input_file =  os.path.join(RENDERER_DATA_DIR, uuid.uuid4())+'.xml'
+        request_json = json.loads(request.data)  # TODO: use serializer
+        with open(input_file, 'w') as f:
+            f.write(request_json['xmlData'])
+        output_file = os.path.join(RENDERER_DATA_DIR, uuid.uuid4())+'.png'
+        subprocess.call([os.path.join(RENDERER_DIR, 'build/nori'), input_file, '0', '0'])
 
         return_object = {
-                'url':
-                }
+                'success': True,
+                'url': output_file
+        }
 
         return Response(return_object)

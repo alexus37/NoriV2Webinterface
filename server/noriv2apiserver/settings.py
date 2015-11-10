@@ -16,6 +16,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FRONTEND_DIR = os.path.join(BASE_DIR, '../app/')
 RENDERER_DIR = os.path.join(BASE_DIR, '../NoriV2/')
+RENDERER_DATA_DIR =  os.path.join(BASE_DIR, 'static')
 
 
 # Quick-start development settings - unsuitable for production
@@ -106,12 +107,12 @@ USE_TZ = True
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
-    FRONTEND_DIR
+    FRONTEND_DIR,
+    RENDERER_DATA_DIR
 )
 STATIC_ROOT = ''
 STATIC_URL = '/'
 
-RENDERER_DATA_DIR =  os.path.join(BASE_DIR, 'static')
 
 AUTH_USER_MODEL = 'noriv2api.User'
 
