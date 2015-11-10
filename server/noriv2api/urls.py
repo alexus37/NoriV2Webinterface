@@ -7,6 +7,7 @@ urlpatterns = [
     url(r'^users/(?P<pk>[0-9]+)/$', views.UserDetail.as_view()),
     url(r'^scenes/$', views.SceneList.as_view()),
     url(r'^scenes/(?P<pk>[0-9]+)$', views.SceneDetail.as_view()),
+    url(r'^render/$', views.RenderView.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
