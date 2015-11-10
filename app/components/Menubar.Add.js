@@ -64,7 +64,8 @@ Menubar.Add = function ( editor ) {
 		var heightSegments = 1;
 
 		var geometry = new THREE.PlaneGeometry( width, height, widthSegments, heightSegments );
-		var material = new THREE.MeshPhongMaterial();
+		//var material = new THREE.MeshPhongMaterial();
+		var material = new THREE.Diffuse(0.8, 0.8, 0.8);
 		var mesh = new THREE.Mesh( geometry, material );
 		mesh.name = 'Plane ' + ( ++ meshCount );
 
@@ -90,7 +91,8 @@ Menubar.Add = function ( editor ) {
 		var depthSegments = 1;
 
 		var geometry = new THREE.BoxGeometry( width, height, depth, widthSegments, heightSegments, depthSegments );
-		var mesh = new THREE.Mesh( geometry, new THREE.MeshPhongMaterial() );
+        var material = new THREE.MeshPhongMaterial();
+		var mesh = new THREE.Mesh( geometry, material );
 		mesh.name = 'Box ' + ( ++ meshCount );
 
 		editor.addObject( mesh );

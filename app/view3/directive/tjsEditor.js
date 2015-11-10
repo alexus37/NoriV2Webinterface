@@ -22,8 +22,7 @@ angular.module("tjsEditor", [])
                     editor.renderFunction = scope.renderFkt;
 					var viewport = new Viewport( editor );
 					elem[0].appendChild( viewport.dom );
-					var player = new Player( editor );
-					elem[0].appendChild( player.dom );
+
 					var script = new Script( editor );
 					elem[0].appendChild( script.dom );
 					var toolbar = new Toolbar( editor );
