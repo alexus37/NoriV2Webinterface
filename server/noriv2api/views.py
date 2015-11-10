@@ -7,7 +7,7 @@ from noriv2api.serializers import SceneSerializer, UserSerializer
 from rest_framework import generics, permissions
 from noriv2api.permissions import IsOwnerOrReadOnly
 
-from settings import RENDERER_DIR, RENDERER_DATA_DIR
+from noriv2apiserver.settings import RENDERER_DIR, RENDERER_DATA_DIR
 
 # TODO improve
 class SceneList(generics.ListCreateAPIView):
