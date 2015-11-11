@@ -215,10 +215,54 @@ Editor.prototype = {
 		for(var i = 0; i < this.scene.children.length; i++) {
 			if(this.scene.children[i].type == "Object3D") {
 				var meshType = "obj";
-				var bsdfType = "diffuse";
-				var bsdfParameters = {
-					albedo: [0.201901, 0.116948, 0.078615]
-				};
+                var bsdfType = "diffuse";
+                var bsdfParameters = {
+                    albedo: [0.201901, 0.116948, 0.078615]
+                };
+                var material = this.scene.children[i].children[0].material;
+                if(material.type == 'diffuse') {
+                    bsdfType = "diffuse";
+                    bsdfParameters = {
+                        albedo: [material.albedo.red, material.albedo.green, material.albedo.blue]
+                    };
+                }
+
+                if ( material.type == 'conductor') {
+                    bsdfType = "conductor";
+                    bsdfParameters = {
+                        materialName: material.conductorType
+                    };
+                }
+
+                if ( material.type == 'dielectric') {
+                    bsdfType = "dielectric";
+                    bsdfParameters = {
+                        intIOR: material.intIor,
+                        extIOR: material.extIor
+                    };
+                }
+
+                if ( material.type == 'microfacetBRDF') {
+                    bsdfType = "microfacet";
+                    bsdfParameters = {
+                        kd: [material.albedo.red, material.albedo.green, material.albedo.blue],
+                        alpha: material.alpha
+                    };
+                }
+
+                if ( material.type == 'mirror') {
+                    bsdfType = "mirror";
+                }
+
+                if ( material.type == 'roughconductor') {
+                    bsdfType = "roughConductor";
+                    bsdfParameters = {
+                        materialName: material.conductorType,
+                        alpha: material.alpha
+                    };
+                }
+
+
 				var meshProps = {
 					toWorld: this.xmlExporter.transformMatrixList(this.scene.children[i].children[0].matrixWorld.elements),
 					filename: '../obj/' + this.scene.children[i].name,

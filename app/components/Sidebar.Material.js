@@ -24,12 +24,12 @@ Sidebar.Material = function ( editor ) {
 
 	var materialClassRow = new UI.Panel();
 	var materialClass = new UI.Select().setOptions( {
-		'conductor': 'Conductor',
-		'dielectric': 'Dielectric',
-		'diffuse': 'Diffuse',
-		'microfacetBRDF': 'Microfacet',
-		'mirror': 'Mirror',
-		'roughconductor': 'Roughconductor'
+		'CONDUCTOR': 'Conductor',
+		'DIELECTRIC': 'Dielectric',
+		'DIFFUSE': 'Diffuse',
+		'MICROFACETBRDF': 'Microfacet',
+		'MIRROR': 'Mirror',
+		'ROUGHCONDUCTOR': 'Roughconductor'
 	} ).setWidth( '150px' ).setFontSize( '12px' ).onChange( update );
 
 	materialClassRow.add( new UI.Text( 'Type' ).setWidth( '90px' ) );
@@ -210,8 +210,33 @@ Sidebar.Material = function ( editor ) {
 
             if ( material.type == 'diffuse') {
                 material.albedo.red = albedoR.getValue();
+                material.albedo.green = albedoG.getValue();
+                material.albedo.blue = albedoB.getValue();
+            }
+
+            if ( material.type == 'conductor') {
+                material.conductorType = conductorTypeOpt.getValue();
+            }
+
+            if ( material.type == 'dielectric') {
+                material.intIor = intIORNr.getValue();
+                material.extIor = extIORNr.getValue();
+            }
+
+            if ( material.type == 'microfacetBRDF') {
                 material.albedo.red = albedoR.getValue();
-                material.albedo.red = albedoR.getValue();
+                material.albedo.green = albedoG.getValue();
+                material.albedo.blue = albedoB.getValue();
+                material.alpha = RoughnessAlpha.getValue();
+            }
+
+            if ( material.type == 'mirror') {
+
+            }
+
+            if ( material.type == 'roughconductor') {
+                material.conductorType = conductorTypeOpt.getValue();
+                material.alpha = RoughnessAlpha.getValue();
             }
 
 
@@ -280,12 +305,37 @@ Sidebar.Material = function ( editor ) {
 
 
 
-		materialClass.setValue( material.type );
+		materialClass.setValue( material.type.toUpperCase() );
 
         if(material.type == 'diffuse') {
             albedoR.setValue(material.albedo.red);
             albedoG.setValue(material.albedo.green);
             albedoB.setValue(material.albedo.blue);
+        }
+
+        if ( material.type == 'conductor') {
+            conductorTypeOpt.setValue(material.conductorType);
+        }
+
+        if ( material.type == 'dielectric') {
+            intIORNr.setValue(material.intIor);
+            extIORNr.setValue(material.extIor);
+        }
+
+        if ( material.type == 'microfacetBRDF') {
+            albedoR.setValue(material.albedo.red);
+            albedoG.setValue(material.albedo.green);
+            albedoB.setValue(material.albedo.blue);
+            RoughnessAlpha.setValue(material.alpha);
+        }
+
+        if ( material.type == 'mirror') {
+
+        }
+
+        if ( material.type == 'roughconductor') {
+            conductorTypeOpt.setValue(material.conductorType);
+            RoughnessAlpha.setValue(material.alpha);
         }
 
 

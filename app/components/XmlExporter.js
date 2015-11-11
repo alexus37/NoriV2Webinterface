@@ -105,6 +105,23 @@ var XmlExporter = function () {
                 case "diffuse":
                     xml += '\t \t <color name="albedo" value="' + parameters['albedo'][0] + ', ' + parameters['albedo'][1] + ', ' + parameters['albedo'][2] +'"/>\n';
                     break;
+				case "dielectric":
+					xml += '\t \t <float name="intIOR" value="' + parameters['intIOR'] + '"/>\n';
+					xml += '\t \t <float name="extIOR" value="' + parameters['extIOR'] + '"/>\n';
+					break;
+				case "microfacet":
+					xml += '\t \t <float name="alpha" value="' + parameters['alpha'] + '"/>\n';
+					xml += '\t \t <color name="kd" value="' + parameters['kd'][0] + ', ' + parameters['kd'][1] + ', ' + parameters['kd'][2] +'"/>\n';
+					break;
+				case "mirror":
+					break;
+				case "conductor":
+					xml += '\t \t <string name="materialName" value="' + parameters['materialName'] + '"/>\n';
+					break;
+				case "roughConductor":
+					xml += '\t \t <float name="alpha" value="' + parameters['alpha'] + '"/>\n';
+					xml += '\t \t <string name="materialName" value="' + parameters['materialName'] + '"/>\n';
+					break;
             }
 
             xml += ' \t </bsdf>\n';

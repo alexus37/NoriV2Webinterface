@@ -65,7 +65,7 @@ Menubar.Add = function ( editor ) {
 
 		var geometry = new THREE.PlaneGeometry( width, height, widthSegments, heightSegments );
 		//var material = new THREE.MeshPhongMaterial();
-		var material = new THREE.Diffuse(0.8, 0.8, 0.8);
+		var material = new THREE.DIFFUSE(0.8, 0.8, 0.8);
 		var mesh = new THREE.Mesh( geometry, material );
 		mesh.name = 'Plane ' + ( ++ meshCount );
 
