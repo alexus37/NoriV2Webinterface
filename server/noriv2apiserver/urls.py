@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import include, url, patterns
 from django.contrib import admin, auth
 from noriv2apiserver import settings
-from noriv2api import serializers
+
 
 
 urlpatterns = [

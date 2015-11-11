@@ -16,7 +16,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FRONTEND_DIR = os.path.join(BASE_DIR, '../app/')
 RENDERER_DIR = os.path.join(BASE_DIR, '../NoriV2/')
-RENDERER_DATA_DIR =  os.path.join(BASE_DIR, 'static')
+RENDERER_DATA_DIR = os.path.join(BASE_DIR, 'static')
 
 
 # Quick-start development settings - unsuitable for production
