@@ -1,12 +1,13 @@
 import subprocess
 import uuid
 import os
+import json
+import logging
 
-from models import Scene, User
-from serializers import SceneSerializer, UserSerializer
-from rest_framework import generics, permissions, views
-from rest_framework.response import Response
-from permissions import IsOwnerOrReadOnly
+from noriv2api.models import Scene, User
+from noriv2api.serializers import SceneSerializer, UserSerializer
+from rest_framework import generics, permissions, views, response
+from noriv2api.permissions import IsOwnerOrReadOnly
 from noriv2apiserver.settings import RENDERER_DIR, RENDERER_DATA_DIR, STATIC_URL
 
 
@@ -41,21 +42,13 @@ class RenderView(views.APIView):
     """
     Renders an image and returns the path to a rendered image
     """
-    # authentication_classes = (authentication.TokenAuthentication,)
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
-    def get_permissions(self):
-        if self.request.method == 'POST':
-            return (permissions.AllowAny(),)
-
-    def get(self, request, format=None):
-        raw_file_path = os.path.join(RENDERER_DATA_DIR, str(uuid.uuid4()))
+    def post(self, request, format=None):
+        raw_file_path =  os.path.join(RENDERER_DATA_DIR, str(uuid.uuid4()))
         input_file = raw_file_path + '.xml'
         output_file = raw_file_path + '.png'
 
-        # import ipdb
-        # ipdb.set_trace()
-        print request.data
         with open(input_file, 'w') as f:
             f.write(request.data['xmlData'])
         subprocess.call([os.path.join(RENDERER_DIR, 'build/nori'), input_file, '0', '0', '1'])
@@ -64,24 +57,6 @@ class RenderView(views.APIView):
             'success': True,
             'url': output_file
         }
+        # TODO: delete xml
 
-        return Response(return_object)
-
-    def post(self, request, format=None):
-        fileName = str(uuid.uuid4())
-        raw_file_path = os.path.join(RENDERER_DATA_DIR, fileName)
-        input_file = raw_file_path + '.xml'
-        output_file = STATIC_URL + fileName + '.png'
-
-        print os.path.join(RENDERER_DIR, 'build/nori')
-        with open(input_file, 'w') as f:
-            f.write(request.data['xmlData'])
-        subprocess.call([os.path.join(RENDERER_DIR, 'build/nori'), input_file, '0', '0', '1'], stderr=subprocess.STDOUT)
-
-        return_object = {
-            'success': True,
-            'url': output_file
-        }
-
-        return Response(return_object)
-
+        return response.Response(return_object)
