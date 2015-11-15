@@ -22,7 +22,7 @@ class AuthenticationTest(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
-    def test_api_authentication(self):
+    def test_api_basic_authentication(self):
         url = reverse('user-authenticate')
         encoded_login = base64.b64encode(
             '{}:{}'.format(
@@ -34,10 +34,10 @@ class AuthenticationTest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['user'], self.user_dict['username'])
 
-        # now test if login persists (with session auth only)
-
-        self.client.credentials(HTTP_AUTHORIZATION=b'')
-        self.client.credentials()
+    def test_api_session_authentication(self):
+        self.client.login(username=self.user_dict['username'],
+                          password=self.user_dict['password'])
+        url = reverse('user-authenticate')
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
