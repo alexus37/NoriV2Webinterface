@@ -7,7 +7,7 @@ class SceneSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Scene
-        fields = ('title', 'content', 'owner')
+        fields = ('url', 'title', 'content', 'owner')
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
