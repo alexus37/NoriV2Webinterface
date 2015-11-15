@@ -16,7 +16,6 @@ subprocess_call_mock = mock.Mock()
 
 class RenderTest(APITestCase):
     def setUp(self):
-        # Every test needs access to the request factory.
         self.user = User.objects.create_user(
             username='jacob', email='jacob@web.de', password='top_secret')
 

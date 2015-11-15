@@ -1,21 +1,19 @@
 from rest_framework import serializers
 from noriv2api.models import User, Scene
-from noriv2apiserver import settings
 
 
 class SceneSerializer(serializers.HyperlinkedModelSerializer):
-    # scenes = serializers.PrimaryKeyRelatedField(many=True, queryset=Scene.objects.all())
     owner = serializers.ReadOnlyField(source='owner.username')
 
     class Meta:
         model = Scene
-        fields = ('title', 'content', 'owner')  # TODO: owner should be another field?
+        fields = ('title', 'content', 'owner')
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
-    scenes = serializers.PrimaryKeyRelatedField(many=True, queryset=Scene.objects.all())
+    user_scenes = serializers.HyperlinkedRelatedField(queryset=Scene.objects.all(), view_name='scene-detail', many=True, required=False)
 
     class Meta:
         # model = settings.AUTH_USER_MODEL
         model = User
-        fields = ('url', 'username', 'email')
+        fields = ('url', 'username', 'email', 'user_scenes')

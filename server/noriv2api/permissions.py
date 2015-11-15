@@ -14,3 +14,15 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
 
         # Write permissions are only allowed to the owner of the scene.
         return obj.owner == request.user
+
+
+class IsAuthenticatedOrCreateOnly(permissions.BasePermission):
+    """
+    The request is authenticated as a user, or is a read-only request.
+    """
+
+    def has_permission(self, request, view):
+        return (
+            request.user.is_authenticated() or
+            request.method == 'POST'
+        )
