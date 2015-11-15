@@ -21,6 +21,7 @@ class UserTest(APITestCase):
         url = reverse('user-detail', kwargs={'pk': self.user.id})
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertNotEqual(response.data.pop('password', None), '')
         self.assertEqual(dict(response.data),
                          {'url': 'http://testserver/users/1/',
                           'username': 'jacob',
@@ -37,7 +38,7 @@ class UserTest(APITestCase):
         url = reverse('user-list')
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual([dict(u) for u in response.data],
+        self.assertEqual([dict(u) for u in response.data if u.pop('password', None)],
                          [{'url': 'http://testserver/users/1/',
                            'username': 'jacob',
                            'email': 'jacob@web.de',
@@ -61,3 +62,7 @@ class UserTest(APITestCase):
         self.assertEqual(
             User.objects.filter(username=user_dict['username']).
             first().email, user_dict['email'])
+
+        self.assertTrue(
+            User.objects.filter(username=user_dict['username']).first(). \
+                                    check_password(user_dict['password']))
