@@ -15,7 +15,9 @@ class AuthenticateView(APIView):
         try:
             contrib.auth.login(request, request.user)
         except AttributeError:
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
+            pass
+        #  return Response(status=status.HTTP_401_UNAUTHORIZED) # TODO:
+        #  something is wrong here
         content = {
             'user': request.user.username,
             'auth': request.auth,
