@@ -3,7 +3,8 @@ import uuid
 import os
 
 from rest_framework import generics, permissions, views, response
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, \
+                                       IsAuthenticated
 
 from noriv2api.models import Scene, User
 from noriv2api.serializers import SceneSerializer, UserSerializer

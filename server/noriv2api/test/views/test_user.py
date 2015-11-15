@@ -30,7 +30,7 @@ class UserTest(APITestCase):
     def test_get_user_unauthenticated(self):
         url = reverse('user-detail', kwargs={'pk': self.user.id})
         response = self.client.get(url)
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_get_users(self):
         self.client.force_authenticate(self.user)
@@ -46,7 +46,7 @@ class UserTest(APITestCase):
     def test_get_users_unauthenticated(self):
         url = reverse('user-list')
         response = self.client.get(url)
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_create_user(self):
         user_dict = {

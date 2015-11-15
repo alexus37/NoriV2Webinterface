@@ -13,21 +13,23 @@ Including another URLconf
     1. Add an import:  from blog import urls as blog_urls
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
-from django.conf.urls import include, url, patterns
-from django.contrib import admin, auth
-from noriv2apiserver import settings
 
+from django.conf.urls import include, url
+from django.contrib import admin
+from noriv2apiserver import settings, auth
 
 
 urlpatterns = [
-# APIs go here!
     url(r'^', include('noriv2api.urls')),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^authenticate/$',
+        auth.AuthenticateView.as_view(), name='user-authenticate'),
 ]
 
 if settings.DEBUG:
     urlpatterns.extend([
-        url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+        url(r'^api-auth/', include('rest_framework.urls',
+                                   namespace='rest_framework')),
         # patterns('django.contrib.staticfiles.views',
         #         url(r'', 'serve', {
         #             'document_root': settings.FRONTEND_DIR,
