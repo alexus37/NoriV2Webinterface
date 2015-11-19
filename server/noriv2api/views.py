@@ -1,7 +1,9 @@
 import subprocess
 import uuid
 import os
+import pathlib
 
+from rest_framework.parsers import FileUploadParser
 from rest_framework import generics, permissions, views, response
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, \
                                        IsAuthenticated
@@ -40,6 +42,35 @@ class UserDetail(generics.RetrieveAPIView):
     serializer_class = UserSerializer
 
     permission_classes = (IsAuthenticated, )
+
+
+class UserResourceView(views.APIView):
+    permission_classes = (IsAuthenticated, )
+    parser_classes = (FileUploadParser,)
+
+    def put(self, request, pk, format=None):
+        # check if pk matches request.user in permission_classes TODO
+        file_obj = request.FILES['file']
+        user_directory = os.path.join(RENDERER_DATA_DIR, request.user.username)
+        if not os.path.exists(user_directory):
+            os.makedirs(user_directory)
+
+
+        file_path = os.path.join(user_directory, file_obj.name)
+
+        path = pathlib.Path(file_path)
+        if path.is_file():
+            return response.Response(status=409)
+        else:
+            path.write_bytes(file_obj.read())
+            return response.Response(status=201)
+
+    def get(self, request, pk):
+        path = pathlib.Path(os.path.join(RENDERER_DATA_DIR, request.user.username))
+        if path.is_dir():
+            return response.Response([d.name for d in path.iterdir() if d.is_file()])
+        else:
+            return response.Response([])
 
 
 class RenderView(views.APIView):
