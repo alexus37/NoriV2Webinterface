@@ -3,7 +3,7 @@ from noriv2api.models import User, Scene
 
 
 class SceneSerializer(serializers.HyperlinkedModelSerializer):
-    owner = serializers.ReadOnlyField(source='owner.username')
+    owner = serializers.HyperlinkedRelatedField(queryset=User.objects.all(), view_name='user-detail', required=True, many=False)
 
     class Meta:
         model = Scene

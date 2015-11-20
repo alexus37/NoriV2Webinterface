@@ -37,7 +37,8 @@ class SceneTest(APITestCase):
                           format(self.scene.id),
                           'title': self.scene_dict['title'],
                           'content': self.scene_dict['content'],
-                          'owner': self.user.username})
+                          'owner': 'http://testserver' +
+                          reverse('user-detail', kwargs={'pk': self.user.id})})
 
     def test_get_scenes(self):
         self.client.force_authenticate(self.user)
@@ -49,7 +50,9 @@ class SceneTest(APITestCase):
                            format(self.scene.id),
                            'title': self.scene_dict['title'],
                            'content': self.scene_dict['content'],
-                           'owner': self.user.username}])
+                           'owner': 'http://testserver' +
+                           reverse('user-detail',
+                                   kwargs={'pk': self.user.id})}])
 
     def test_get_scenes_unauthenticated(self):
         url = reverse('scene-list')
@@ -72,13 +75,12 @@ class SceneTest(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
-
     def test_create_scene(self):
         self.client.force_authenticate(self.user)
         scene_dict = {
             'title': 'other scene',
             'content': '<xml></xml>',
-            'owner': self.user.username
+            'owner': reverse('user-detail', kwargs={'pk': self.user.id})
                 }
         url = reverse('scene-list')
         response = self.client.post(url, scene_dict, format='json')
