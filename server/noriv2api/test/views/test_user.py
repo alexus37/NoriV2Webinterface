@@ -41,7 +41,7 @@ class UserTest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertNotEqual(response.data.pop('password', None), '')
         self.assertEqual(dict(response.data),
-                         {'url': 'http://testserver/users/1/',
+                         {'url': 'http://testserver/users/{}/'.format(self.user.id),
                           'username': 'jacob',
                           'email': 'jacob@web.de',
                           'user_scenes': []})

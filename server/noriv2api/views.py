@@ -4,21 +4,20 @@ import os
 import pathlib
 
 from rest_framework.parsers import FileUploadParser
-from rest_framework import generics, permissions, views, response
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, \
-                                       IsAuthenticated
+from rest_framework import generics, permissions, views, response  # , filters
+from rest_framework.permissions import IsAuthenticated
 
 from noriv2api.models import Scene, User
 from noriv2api.serializers import SceneSerializer, UserSerializer
-from noriv2api.permissions import IsAuthenticatedOrCreateOnly, IsOwnerOrReadOnly
+from noriv2api.permissions import IsOwner, IsAuthenticatedOrCreateOnly
 from noriv2apiserver.settings import RENDERER_DIR, RENDERER_DATA_DIR
 
 
-# TODO improve
 class SceneList(generics.ListCreateAPIView):
     queryset = Scene.objects.all()
     serializer_class = SceneSerializer
-    permission_classes = (IsAuthenticatedOrReadOnly, )
+    permission_classes = (IsAuthenticated, )
+    # filter_backends = (filters.DjangoObjectPermissionsFilter) # TODO do this
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
@@ -27,8 +26,7 @@ class SceneList(generics.ListCreateAPIView):
 class SceneDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Scene.objects.all()
     serializer_class = SceneSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
-                          IsOwnerOrReadOnly,)
+    permission_classes = (IsOwner, )
 
 
 class UserList(generics.ListCreateAPIView):
@@ -55,7 +53,6 @@ class UserResourceView(views.APIView):
         if not os.path.exists(user_directory):
             os.makedirs(user_directory)
 
-
         file_path = os.path.join(user_directory, file_obj.name)
 
         path = pathlib.Path(file_path)
@@ -66,9 +63,11 @@ class UserResourceView(views.APIView):
             return response.Response(status=201)
 
     def get(self, request, pk):
-        path = pathlib.Path(os.path.join(RENDERER_DATA_DIR, request.user.username))
+        path = pathlib.Path(
+            os.path.join(RENDERER_DATA_DIR, request.user.username))
         if path.is_dir():
-            return response.Response([d.name for d in path.iterdir() if d.is_file()])
+            return response.Response(
+                [d.name for d in path.iterdir() if d.is_file()])
         else:
             return response.Response([])
 
