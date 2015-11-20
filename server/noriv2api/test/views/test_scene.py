@@ -61,5 +61,33 @@ class SceneTest(APITestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
+    def test_create_scene_unathorized(self):
+        scene_dict = {
+            'title': 'other scene',
+            'content': '<xml></xml>',
+            'owner': self.user.username
+                }
+        url = reverse('scene-list')
+        response = self.client.post(url, scene_dict, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+
+    def test_create_scene(self):
+        self.client.force_authenticate(self.user)
+        scene_dict = {
+            'title': 'other scene',
+            'content': '<xml></xml>',
+            'owner': self.user.username
+                }
+        url = reverse('scene-list')
+        response = self.client.post(url, scene_dict, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(
+            Scene.objects.filter(pk=response.data['url'][-1]).
+            first().title, scene_dict['title'])
+
+
     # TODO make tests that you just see your own scenes and can only change and
     # edit your own scenes and create scene only possible as authorized
