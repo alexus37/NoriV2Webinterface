@@ -10,17 +10,18 @@ module.config(['$routeProvider', 'growlProvider', function ($routeProvider, grow
 module.controller('LoginController', ['$scope', 'growl', '$location', 'AuthenticationService',
         function ($scope, growl,  $location, AuthenticationService) {
             // reset login status
-            AuthenticationService.ClearCredentials();
-
             $scope.login = function () {
+                AuthenticationService.ClearCredentials();
+                AuthenticationService.SetCredentials($scope.username, $scope.password);
                 $scope.dataLoading = true;
                 AuthenticationService.Login($scope.username, $scope.password, function (response) {
-                    if (response.success) {
-                        AuthenticationService.SetCredentials($scope.username, $scope.cookie);
+                    if ("user" in response) {
                         $scope.noLogin = true;
                         $location.path('/view1');
+                        growl.success("Welcome back :" + response["user"], {});
                     } else {
-                        console.log(response.message);
+                        AuthenticationService.ClearCredentials();
+                        growl.error(response.detail, {});
                         $scope.noLogin = false;
                         $scope.dataLoading = false;
                     }
