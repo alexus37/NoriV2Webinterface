@@ -20,14 +20,24 @@ angular.module('myApp.view2')
      * @description
      * This controller does most of the computation.
      */
-    .controller('View2Ctrl', ["$scope", "growl", "communicationService", "FileUploader", 
-        function ($scope, growl, communicationService, FileUploader) {
+    .controller('View2Ctrl', ["$scope", "growl", "$http", "FileUploader", "$cookies",
+        function ($scope, growl, $http, FileUploader, $cookies) {
+            function getUserURL(user) {
+                return '../users/2';
+            }
+
             // set up a communication service
-            var comServ = new communicationService('http://127.0.0.1:7001/objUpload');
+            var url = getUserURL($scope.$parent.username) + '/resource';
+
+
             var uploadedFiles = $scope.uploadedFiles = [];
-            $scope.assimpModelUrl = "data/testUser/obj/mesh_3.obj";
+            $scope.assimpModelUrl = "";
             var uploader = $scope.uploader = new FileUploader({
-                url: '../objUpload'
+                url: url,
+                method: 'PUT',
+                headers : {
+                    'X-CSRFToken': $cookies.get('csrftoken')
+                }
             });
 
 
@@ -44,16 +54,15 @@ angular.module('myApp.view2')
                 }
             });
 
-            function updateFileList(){                
-                var promise = comServ.httpGetRequest();
-                promise.success(function updateList(payload){
+            function updateFileList(){
+                $http.get(url).success(function updateList(payload){
                     $scope.uploadedFiles = uploadedFiles = payload;
                 });
             }
             updateFileList();
 
             $scope.loadObjModel = function(item) {
-                $scope.assimpModelUrl = "data/testUser/obj/" + item;
+                $scope.assimpModelUrl = $scope.$parent.username + "/" + item;
             };
 
             // CALLBACKS
@@ -86,14 +95,17 @@ angular.module('myApp.view2')
                 console.info('onCancelItem', fileItem, response, status, headers);
             };
             uploader.onCompleteItem = function(fileItem, response, status, headers) {
-                if (response["msg"] == "success") {
+                if (status == 201) {
                     growl.success("File " + fileItem.file.name + " successfully uploaded!", {}); 
+                } else if(status == 409) {
+                    growl.success("File " + fileItem.file.name + " all ready exists!", {});
                 } else {
-                    growl.error("File " + fileItem.file.name + " upload failed!", {})
+                    growl.error("File " + fileItem.file.name + " upload failed!", {});
+                    growl.error(response.detail, {});
                 }
             };
             uploader.onCompleteAll = function() {
-                updateFileList()
+                updateFileList();
                 console.info('onCompleteAll');
             };
         }]);

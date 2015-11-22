@@ -3,7 +3,7 @@ import uuid
 import os
 import pathlib
 
-from rest_framework.parsers import FileUploadParser
+from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework import generics, permissions, views, response  # , filters
 from rest_framework.permissions import IsAuthenticated
 
@@ -44,7 +44,7 @@ class UserDetail(generics.RetrieveAPIView):
 
 class UserResourceView(views.APIView):
     permission_classes = (IsAuthenticated, )
-    parser_classes = (FileUploadParser,)
+    parser_classes = (FormParser, MultiPartParser,)
 
     def put(self, request, pk, format=None):
         # check if pk matches request.user in permission_classes TODO
