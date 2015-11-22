@@ -24,12 +24,12 @@
 
 </head>
 <body ng-controller="MainCtrl">
-  <div class="btn-group">
+  <div class="btn-group" ng-show="noLogin">
       <label class="btn btn-primary" ng-model="viewModel" btn-radio="'view1'">view1</label>
       <label class="btn btn-primary" ng-model="viewModel" btn-radio="'view2'">view2</label>
   </div>
 
-  <hr>
+  <hr ng-show="noLogin">
   <div ng-view></div>
 
   <!-- JQUERY BEFORE ANGULAR -->    
@@ -51,6 +51,7 @@
   <script src="bower_components/codemirror/mode/xml/xml.js"></script>
   <script src="bower_components/three.js/build/three.js"></script>
   <script src="bower_components/angular-file-upload/dist/angular-file-upload.min.js"></script>
+  <script src="bower_components/angular-cookies/angular-cookies.min.js"></script>
   <script type="text/javascript" src="bower_components/angular-ui-codemirror/ui-codemirror.js"></script>
 
   <script src="app.js"></script>
@@ -59,6 +60,7 @@
   <script src="view2/scripts/console-shame.js"></script>
   <script src="view2/scripts/AssimpOBJLoader.js"></script>
   <script src="view2/scripts/OrbitControls.js"></script>
+  <script src="login/scripts/prefixfree.min.js"></script>
 
   <!--DIRECTIVES-->
   <script src="view2/directive/tjsModelViewer.js"></script>
@@ -67,9 +69,10 @@
   <script src="view1/service/communicationService.js"></script>
 
   <!--FACTORIES-->
-  
+  <script src="login/factory/loginFactory.js"></script>
+
   <!--CONTROLLERS-->
-  
+  <script src="login/login.js"></script>
   <script src="view1/view1.js"></script>
   <script src="view2/view2.js"></script>
   

@@ -5,7 +5,7 @@ angular.module('myApp.view2')
         $routeProvider.when('/view2', {
             templateUrl: 'view2/view2.html',
             controller: 'View2Ctrl'
-        });
+        }).otherwise({redirectTo: '/login'});
         growlProvider.globalTimeToLive(3000);
     }])
 
@@ -54,7 +54,7 @@ angular.module('myApp.view2')
 
             $scope.loadObjModel = function(item) {
                 $scope.assimpModelUrl = "data/testUser/obj/" + item;
-            }
+            };
 
             // CALLBACKS
 

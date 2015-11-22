@@ -14,12 +14,13 @@
  */
 angular.module('myApp', [
   'ngRoute',
+  'myApp.login',
   'myApp.view1',
   'myApp.view2'
 ])
 
 .config(['$routeProvider', function($routeProvider) {
-  $routeProvider.otherwise({redirectTo: '/view1'});
+        $routeProvider.otherwise({redirectTo: '/login'});
 }])
 /**
  * @ngdoc controller
@@ -33,8 +34,9 @@ angular.module('myApp', [
  * The main controller activates the sub controller depending on the requested url.
  */
 .controller('MainCtrl', ["$scope", "$http", "$location", "$window", function($scope, $http, $location, $window) {
-	$scope.viewModel = 'view1';
+	$scope.viewModel = 'login';
     $scope.server = "http://"+location.host;
+    $scope.noLogin = true;
 
     $scope.$watch('viewModel', function(value) {
     	$window.open('#/' + value, '_self');
@@ -42,6 +44,22 @@ angular.module('myApp', [
 
 
 }]);
+
+/**
+ * @ngdoc overview
+ * @name myApp.login
+ * @author Alexander Lelidis
+ * @requires ngRoute
+ * @requires ui.bootstrap
+ * @requires angular-loading-bar
+ * @requires angular-growl
+ * @description
+ * Main view, does most of the computation, handles the charts and interaction with the leaflet map.
+ */
+angular.module('myApp.login', ['ngRoute', 'ngCookies', 'angular-growl']);
+
+
+
 /**
  * @ngdoc overview
  * @name myApp.view1
@@ -67,3 +85,4 @@ angular.module('myApp.view1', ['ngRoute', 'ui.bootstrap', 'angular-loading-bar',
  * Main view, does most of the computation, handles the charts and interaction with the leaflet map.
  */
 angular.module('myApp.view2', ['ngRoute', 'ui.bootstrap', 'angular-loading-bar', 'angular-growl', 'angularFileUpload', 'tjsModelViewer']);
+
