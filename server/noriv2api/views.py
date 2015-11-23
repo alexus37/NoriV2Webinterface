@@ -10,7 +10,7 @@ from rest_framework.permissions import IsAuthenticated
 from noriv2api.models import Scene, User
 from noriv2api.serializers import SceneSerializer, UserSerializer
 from noriv2api.permissions import IsOwner, IsAuthenticatedOrCreateOnly
-from noriv2apiserver.settings import RENDERER_DIR, RENDERER_DATA_DIR
+from noriv2apiserver.settings import RENDERER_DIR, RENDERER_DATA_DIR, STATIC_URL
 
 
 class SceneList(generics.ListCreateAPIView):
@@ -79,9 +79,11 @@ class RenderView(views.APIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     def post(self, request, format=None):
-        raw_file_path = os.path.join(RENDERER_DATA_DIR, str(uuid.uuid4()))
+        # save xml scene in user directory ToDo
+        file_name = str(uuid.uuid4())
+        raw_file_path = os.path.join(RENDERER_DATA_DIR, file_name)
         input_file = raw_file_path + '.xml'
-        output_file = raw_file_path + '.png'
+        output_file = STATIC_URL + file_name + '.png'
 
         with open(input_file, 'w') as f:
             f.write(request.data['xmlData'])

@@ -23,10 +23,11 @@ angular.module('myApp.view2')
     .controller('View2Ctrl', ["$scope", "growl", "$http", "FileUploader", "$cookies",
         function ($scope, growl, $http, FileUploader, $cookies) {
             function getUserURL(user) {
+                // send request to get the user url ToDo
                 return '../users/2';
             }
 
-            // set up a communication service
+            // set up the url
             var url = getUserURL($scope.$parent.username) + '/resource';
 
 

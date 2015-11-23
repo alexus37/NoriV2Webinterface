@@ -10,7 +10,7 @@ var module = angular.module('myApp.view1');
  * @description
  * Service to talk with backend api and also prepare the data for the charts.
  */
-module.service('communicationService', ['$http',  function($http){
+module.service('communicationService', ['$http', '$cookies', function($http, $cookies){
     /**
      * @ngdoc
      * @methodOf myApp.view1.communicationService
@@ -21,6 +21,7 @@ module.service('communicationService', ['$http',  function($http){
      * @returns {communicationService} Instance of the service.
      */
 	var communicationService = function(url) {
+        $http.defaults.headers.common['X-CSRFToken'] = $cookies.get('csrftoken')
         this.url = url;
     };
     /**
