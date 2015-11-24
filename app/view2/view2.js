@@ -22,13 +22,13 @@ angular.module('myApp.view2')
      */
     .controller('View2Ctrl', ["$scope", "growl", "$http", "FileUploader", "$cookies",
         function ($scope, growl, $http, FileUploader, $cookies) {
-            function getUserURL(user) {
+            function getUserURL() {
                 // send request to get the user url ToDo
-                return '../users/2';
+                return $scope.$parent.user.url;
             }
 
             // set up the url
-            var url = getUserURL($scope.$parent.username) + '/resource';
+            var url = getUserURL() + 'resource';
 
 
             var uploadedFiles = $scope.uploadedFiles = [];
@@ -63,7 +63,7 @@ angular.module('myApp.view2')
             updateFileList();
 
             $scope.loadObjModel = function(item) {
-                $scope.assimpModelUrl = $scope.$parent.username + "/" + item;
+                $scope.assimpModelUrl = $scope.$parent.user.username + "/" + item;
             };
 
             // CALLBACKS

@@ -41,7 +41,7 @@ angular.module('myApp.view1')
                         fileName: $scope.fileName,
                         xmlData: $scope.xmlInput,
                         sendMail: false,
-                        email: "mail@smt.de"
+                        email: $scope.$parent.user.email
                 };
                 
                 var promise = comServ.httpPostRequest(xmlQuery);

@@ -37,7 +37,7 @@ angular.module('myApp', [
 	$scope.viewModel = 'login';
     $scope.server = "http://"+location.host;
     $scope.noLogin = true;
-    $scope.username = "";
+    $scope.user = null;
 
     $scope.$watch('viewModel', function(value) {
     	$window.open('#/' + value, '_self');

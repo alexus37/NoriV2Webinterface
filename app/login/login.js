@@ -19,13 +19,13 @@ module.controller('LoginController', ['$scope', 'growl', '$location', 'Authentic
                         $scope.$parent.noLogin = true;
 
                         growl.success("Welcome back :" + response["user"], {});
-                        $scope.$parent.username = response["user"];
+                        $scope.$parent.user = response["user"];
                         $location.path('/view1');
                     } else {
                         AuthenticationService.ClearCredentials();
                         growl.error(response.detail, {});
-                        $scope.$parent.noLogin = false;;
-                        $scope.$parent.username = "";
+                        $scope.$parent.noLogin = false;
+                        $scope.$parent.user = null;
                         $scope.dataLoading = false;
                     }
                 });
