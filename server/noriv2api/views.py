@@ -95,6 +95,6 @@ class RenderView(views.APIView):
             'success': True,
             'url': output_file
         }
-        # TODO: delete xml
+        os.remove(input_file)
 
         return response.Response(return_object)

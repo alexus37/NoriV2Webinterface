@@ -8,9 +8,12 @@ from rest_framework.test import APITestCase
 
 from noriv2apiserver.settings import RENDERER_DIR, RENDERER_DATA_DIR
 from noriv2api.models import User
+from noriv2api import views
 
 
 subprocess_call_mock = mock.Mock()
+file_mock = mock.mock_open()
+os_remove_mock = mock.MagicMock()
 
 
 class RenderTest(APITestCase):
@@ -19,6 +22,8 @@ class RenderTest(APITestCase):
             username='jacob', email='jacob@web.de', password='top_secret')
 
     @mock.patch('subprocess.call', subprocess_call_mock)
+    @mock.patch('{}.open'.format(views.__name__), file_mock, create=True)
+    @mock.patch('os.remove', os_remove_mock)
     def test_render_success(self):
         url = reverse('render')
         data = {'xmlData': ''}
@@ -39,6 +44,14 @@ class RenderTest(APITestCase):
              '0',
              '0',
              '1'])
+
+        # check that xml file was created and written
+        file_mock.assert_called_once_with(input_file, 'w')
+        file_mock.return_value.write.assert_called_once_with(data['xmlData'])
+
+        # check that file doesn't exist anymore
+        # self.assertFalse(pathlib.Path(input_file).exists())
+        os_remove_mock.assert_called_once_with(input_file)
 
     # test unauthenticated fail.
     def test_render_not_authenticated(self):

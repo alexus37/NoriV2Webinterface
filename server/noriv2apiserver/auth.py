@@ -14,14 +14,12 @@ class AuthenticateView(APIView):
     permission_classes = (IsAuthenticated, )
 
     def get(self, request, format=None):
+        # TODO: understand. doesn't make sense..
         if not request.user: # Seems like request.backend is only set when the user is logged in first
             try:
                 contrib.auth.login(request, request.user)
             except AttributeError:
                 raise
-                # for a strange reason
-                #  return Response(status=status.HTTP_401_UNAUTHORIZED) # TODO:
-                #  something is wrong here
 
         # what is request.auth?
         content = {
