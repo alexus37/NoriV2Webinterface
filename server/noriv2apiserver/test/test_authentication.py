@@ -1,4 +1,5 @@
 import base64
+import copy
 
 from django.core.urlresolvers import reverse
 from rest_framework import status
@@ -32,7 +33,6 @@ class AuthenticationTest(APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data['user'], self.user_dict['username'])
 
     def test_api_session_authentication(self):
         self.client.login(username=self.user_dict['username'],
@@ -41,4 +41,17 @@ class AuthenticationTest(APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data['user'], self.user_dict['username'])
+
+    def test_api_authentication_response(self):
+        self.client.login(username=self.user_dict['username'],
+                          password=self.user_dict['password'])
+        url = reverse('user-authenticate')
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        expected_user_data = copy.copy(self.user_dict)
+        expected_user_data['url'] = 'http://testserver{}'.format(
+            reverse('user-detail', kwargs={'pk': self.user.id}))
+        del expected_user_data['password']
+        self.assertDictContainsSubset(expected_user_data, response.data['user'])
+        # auth
