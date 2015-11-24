@@ -1,5 +1,7 @@
 ﻿# Nori Webinterface
 
+[![Join the chat at https://gitter.im/alexus37/NoriV2Webinterface](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/alexus37/NoriV2Webinterface?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 The purpose of this web app is to be a web interface for the nori renderer. The whole process is very interactive and self-explanatory and can be done with every state-of-the-art web browser.
 
 # Requirements
