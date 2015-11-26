@@ -34,7 +34,7 @@ class RenderTest(APITestCase):
         self.assertEqual(response.data['success'], True)
 
         file_uuid = re.search('([^/]*).png', response.data['url']).groups()[0]
-        raw_file_path = os.path.join(RENDERER_DATA_DIR, file_uuid)
+        raw_file_path = os.path.join(RENDERER_DATA_DIR, self.user.username, file_uuid)
         input_file = raw_file_path + '.xml'
 
         # check that renderer was called with correct arguments

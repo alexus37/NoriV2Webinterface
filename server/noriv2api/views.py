@@ -81,7 +81,9 @@ class RenderView(views.APIView):
     def post(self, request, format=None):
         # save xml scene in user directory ToDo
         file_name = str(uuid.uuid4())
-        raw_file_path = os.path.join(RENDERER_DATA_DIR, file_name)
+        raw_file_path = os.path.join(RENDERER_DATA_DIR,
+                                     request.user.username,
+                                     file_name)
         input_file = raw_file_path + '.xml'
         output_file = STATIC_URL + file_name + '.png'
 
