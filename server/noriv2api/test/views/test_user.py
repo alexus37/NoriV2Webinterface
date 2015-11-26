@@ -1,5 +1,6 @@
 import pathlib
 # from rest_framework.test import APIRequestFactory
+from django.test.client import encode_multipart
 from django.core.urlresolvers import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
@@ -20,9 +21,9 @@ class UserTest(APITestCase):
 
         pathlib.Path(settings.RENDERER_DATA_DIR, self.user.username).mkdir()
 
-        self.test_file = pathlib.Path(settings.RENDERER_DATA_DIR, self.user.username, 'testfile.png')
+        self.test_file = pathlib.Path(settings.RENDERER_DATA_DIR, self.user.username, 'testfile.obj')
         self.test_file.touch()
-        self.test_file2 = pathlib.Path(settings.RENDERER_DATA_DIR, self.user.username, 'testfile2.png')
+        self.test_file2 = pathlib.Path(settings.RENDERER_DATA_DIR, self.user.username, 'testfile2.obj')
 
     def tearDown(self):
         self.test_file.unlink()
@@ -88,29 +89,45 @@ class UserTest(APITestCase):
     def test_upload(self):
         self.client.force_authenticate(self.user)
         url = reverse('user-resource', kwargs={'pk': self.user.pk})
-        file_string = b'uiae\naa'
-        self.client.credentials(HTTP_CONTENT_DISPOSITION='attachment; filename={}'.format(self.test_file2.name))
-        response = self.client.put(url, data=file_string, content_type='application/octet-stream')
+        file_name = 'testfile2.obj'
+        test = pathlib.Path(settings.RENDERER_DATA_DIR,  file_name)
+        test.touch()
+        
+        f = open(str(test.resolve()), 'w+')
+        content = encode_multipart('BoUnDaRyStRiNg',  {'file': f})
+        content_type = 'multipart/form-data; boundary=BoUnDaRyStRiNg'
+        response = self.client.put(url, data=content, content_type=content_type)
+        f.close()
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertTrue(self.test_file2.is_file())
-        self.assertEqual(self.test_file2.read_bytes(), file_string)
+        result = pathlib.Path(settings.RENDERER_DATA_DIR, self.user.username, file_name)
+        self.assertTrue(result.is_file())
+        self.assertEqual(result.name, file_name)
+        
+        test.unlink()        
+        if result.is_file():
+            result.unlink()
 
     def test_existing_upload_fail(self):
         # put testfile1 filename
         self.client.force_authenticate(self.user)
         url = reverse('user-resource', kwargs={'pk': self.user.pk})
-        file_string = b'uiae\naa'
-        self.client.credentials(HTTP_CONTENT_DISPOSITION='attachment; filename={}'.format(self.test_file.name))
-        response = self.client.put(url, data=file_string, content_type='application/octet-stream')
+
+        f = open(str(self.test_file.resolve()), 'w+')
+        content = encode_multipart('BoUnDaRyStRiNg',  {'file': f})
+        content_type = 'multipart/form-data; boundary=BoUnDaRyStRiNg'
+        response = self.client.put(url, data=content, content_type=content_type)
+        f.close()
 
         self.assertEqual(response.status_code, status.HTTP_409_CONFLICT)
 
     def test_upload_unauthenticated(self):
         url = reverse('user-resource', kwargs={'pk': self.user.pk})
-        file_string = b'uiae\naa'
-        self.client.credentials(HTTP_CONTENT_DISPOSITION='attachment; filename={}'.format(self.test_file2.name))
-        response = self.client.put(url, data=file_string, content_type='application/octet-stream')
+        f = open(str(self.test_file.resolve()), 'w+')
+        content = encode_multipart('BoUnDaRyStRiNg',  {'file': f})
+        content_type = 'multipart/form-data; boundary=BoUnDaRyStRiNg'
+        response = self.client.put(url, data=content, content_type=content_type)
+        f.close()
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     # def test_upload_wrong_user(self): # TODO
