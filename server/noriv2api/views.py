@@ -67,7 +67,7 @@ class UserResourceView(views.APIView):
             os.path.join(RENDERER_DATA_DIR, request.user.username))
         if path.is_dir():
             return response.Response(
-                [d.name for d in path.iterdir() if d.is_file()])
+                [d.name for d in path.iterdir() if d.is_file() and d.suffix == '.obj'])
         else:
             return response.Response([])
 

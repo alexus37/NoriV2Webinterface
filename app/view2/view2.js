@@ -37,7 +37,8 @@ angular.module('myApp.view2')
                 url: url,
                 method: 'PUT',
                 headers : {
-                    'X-CSRFToken': $cookies.get('csrftoken')
+                    'X-CSRFToken': $cookies.get('csrftoken'),
+                    'Authorization': 'Basic ' + $scope.$parent.globals.currentUser.authdata
                 }
             });
 

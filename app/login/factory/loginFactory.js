@@ -23,14 +23,14 @@ module.factory('AuthenticationService', ['Base64', '$http', '$cookieStore', '$ro
                         authdata: authdata
                     }
                 };
-
-                $http.defaults.headers.common['Authorization'] = 'Basic ' + authdata; // jshint ignore:line
-                $cookieStore.put('globals', $rootScope.globals);
+                var auth = 'Basic ' + authdata;
+                $http.defaults.headers.common['Authorization'] = auth; // jshint ignore:line
+                $cookieStore.put('Authorization', auth);
             };
 
             service.ClearCredentials = function () {
                 $rootScope.globals = {};
-                $cookieStore.remove('globals');
+                $cookieStore.remove('Authorization');
                 $http.defaults.headers.common.Authorization = 'Basic '
             };
 
