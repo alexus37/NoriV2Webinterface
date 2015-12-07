@@ -85,7 +85,9 @@ class RenderView(views.APIView):
                                      request.user.username,
                                      file_name)
         input_file = raw_file_path + '.xml'
-        output_file = STATIC_URL + file_name + '.png'
+        output_file = os.path.join(STATIC_URL,
+                                   request.user.username,
+                                   file_name + '.png')
 
         with open(input_file, 'w') as f:
             f.write(request.data['xmlData'])
