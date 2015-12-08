@@ -22,6 +22,7 @@ angular.module('myApp.upload')
      */
     .controller('uploadCtrl', ["$scope", "growl", "$http", "FileUploader", "$cookies",
         function ($scope, growl, $http, FileUploader, $cookies) {
+            
             function getUserURL() {
                 // send request to get the user url ToDo
                 return $scope.$parent.user.url;
