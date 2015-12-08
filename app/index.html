@@ -25,8 +25,8 @@
 </head>
 <body ng-controller="MainCtrl">
   <div class="btn-group" ng-show="noLogin">
-      <label class="btn btn-primary" ng-model="viewModel" btn-radio="'view1'">view1</label>
-      <label class="btn btn-primary" ng-model="viewModel" btn-radio="'view2'">view2</label>
+      <label class="btn btn-primary" ng-model="viewModel" btn-radio="'basic'">basic</label>
+      <label class="btn btn-primary" ng-model="viewModel" btn-radio="'upload'">upload</label>
   </div>
 
   <hr ng-show="noLogin">
@@ -57,24 +57,24 @@
   <script src="app.js"></script>
 
   <!--SCRIPTS-->
-  <script src="view2/scripts/console-shame.js"></script>
-  <script src="view2/scripts/AssimpOBJLoader.js"></script>
-  <script src="view2/scripts/OrbitControls.js"></script>
+  <script src="upload/scripts/console-shame.js"></script>
+  <script src="upload/scripts/AssimpOBJLoader.js"></script>
+  <script src="upload/scripts/OrbitControls.js"></script>
   <script src="login/scripts/prefixfree.min.js"></script>
 
   <!--DIRECTIVES-->
-  <script src="view2/directive/tjsModelViewer.js"></script>
+  <script src="upload/directive/tjsModelViewer.js"></script>
 
   <!--SERVICES-->
-  <script src="view1/service/communicationService.js"></script>
+  <script src="basic/service/communicationService.js"></script>
 
   <!--FACTORIES-->
   <script src="login/factory/loginFactory.js"></script>
 
   <!--CONTROLLERS-->
   <script src="login/login.js"></script>
-  <script src="view1/view1.js"></script>
-  <script src="view2/view2.js"></script>
+  <script src="basic/basic.js"></script>
+  <script src="upload/upload.js"></script>
   
 
 </body>

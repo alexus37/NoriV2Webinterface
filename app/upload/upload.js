@@ -1,10 +1,10 @@
 'use strict';
-angular.module('myApp.view2')
+angular.module('myApp.upload')
 //configure the $routeProvider, that if the /view1 url is called that View1Ctrl is the current controller
     .config(['$routeProvider', 'growlProvider', function ($routeProvider, growlProvider) {
-        $routeProvider.when('/view2', {
-            templateUrl: 'view2/view2.html',
-            controller: 'View2Ctrl'
+        $routeProvider.when('/upload', {
+            templateUrl: 'upload/upload.html',
+            controller: 'uploadCtrl'
         }).otherwise({redirectTo: '/login'});
         growlProvider.globalTimeToLive(3000);
     }])
@@ -20,7 +20,7 @@ angular.module('myApp.view2')
      * @description
      * This controller does most of the computation.
      */
-    .controller('View2Ctrl', ["$scope", "growl", "$http", "FileUploader", "$cookies",
+    .controller('uploadCtrl', ["$scope", "growl", "$http", "FileUploader", "$cookies",
         function ($scope, growl, $http, FileUploader, $cookies) {
             function getUserURL() {
                 // send request to get the user url ToDo

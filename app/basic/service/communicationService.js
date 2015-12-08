@@ -1,9 +1,9 @@
 'use strict';
 
-var module = angular.module('myApp.view1');
+var module = angular.module('myApp.basic');
 /**
  * @ngdoc service
- * @name myApp.view1.communicationService
+ * @name myApp.basic.communicationService
  * @requires $http
  * @requires reArrangingService
  * @author Alexander Lelidis
@@ -13,8 +13,8 @@ var module = angular.module('myApp.view1');
 module.service('communicationService', ['$http',  function($http){
     /**
      * @ngdoc
-     * @methodOf myApp.view1.communicationService
-     * @name myApp.view1.communicationService#communicationService
+     * @methodOf myApp.basic.communicationService
+     * @name myApp.basic.communicationService#communicationService
      * @description
      * Constructor
      * @param {string} url The url for the server requests.
@@ -25,8 +25,8 @@ module.service('communicationService', ['$http',  function($http){
     };
     /**
      * @ngdoc
-     * @methodOf myApp.view1.communicationService
-     * @name myApp.view1.communicationService#httpPostRequest
+     * @methodOf myApp.basic.communicationService
+     * @name myApp.basic.communicationService#httpPostRequest
      * @description
      * Send a http post request.
      * @param {object} geoQuery The query, which is send to the url via http post.
@@ -38,8 +38,8 @@ module.service('communicationService', ['$http',  function($http){
 
     /**
      * @ngdoc
-     * @methodOf myApp.view1.communicationService
-     * @name myApp.view1.communicationService#httpGetRequest
+     * @methodOf myApp.basic.communicationService
+     * @name myApp.basic.communicationService#httpGetRequest
      * @description
      * Send a http post request.
      * @param {object} geoQuery The query, which is send to the url via http post.

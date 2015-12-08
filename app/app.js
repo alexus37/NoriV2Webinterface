@@ -6,7 +6,7 @@
  * @name myApp
  * @requires ngRoute
  * @requires myApp.view1
- * @requires myApp.view2
+ * @requires myApp.upload
  * @requires myApp.view3
  * @author Alexander Lelidis
  * @description
@@ -15,8 +15,8 @@
 angular.module('myApp', [
   'ngRoute',
   'myApp.login',
-  'myApp.view1',
-  'myApp.view2'
+  'myApp.basic',
+  'myApp.upload'
 ])
 
 .config(['$routeProvider', function($routeProvider) {
@@ -63,7 +63,7 @@ angular.module('myApp.login', ['ngRoute', 'ngCookies', 'angular-growl']);
 
 /**
  * @ngdoc overview
- * @name myApp.view1
+ * @name myApp.basic
  * @author Alexander Lelidis
  * @requires ngRoute
  * @requires ui.bootstrap
@@ -73,10 +73,10 @@ angular.module('myApp.login', ['ngRoute', 'ngCookies', 'angular-growl']);
  * @description
  * Main view, does most of the computation, handles the charts and interaction with the leaflet map.
  */
-angular.module('myApp.view1', ['ngRoute', 'ui.bootstrap', 'angular-loading-bar', 'angular-growl', 'ui.codemirror']);
+angular.module('myApp.basic', ['ngRoute', 'ui.bootstrap', 'angular-loading-bar', 'angular-growl', 'ui.codemirror']);
 /**
  * @ngdoc overview
- * @name myApp.view1
+ * @name myApp.upload
  * @author Alexander Lelidis
  * @requires ngRoute
  * @requires ui.bootstrap
@@ -85,5 +85,5 @@ angular.module('myApp.view1', ['ngRoute', 'ui.bootstrap', 'angular-loading-bar',
  * @description
  * Main view, does most of the computation, handles the charts and interaction with the leaflet map.
  */
-angular.module('myApp.view2', ['ngRoute', 'ui.bootstrap', 'angular-loading-bar', 'angular-growl', 'angularFileUpload', 'tjsModelViewer']);
+angular.module('myApp.upload', ['ngRoute', 'ui.bootstrap', 'angular-loading-bar', 'angular-growl', 'angularFileUpload', 'tjsModelViewer']);
 

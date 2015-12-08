@@ -20,7 +20,7 @@ module.controller('LoginController', ['$scope', 'growl', '$location', 'Authentic
 
                         growl.success("Welcome back :" + response["user"], {});
                         $scope.$parent.user = response["user"];
-                        $location.path('/view1');
+                        $location.path('/basic');
                     } else {
                         AuthenticationService.ClearCredentials();
                         growl.error(response.detail, {});
