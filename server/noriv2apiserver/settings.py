@@ -42,7 +42,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'noriv2api'
+    'noriv2api',
+    'swampdragon'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -129,3 +130,6 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     )
 }
+
+SWAMP_DRAGON_CONNECTION = ('noriv2apiserver.sockserver.DataConnection', '/data')
+DRAGON_URL = 'http://localhost:9999/'
