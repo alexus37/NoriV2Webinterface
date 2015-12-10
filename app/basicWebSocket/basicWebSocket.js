@@ -31,18 +31,14 @@ angular.module('myApp.basicWebSocket')
                 theme:'twilight',
                 mode: 'xml'
             };
-            //var dataStream = $websocket('wss://' + $scope.$parent.serverhost + '.websocket');
-            var dataStream = $websocket('ws://localhost:8080/echo');
+            $scope.percentage = 0;            
 
             // set up a communication service
             var comServ = new communicationService('../render/');
 
-            $scope.sendRequest = function(){
-                dataStream.send(JSON.stringify({'message': 'update',
-                                                'url': 'images/testImage.png' }));
-                
+            $scope.sendRequest = function(){                
 
-                /*var xmlQuery = {
+                var xmlQuery = {
                         fileName: $scope.fileName,
                         xmlData: $scope.xmlInput,
                         sendMail: false,
@@ -52,20 +48,29 @@ angular.module('myApp.basicWebSocket')
                 var promise = comServ.httpPostRequest(xmlQuery);
                 promise.success(function updateLines(payload){
                     if(payload['success']) {
-                        $scope.imageData = payload['url'];
-                        growl.success("Image successfully rendered!", {});
+                        var wsUrl = payload['webocketUrl'];
+
+                        // set up web socket
+                        var dataStream = $websocket(wsUrl);
+
+
+                        dataStream.onMessage(function(message) {
+                            var msg = JSON.parse(message.data);
+
+                            if(!msg['finished'] == 'update') {
+                                $scope.percentage = msg['percentage'];
+                                $scope.imageData = msg['url'] + '?cacheBuster=' + Math.random();
+                            } else {                                
+                                dataStream.close();
+                                growl.success("Image successfully rendered!", {});
+                            }           
+                        });
+                        
                     } else {
                         growl.error("An error occurred during the rendering!", {});
                     }
-                });*/
-            }
-
-            dataStream.onMessage(function(message) {
-                var msg = JSON.parse(message.data);
-                if(msg['message']== 'update') {
-                    $scope.imageData = msg['url'] + '?cacheBuster=' + Math.random();
-                }            
-            });
+                });
+            }            
         }]);
 
 
