@@ -16,8 +16,6 @@ from noriv2api.permissions import IsOwner, IsAuthenticatedOrCreateOnly
 from noriv2apiserver.settings import RENDERER_DIR, RENDERER_DATA_DIR, STATIC_URL
 
 
-
-
 class SceneList(generics.ListCreateAPIView):
     queryset = Scene.objects.all()
     serializer_class = SceneSerializer
@@ -72,7 +70,8 @@ class UserResourceView(views.APIView):
             os.path.join(RENDERER_DATA_DIR, request.user.username))
         if path.is_dir():
             return response.Response(
-                [d.name for d in path.iterdir() if d.is_file() and d.suffix == '.obj'])
+                [d.name for d in path.iterdir()
+                 if d.is_file() and d.suffix == '.obj'])
         else:
             return response.Response([])
 
@@ -97,6 +96,8 @@ class RenderView(views.APIView):
         with open(input_file, 'w') as f:
             f.write(request.data['xmlData'])
 
+        self._render(input_file, output_file, self.request.user.id)
+
         return_object = {
             'url': output_file,
             'percentage': 0,
@@ -106,7 +107,7 @@ class RenderView(views.APIView):
         return response.Response(return_object)
 
     @async
-    def _render(input_file, output_file, userid):
+    def _render(self, input_file, output_file, userid):
         proc = subprocess.Popen(
             [os.path.join(RENDERER_DIR, 'build/nori'),
              input_file, '0', '0', '1'],
@@ -135,8 +136,7 @@ class RenderView(views.APIView):
             'percentage': 100,
             'finished': True
         }
-        publish_data(channel='user-{}'.format(userid),
-                        data=return_object)
+        publish_data(channel='user-{}'.format(userid), data=return_object)
 
         # TODO unsubscribe
         os.remove(input_file)
