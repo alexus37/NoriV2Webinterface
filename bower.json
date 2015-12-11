@@ -21,5 +21,6 @@
     "three.js": "threejs#*",
     "angular-cookies": "~1.4.8",
     "angular-websocket": "~1.0.14"
+    "swampdragon": "~0.4.3"
   }
 }

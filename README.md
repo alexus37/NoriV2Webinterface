@@ -10,6 +10,9 @@ The purpose of this web app is to be a web interface for the nori renderer. The 
 - npm(/node)
 - imagemagick (with exr support)
 - cmake
+- redis
+
+Make sure redis is running
 
 # Bootstrapping
 
@@ -42,19 +45,12 @@ After setting up the project, click the Configure and Generate button. This will
 
 The Build->Build Solution menu item will automatically compile all dependency libraries and Nori itself; the resulting executable is written to the Release or Debug subfolder of your chosen build directory. Note that you will probably see many warning messages while the dependencies are compiled—you can ignore them.
 
-# Run
+# Run (Server) in development environment
 
-Start the server locally by running.
-
-```
-python server.py --logging=error
-```
-
-If you want to see more detailed information just remove the logging option.
-Now open the following link [http://127.0.0.1:7001][webapp] in your favorite
-web browser, preferable google chrome or chromium.
-
-The default Username/Password is: testUser/alex123
+in the server directory run:
+- celery -A noriv2apiserver worker -l info
+- ./server.py
+- ./manage.py runserver
 
 # Data
 

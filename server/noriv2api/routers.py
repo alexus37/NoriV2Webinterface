@@ -5,14 +5,13 @@ from swampdragon.route_handler import BaseRouter
 class UpdateMsgRouter(BaseRouter):
     route_name = 'update-msg'
     valid_verbs = [
-        'subscribe', 'unsubscribe', 'ping'
+        'subscribe', 'unsubscribe'
     ]
 
-    def subscribe(self, **kwargs):
-        import ipdb; ipdb.set_trace() # channel has to be user-{id}
-        super().subscribe(**kwargs)
+    def get_subscription_channels(self, **kwargs):
+        return ['update-msg']
 
-    def ping(self, **kwargs):
-        self.send({'pong': 'pong'})
+    def subscribe(self, **kwargs):
+        super().subscribe(**kwargs)
 
 route_handler.register(UpdateMsgRouter)

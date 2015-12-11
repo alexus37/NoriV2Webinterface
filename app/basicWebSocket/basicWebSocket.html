@@ -2,7 +2,7 @@
     <div growl></div>
      <div class="col-md-6 ">
      	<textarea ui-codemirror
-     			  class="xmlInput" 
+     			  class="xmlInput"
      			  ng-model="xmlInput"
      			  ui-codemirror-opts="editorOptions"></textarea>
      </div>
@@ -15,11 +15,12 @@
 	          />
      </div>
      <div class="col-md-6 ">
-	     <button type="button" 
-	          class="btn btn-default" 
+	     <button type="button"
+	          class="btn btn-default"
+            disabled="{{sendDisabled}}"
 	          ng-click="sendRequest()" > Send to server </button>
 	 </div>
 </div>
 
 
-    
+

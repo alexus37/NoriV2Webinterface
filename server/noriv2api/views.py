@@ -1,5 +1,3 @@
-import subprocess
-import json
 import uuid
 import os
 import pathlib
@@ -7,13 +5,12 @@ import pathlib
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework import generics, permissions, views, response  # , filters
 from rest_framework.permissions import IsAuthenticated
-from djutils.decorators import async
-from swampdragon.pubsub_providers.data_publisher import publish_data
 
 from noriv2api.models import Scene, User
 from noriv2api.serializers import SceneSerializer, UserSerializer
 from noriv2api.permissions import IsOwner, IsAuthenticatedOrCreateOnly
-from noriv2apiserver.settings import RENDERER_DIR, RENDERER_DATA_DIR, STATIC_URL
+from noriv2apiserver.settings import RENDERER_DATA_DIR, STATIC_URL
+from noriv2api.tasks import render_image
 
 
 class SceneList(generics.ListCreateAPIView):
@@ -96,47 +93,13 @@ class RenderView(views.APIView):
         with open(input_file, 'w') as f:
             f.write(request.data['xmlData'])
 
-        self._render(input_file, output_file, self.request.user.id)
-
         return_object = {
             'url': output_file,
+            'channelname': request.user.username,
             'percentage': 0,
             'finished': False
         }
 
+        render_image.delay(input_file, output_file, self.request.user.id)
+
         return response.Response(return_object)
-
-    @async
-    def _render(self, input_file, output_file, userid):
-        proc = subprocess.Popen(
-            [os.path.join(RENDERER_DIR, 'build/nori'),
-             input_file, '0', '0', '1'],
-            stdout=subprocess.PIPE)
-        while True:
-            # read output and send to websockets
-            line = proc.stdout.readline()
-            if line != '':
-                try:
-                    data = json.loads(line)
-                    return_object = {
-                        'url': output_file,
-                        'percentage': data['percentage'],
-                        'finished': False
-                    }
-                    publish_data(channel='user-{}'.format(userid),
-                                 data=return_object)
-
-                except json.JSONDecodeError:
-                    pass
-            else:
-                break
-
-        return_object = {
-            'url': output_file,
-            'percentage': 100,
-            'finished': True
-        }
-        publish_data(channel='user-{}'.format(userid), data=return_object)
-
-        # TODO unsubscribe
-        os.remove(input_file)

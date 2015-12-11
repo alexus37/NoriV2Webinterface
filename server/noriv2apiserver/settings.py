@@ -133,3 +133,10 @@ REST_FRAMEWORK = {
 
 SWAMP_DRAGON_CONNECTION = ('noriv2apiserver.sockserver.DataConnection', '/data')
 DRAGON_URL = 'http://localhost:9999/'
+# CELERY STUFF
+BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Africa/Nairobi'
