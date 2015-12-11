@@ -49,7 +49,7 @@ The Build->Build Solution menu item will automatically compile all dependency li
 
 in the server directory run:
 - celery -A noriv2apiserver worker -l info
-- ./server.py
+- ./wsserver.py
 - ./manage.py runserver
 
 # Data

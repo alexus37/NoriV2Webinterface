@@ -1,0 +1,5 @@
+#!/bin/bash
+
+celery -A noriv2apiserver worker -l info 2>&1 > logs/celery &
+./wsserver.py 2>&1  > logs/wsserver &
+./manage.py runserver 2>&1 > logs/django &
