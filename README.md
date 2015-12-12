@@ -8,9 +8,11 @@ The purpose of this web app is to be a web interface for the nori renderer. The 
 
 - pip (which python version?)
 - npm(/node)
-- imagemagick (with exr support)
 - cmake
 - redis
+`
+sudo apt-get install redis-server
+`
 
 Make sure redis is running
 

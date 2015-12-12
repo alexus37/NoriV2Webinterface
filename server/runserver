@@ -1,5 +1,8 @@
 #!/bin/bash
 
 celery -A noriv2apiserver worker -l info > logs/celery 2>&1 &
+echo $! > .PIDServer
 ./wsserver.py > logs/wsserver 2>&1 &
+echo $! >> .PIDServer
 ./manage.py runserver > logs/django 2>&1 &
+echo $! >> .PIDServer
