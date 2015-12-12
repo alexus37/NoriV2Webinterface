@@ -30,7 +30,7 @@ def render_image(input_file, output_file, userid):
                 data = json.loads(line.decode('utf8'))
                 return_object = {
                     'url': output_file,
-                    'percentage': 50,  # data['message'],  # percentage
+                    'percentage': data['percentage'],  # percentage
                     'finished': False
                 }
                 publish_data(channel='update-msg'.format(userid),

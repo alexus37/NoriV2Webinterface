@@ -36,6 +36,7 @@ angular.module('myApp.basicWebSocket')
             $scope.sendDisabled = true;
             $scope.lastUpdate = Date.now();
             $scope.minWait = 500;
+            $scope.rendering = false;
 
 
             $dragon.onReady(function() {
@@ -50,12 +51,13 @@ angular.module('myApp.basicWebSocket')
                         $scope.percentage = message.data['percentage'];
                         if(Date.now() > $scope.lastUpdate+$scope.minWait || message.data['finished'] == true) {
                             $scope.imageData = message.data['url'] + '?cacheBuster=' + Math.random();
-                            $scope.lastUpdate = Date.now();
+                            $scope.lastUpdate = Date.now();                            
                         }
                         if(message.data['finished'] == true) {
                             $dragon.unsubscribe('update-msg', $scope.channel, {}).then(function(response) {
                             });
                             growl.success("Image successfully rendered!", {});
+                            $scope.rendering = false;
                         }
                     });
                 }
@@ -74,6 +76,7 @@ angular.module('myApp.basicWebSocket')
                         sendMail: false,
                         email: $scope.$parent.user.email
                 };
+                $scope.rendering = true;
 
                 var promise = comServ.httpPostRequest(xmlQuery);
                 promise.success(function updateLines(payload){

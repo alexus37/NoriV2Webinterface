@@ -6,7 +6,10 @@ if [ ! -f .PIDServer ]; then
 fi
 
 while IFS='' read -r line || [[ -n "$line" ]]; do
-    kill $line
+	if ps -p $line > /dev/null
+	then    
+		kill $line
+	fi
 done < ".PIDServer"
 
 rm .PIDServer
