@@ -22,12 +22,13 @@ module.directive('renderCanvas', function() {
 				element[0].width = width;
 				element[0].height = height;
 			};
-			scope.addPatch = function(offsetX, offsetY, b64Data) {
+			scope.addPatch = function(offsetX, offsetY, patchsizeWidth, patchsizeHeight, b64Data) {
 				var img = new Image();
 				img.src = b64Data;
 				img.onload = function () {
 					ctx.drawImage(img, offsetX, offsetY);
 				}
+				
 			};
 		}
     };
