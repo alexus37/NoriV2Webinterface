@@ -5,3 +5,7 @@ tornado==4.0.1
 numpy==1.9.2
 requests==2.7.0
 argparse==1.2.1
+swampdragon
+djutils
+celery
+redis

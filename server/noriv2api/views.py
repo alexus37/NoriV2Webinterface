@@ -1,4 +1,3 @@
-import subprocess
 import uuid
 import os
 import pathlib
@@ -10,7 +9,8 @@ from rest_framework.permissions import IsAuthenticated
 from noriv2api.models import Scene, User
 from noriv2api.serializers import SceneSerializer, UserSerializer
 from noriv2api.permissions import IsOwner, IsAuthenticatedOrCreateOnly
-from noriv2apiserver.settings import RENDERER_DIR, RENDERER_DATA_DIR, STATIC_URL
+from noriv2apiserver.settings import RENDERER_DATA_DIR, STATIC_URL
+from noriv2api.tasks import render_image
 
 
 class SceneList(generics.ListCreateAPIView):
@@ -67,7 +67,8 @@ class UserResourceView(views.APIView):
             os.path.join(RENDERER_DATA_DIR, request.user.username))
         if path.is_dir():
             return response.Response(
-                [d.name for d in path.iterdir() if d.is_file() and d.suffix == '.obj'])
+                [d.name for d in path.iterdir()
+                 if d.is_file() and d.suffix == '.obj'])
         else:
             return response.Response([])
 
@@ -91,14 +92,15 @@ class RenderView(views.APIView):
 
         with open(input_file, 'w') as f:
             f.write(request.data['xmlData'])
-        subprocess.call(
-            [os.path.join(RENDERER_DIR, 'build/nori'),
-             input_file, '0', '0', '1'])
+
+        task = render_image.delay(input_file, output_file, self.request.user.id)
 
         return_object = {
-            'success': True,
-            'url': output_file
+            'url': output_file,
+            'channelname': request.user.username,
+            'percentage': 0,
+            'finished': False,
+            'taskId': task.id
         }
-        os.remove(input_file)
 
         return response.Response(return_object)

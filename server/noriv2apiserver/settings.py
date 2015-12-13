@@ -42,7 +42,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'noriv2api'
+    'noriv2api',
+    'swampdragon'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -129,3 +130,13 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     )
 }
+
+SWAMP_DRAGON_CONNECTION = ('noriv2apiserver.sockserver.DataConnection', '/data')
+DRAGON_URL = 'http://localhost:9999/'
+# CELERY STUFF
+BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Africa/Nairobi'

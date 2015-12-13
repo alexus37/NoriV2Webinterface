@@ -17,6 +17,7 @@ angular.module('myApp', [
   'myApp.login',
   'myApp.basic',
   'myApp.basicWebSocket',
+  'myApp.basicWebSocketPatches',
   'myApp.upload'
 ])
 
@@ -34,7 +35,7 @@ angular.module('myApp', [
  * @description
  * The main controller activates the sub controller depending on the requested url.
  */
-.controller('MainCtrl', ["$scope", "$http", "$location", "$window", "AuthenticationService", 
+.controller('MainCtrl', ["$scope", "$http", "$location", "$window", "AuthenticationService",
     function($scope, $http, $location, $window, AuthenticationService) {
     	$scope.viewModel = 'login';
       $scope.server = "http://"+location.host;
@@ -109,6 +110,19 @@ angular.module('myApp.upload', ['ngRoute', 'ui.bootstrap', 'angular-loading-bar'
  * @description
  * Main view, does most of the computation, handles the charts and interaction with the leaflet map.
  */
-angular.module('myApp.basicWebSocket', ['ngRoute', 'ui.bootstrap', 'angular-loading-bar', 'angular-growl', 'ui.codemirror', 'ngWebSocket']);
+angular.module('myApp.basicWebSocket', ['ngRoute', 'ui.bootstrap', 'angular-loading-bar', 'angular-growl', 'ui.codemirror', 'ngWebSocket', 'SwampDragonServices']);
 
 
+/**
+ * @ngdoc overview
+ * @name myApp.basic
+ * @author Alexander Lelidis
+ * @requires ngRoute
+ * @requires ui.bootstrap
+ * @requires angular-loading-bar
+ * @requires angular-growl
+ * @requires ui.codemirror
+ * @description
+ * Main view, does most of the computation, handles the charts and interaction with the leaflet map.
+ */
+angular.module('myApp.basicWebSocketPatches', ['ngRoute', 'ui.bootstrap', 'angular-loading-bar', 'angular-growl', 'ui.codemirror', 'ngWebSocket', 'SwampDragonServices']);
