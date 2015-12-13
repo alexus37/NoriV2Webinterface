@@ -17,6 +17,7 @@ angular.module('myApp', [
   'myApp.login',
   'myApp.basic',
   'myApp.basicWebSocket',
+  'myApp.basicWebSocketPatches',
   'myApp.upload'
 ])
 
@@ -112,3 +113,16 @@ angular.module('myApp.upload', ['ngRoute', 'ui.bootstrap', 'angular-loading-bar'
 angular.module('myApp.basicWebSocket', ['ngRoute', 'ui.bootstrap', 'angular-loading-bar', 'angular-growl', 'ui.codemirror', 'ngWebSocket', 'SwampDragonServices']);
 
 
+/**
+ * @ngdoc overview
+ * @name myApp.basic
+ * @author Alexander Lelidis
+ * @requires ngRoute
+ * @requires ui.bootstrap
+ * @requires angular-loading-bar
+ * @requires angular-growl
+ * @requires ui.codemirror
+ * @description
+ * Main view, does most of the computation, handles the charts and interaction with the leaflet map.
+ */
+angular.module('myApp.basicWebSocketPatches', ['ngRoute', 'ui.bootstrap', 'angular-loading-bar', 'angular-growl', 'ui.codemirror', 'ngWebSocket', 'SwampDragonServices']);

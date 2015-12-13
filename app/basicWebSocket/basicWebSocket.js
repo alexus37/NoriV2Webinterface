@@ -105,6 +105,7 @@ angular.module('myApp.basicWebSocket')
            email: $scope.$parent.user.email
          };
          $scope.rendering = true;
+         $scope.percentage = 0;
 
          var promise = comServ.httpPostRequest(xmlQuery);
          promise.success(function updateLines(payload){

@@ -28,6 +28,7 @@
       <label class="btn btn-primary" ng-click="changeViewModel('basic')" ng-model="viewModel" btn-radio="'basic'">basic</label>
       <label class="btn btn-primary" ng-click="changeViewModel('upload')" ng-model="viewModel" btn-radio="'upload'">upload</label>
       <label class="btn btn-primary" ng-click="changeViewModel('basicWebSocket')" ng-model="viewModel" btn-radio="'basicWebSocket'">basicWebSocket</label>
+      <label class="btn btn-primary" ng-click="changeViewModel('basicWebSocketPatches')" ng-model="viewModel" btn-radio="'basicWebSocketPatches'">basicWebSocketPatches</label>
   </div>
   <div class="btn-group pull-right" ng-show="noLogin">
       <label class="btn btn-primary" ng-click="logout()"><i class="fa fa-sign-out">Log out</i></label>
@@ -75,6 +76,7 @@
 
   <!--DIRECTIVES-->
   <script src="upload/directive/tjsModelViewer.js"></script>
+  <script src="basicWebSocketPatches/directive/canvas.js"></script>
 
   <!--SERVICES-->
   <script src="basic/service/communicationService.js"></script>
@@ -87,6 +89,7 @@
   <script src="login/login.js"></script>
   <script src="basic/basic.js"></script>
   <script src="basicWebSocket/basicWebSocket.js"></script>
+  <script src="basicWebSocketPatches/basicWebSocketPatches.js"></script>
   <script src="upload/upload.js"></script>
 
 
