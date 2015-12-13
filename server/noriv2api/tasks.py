@@ -31,13 +31,13 @@ def render_image(input_file, output_file, userid):
                 return_object = {
                     'url': output_file,
                     'percentage': data['percentage'],  # percentage
-                    'x': data['x'],  
-                    'y': data['y'],  
-                    'width': data['width'],  
+                    'x': data['x'],
+                    'y': data['y'],
+                    'width': data['width'],
                     'height': data['height'],
-                    'data': data['data'],  
+                    'data': data['data'],
                     'patchHeight': data['patchHeight'],
-                    'patchWidth': data['patchWidth'],  
+                    'patchWidth': data['patchWidth'],
                     'finished': False
                 }
                 publish_data(channel='update-msg'.format(userid),

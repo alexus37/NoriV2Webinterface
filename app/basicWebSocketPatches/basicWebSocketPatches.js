@@ -35,7 +35,7 @@ angular.module('myApp.basicWebSocketPatches')
        $scope.percentage = 0;
        $scope.sendDisabled = true;
        $scope.rendering = false;
-       $scope.heightSetted = false;
+       $scope.heightSet = false;
        $scope.progressbarType = "";
 
 
@@ -55,12 +55,12 @@ angular.module('myApp.basicWebSocketPatches')
              var offsetY = message.data['y'];
              var pWidth = message.data['patchHeight'];
              var pHeight = message.data['patchWidth'];
-             
-             if (!$scope.heightSetted) {
+
+             if (!$scope.heightSet) {
              	var width = message.data['width'];
              	var height = message.data['height'];
              	$scope.setSize(width, height);
-             	$scope.heightSetted = true;
+             	$scope.heightSet = true;
              }
 
              $scope.addPatch(offsetX, offsetY, pWidth, pHeight, b64Data);
@@ -79,6 +79,12 @@ angular.module('myApp.basicWebSocketPatches')
 
        // set up a communication service
        var comServ = new communicationService('../render/');
+
+       $scope.sendCancel = function() {
+          swampdragon.callRouter('control', 'update-msg', {command: 'cancel', taskId: $scope.serverTaskId}, function (context, data) {
+            // TODO: Alex: Wenn data.success == 'true', dann hats geklappt. wenn 'false' dann nicht. kannst ja entsprechend reagieren wenn dir was im sinn steht.
+          });
+       };
 
        $scope.sendRequest = function(){
 
@@ -99,13 +105,15 @@ angular.module('myApp.basicWebSocketPatches')
          var promise = comServ.httpPostRequest(xmlQuery);
          promise.success(function updateLines(payload){
            if(payload['finished'] == false) { // started running
-             $scope.channel = payload['channelname'];             
+             $scope.channel = payload['channelname'];
+             $scope.serverTaskId = payload['taskId'];
 
              $dragon.subscribe('update-msg', $scope.channel, {}).then(function(response) {
+
              });
            } else {
              growl.error("An error occurred during the rendering!", {});
            }
          });
-       }
+       };
  }]);
