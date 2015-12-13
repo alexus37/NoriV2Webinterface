@@ -82,7 +82,12 @@ angular.module('myApp.basicWebSocketPatches')
 
        $scope.sendCancel = function() {
           swampdragon.callRouter('control', 'update-msg', {command: 'cancel', taskId: $scope.serverTaskId}, function (context, data) {
-            // TODO: Alex: Wenn data.success == 'true', dann hats geklappt. wenn 'false' dann nicht. kannst ja entsprechend reagieren wenn dir was im sinn steht.
+            if(message.data['success']) {
+               	growl.success("Rendering successfully canceled!", {});          
+         	} else {
+         		growl.error("An error occurred during the termination!", {});
+         	}
+         	$scope.rendering = false;
           });
        };
 
