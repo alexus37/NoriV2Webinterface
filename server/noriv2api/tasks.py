@@ -30,7 +30,7 @@ def render_image(input_file, output_file, userid):
                 data = json.loads(line.decode('utf8'))
                 return_object = {
                     'url': output_file,
-                    'percentage': data['percentage'],  # percentage
+                    'percentage': data['percentage'],
                     'x': data['x'],
                     'y': data['y'],
                     'width': data['width'],

@@ -17,7 +17,7 @@ class UpdateMsgRouter(BaseRouter):
 
     def control(self, **kwargs):
         if kwargs['command'] == 'cancel':
-            revoke(kwargs['task_id'], terminate=True)
+            revoke(kwargs['taskId'], terminate=True)
             self.send({'command': 'cancel', 'success': 'true'})
         else:
             self.send({'command': kwargs['command'],
