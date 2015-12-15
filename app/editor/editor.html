@@ -1,0 +1,39 @@
+<div growl></div>
+
+<button type="button" class="btn btn-default" ng-click="toggleEditor()">Toggle Editor</button>
+<button type="button" class="btn btn-default" ng-click="toggleImage()">Toggle Result</button>
+<hr>
+<div collapse="DOMVars.editorCollapsed">
+    <div id="tjsEditor">
+        <tjs-editor render-function="renderFkt(xml)"></tjs-editor>
+    </div>
+</div>
+<div collapse="DOMVars.imageCollapsed">
+    <div class="row">
+      <div class="col-md-12">
+  	    <canvas render-canvas 
+                  add-patch="addPatch"
+                  set-size="setSize"
+                  reset="reset"></canvas>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2">
+      	<button type="button"
+              class="btn btn-default"
+              ng-show="DOMVars.rendering"
+              ng-click="sendCancel()" > Cancel rendering</button>
+      </div>
+      <div class="col-md-8">
+          <progressbar class="progress-striped active" 
+                        animate="true" 
+                        max="100" 
+                        value="DOMVars.percentage" 
+                        type="{{DOMVars.progressbarType}}"
+                        ng-show="DOMVars.rendering">
+          	<b>{{DOMVars.percentageMsg}}</b>
+      	</progressbar>
+  	</div>
+  </div>
+</div>
+

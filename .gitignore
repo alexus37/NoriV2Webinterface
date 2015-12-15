@@ -9,3 +9,5 @@ nori/build/*
 app/.idea/*
 /build
 node_modules/
+server/static/*
+.ropeproject/

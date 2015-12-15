@@ -6,7 +6,7 @@
  * @name myApp
  * @requires ngRoute
  * @requires myApp.view1
- * @requires myApp.view2
+ * @requires myApp.upload
  * @requires myApp.view3
  * @author Alexander Lelidis
  * @description
@@ -14,13 +14,16 @@
  */
 angular.module('myApp', [
   'ngRoute',
-  'myApp.view1',
-  'myApp.view2',
-  'myApp.view3'
+  'myApp.login',
+  'myApp.basic',
+  'myApp.basicWebSocket',
+  'myApp.basicWebSocketPatches',
+  'myApp.upload',
+  'myApp.editor'
 ])
 
 .config(['$routeProvider', function($routeProvider) {
-  $routeProvider.otherwise({redirectTo: '/view1'});
+        $routeProvider.otherwise({redirectTo: '/login'});
 }])
 /**
  * @ngdoc controller
@@ -33,19 +36,46 @@ angular.module('myApp', [
  * @description
  * The main controller activates the sub controller depending on the requested url.
  */
-.controller('MainCtrl', ["$scope", "$http", "$location", "$window", function($scope, $http, $location, $window) {
-	$scope.viewModel = 'view1';
-    $scope.server = "http://"+location.host;
+.controller('MainCtrl', ["$scope", "$http", "$location", "$window", "AuthenticationService",
+    function($scope, $http, $location, $window, AuthenticationService) {
+    	$scope.viewModel = 'login';
+      $scope.server = "http://"+location.host;
+      $scope.serverhost = location.host;
+      $scope.noLogin = true;
+      $scope.user = null;
 
-    $scope.$watch('viewModel', function(value) {
-    	$window.open('#/' + value, '_self');
-    });
+      $scope.logout = function () {
+        AuthenticationService.ClearCredentials();
+        $scope.changeViewModel('login');
+      }
+
+      $scope.changeViewModel = function(value) {
+        $window.open('#/' + value, '_self');
+      }
+
+      $scope.logout();
 
 
 }]);
+
 /**
  * @ngdoc overview
- * @name myApp.view1
+ * @name myApp.login
+ * @author Alexander Lelidis
+ * @requires ngRoute
+ * @requires ui.bootstrap
+ * @requires angular-loading-bar
+ * @requires angular-growl
+ * @description
+ * Main view, does most of the computation, handles the charts and interaction with the leaflet map.
+ */
+angular.module('myApp.login', ['ngRoute', 'ngCookies', 'angular-growl']);
+
+
+
+/**
+ * @ngdoc overview
+ * @name myApp.basic
  * @author Alexander Lelidis
  * @requires ngRoute
  * @requires ui.bootstrap
@@ -55,10 +85,10 @@ angular.module('myApp', [
  * @description
  * Basic text editor 
  */
-angular.module('myApp.view1', ['ngRoute', 'ui.bootstrap', 'angular-loading-bar', 'angular-growl', 'ui.codemirror']);
+angular.module('myApp.basic', ['ngRoute', 'ui.bootstrap', 'angular-loading-bar', 'angular-growl', 'ui.codemirror']);
 /**
  * @ngdoc overview
- * @name myApp.view2
+ * @name myApp.upload
  * @author Alexander Lelidis
  * @requires ngRoute
  * @requires ui.bootstrap
@@ -68,11 +98,11 @@ angular.module('myApp.view1', ['ngRoute', 'ui.bootstrap', 'angular-loading-bar',
  * @description
  * Obj uploader and viewer
  */
-angular.module('myApp.view2', ['ngRoute', 'ui.bootstrap', 'angular-loading-bar', 'angular-growl', 'angularFileUpload', 'tjsModelViewer']);
+angular.module('myApp.upload', ['ngRoute', 'ui.bootstrap', 'angular-loading-bar', 'angular-growl', 'angularFileUpload', 'tjsModelViewer']);
 
 /**
  * @ngdoc overview
- * @name myApp.view1
+ * @name myApp.basic
  * @author Alexander Lelidis
  * @requires ngRoute
  * @requires ui.bootstrap
@@ -81,4 +111,23 @@ angular.module('myApp.view2', ['ngRoute', 'ui.bootstrap', 'angular-loading-bar',
  * @description
  * 
  */
-angular.module('myApp.view3', ['ngRoute', 'ui.bootstrap','ngAnimate', 'angular-loading-bar', 'angular-growl', 'tjsEditor']);
+angular.module('myApp.editor', ['ngRoute', 'ui.bootstrap','ngAnimate', 'angular-loading-bar', 'angular-growl', 'tjsEditor', 'ngWebSocket', 'SwampDragonServices']);
+
+
+angular.module('myApp.basicWebSocket', ['ngRoute', 'ui.bootstrap', 'angular-loading-bar', 'angular-growl', 'ui.codemirror', 'ngWebSocket', 'SwampDragonServices']);
+
+
+/**
+ * @ngdoc overview
+ * @name myApp.basic
+ * @author Alexander Lelidis
+ * @requires ngRoute
+ * @requires ui.bootstrap
+ * @requires angular-loading-bar
+ * @requires angular-growl
+ * @requires ui.codemirror
+ * @description
+ * Main view, does most of the computation, handles the charts and interaction with the leaflet map.
+ */
+angular.module('myApp.basicWebSocketPatches', ['ngRoute', 'ui.bootstrap', 'angular-loading-bar', 'angular-growl', 'ui.codemirror', 'ngWebSocket', 'SwampDragonServices']);
+

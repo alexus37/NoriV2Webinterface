@@ -2,7 +2,7 @@
 <!--[if lt IE 7]>      <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> 
+<!--[if gt IE 8]><!-->
 <html lang="en" ng-app="myApp" class="no-js"> <!--<![endif]-->
 <head>
   <meta charset="utf-8">
@@ -10,11 +10,14 @@
   <title>Nori web interface</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="favicon.ico" type="image/x-icon"> 
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"> 
+
 
 
 
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="app.css"> 
+  <link rel="stylesheet" href="app.css">
   <link rel="stylesheet" href="bower_components/jquery-ui/themes/smoothness/jquery-ui.css">
   <link rel='stylesheet' href='bower_components/angular-loading-bar/src/loading-bar.css' type='text/css' media='all' />
   <link rel="stylesheet" href="bower_components/angular-growl-v2/build/angular-growl.min.css" >
@@ -33,26 +36,36 @@
 
 </head>
 <body ng-controller="MainCtrl">
-  <div class="btn-group">
-      <label class="btn btn-primary" ng-model="viewModel" btn-radio="'view1'">view1</label>
-      <label class="btn btn-primary" ng-model="viewModel" btn-radio="'view2'">view2</label>
-      <label class="btn btn-primary" ng-model="viewModel" btn-radio="'view3'">view3</label>
+  <div class="btn-group" ng-show="noLogin">
+      <label  class="btn btn-primary" ng-click="changeViewModel('basic')" 
+              ng-model="viewModel" btn-radio="'basic'">basic</label>
+      <label  class="btn btn-primary" ng-click="changeViewModel('upload')" 
+              ng-model="viewModel" btn-radio="'upload'">upload</label>
+      <label  class="btn btn-primary" ng-click="changeViewModel('basicWebSocket')" 
+              ng-model="viewModel" btn-radio="'basicWebSocket'">basicWebSocket</label>
+      <label  class="btn btn-primary" ng-click="changeViewModel('basicWebSocketPatches')" 
+              ng-model="viewModel" btn-radio="'basicWebSocketPatches'">basicWebSocketPatches</label>
+      <label  class="btn btn-primary" ng-click="changeViewModel('editor')" 
+              ng-model="viewModel" btn-radio="'editor'">Editor</label>
+  </div>
+  <div class="btn-group pull-right" ng-show="noLogin">
+      <label class="btn btn-primary" ng-click="logout()"><i class="fa fa-sign-out">Log out</i></label>
   </div>
 
-  <hr>
+  <hr ng-show="noLogin">
   <div ng-view></div>
 
-  <!-- JQUERY BEFORE ANGULAR -->    
+  <!-- JQUERY BEFORE ANGULAR -->
   <script src="bower_components/jquery/dist/jquery.min.js"></script>
   <script src="bower_components/jquery-ui/ui/minified/jquery-ui.min.js"></script>
-  
+
   <script src="http://nervgh.github.io/js/es5-shim.min.js"></script>
 
 
   <script src="bower_components/angular/angular.js"></script>
- 
+
   <script src="bower_components/angular-route/angular-route.js"></script>
- 
+
   <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
 
   <script src="bower_components/angular-loading-bar/src/loading-bar.js"></script>
@@ -62,7 +75,15 @@
   <script src="bower_components/codemirror/mode/xml/xml.js"></script>
   <script src="bower_components/three.js/build/three.js"></script>
   <script src="bower_components/angular-file-upload/dist/angular-file-upload.min.js"></script>
+  <script src="bower_components/angular-cookies/angular-cookies.min.js"></script>
+  <script src="bower_components/angular-websocket/angular-websocket.min.js"></script>
   <script type="text/javascript" src="bower_components/angular-ui-codemirror/ui-codemirror.js"></script>
+
+
+  <script type="text/javascript" src="http://localhost:9999/settings.js"></script> <!-- TODO make this general -->
+  <script type="text/javascript" src="bower_components/swampdragon/dist/swampdragon.min.js"></script>
+  <script type="text/javascript" src="bower_components/swampdragon/dist/datamapper.js"></script>
+  <script type="text/javascript" src="bower_components/swampdragon/angular/services.js"></script>
 
   <script src="app.js"></script>
 
@@ -143,7 +164,7 @@
     <script src="components/Config.js"></script>
     <script src="components/History.js"></script>
     <script src="components/Loader.js"></script>
-  <script src="components/XmlExporter.js"></script>
+    <script src="components/XmlExporter.js"></script>
     <script src="components/Menubar.js"></script>
     <script src="components/Menubar.File.js"></script>
     <script src="components/Menubar.Edit.js"></script>
@@ -178,25 +199,31 @@
 
 
   <!--SCRIPTS-->
-  <script src="view2/scripts/console-shame.js"></script>
-  <script src="view2/scripts/AssimpOBJLoader.js"></script>
-  <script src="view2/scripts/OrbitControls.js"></script>
+  <script src="upload/scripts/console-shame.js"></script>
+  <script src="upload/scripts/AssimpOBJLoader.js"></script>
+  <script src="upload/scripts/OrbitControls.js"></script>
+  <script src="login/scripts/prefixfree.min.js"></script>
 
   <!--DIRECTIVES-->
-  <script src="view2/directive/tjsModelViewer.js"></script>
-  <script src="view3/directive/tjsEditor.js"></script>
+  <script src="upload/directive/tjsModelViewer.js"></script>
+  <script src="basicWebSocketPatches/directive/canvas.js"></script>
+  <script src="editor/directive/tjsEditor.js"></script>
 
   <!--SERVICES-->
-  <script src="view1/service/communicationService.js"></script>
+  <script src="basic/service/communicationService.js"></script>
+  <script src="basicWebSocket/service/communicationService.js"></script>
 
   <!--FACTORIES-->
-  
+  <script src="login/factory/loginFactory.js"></script>
+
   <!--CONTROLLERS-->
-  
-  <script src="view1/view1.js"></script>
-  <script src="view2/view2.js"></script>
-  <script src="view3/view3.js"></script>
-  
+  <script src="login/login.js"></script>
+  <script src="basic/basic.js"></script>
+  <script src="basicWebSocket/basicWebSocket.js"></script>
+  <script src="basicWebSocketPatches/basicWebSocketPatches.js"></script>
+  <script src="upload/upload.js"></script>
+  <script src="editor/editor.js"></script>
+
 
 </body>
 </html>

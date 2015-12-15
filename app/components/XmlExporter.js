@@ -35,6 +35,9 @@ var XmlExporter = function () {
 				xml += '\t<integer name="photonCount" value="' + parameters["photonCount"] + '"/>\n';
 				xml += '\t<float name="photonRadius" value="' + parameters["photonRadius"] + '"/>\n';
 			}
+			if(iType == 'av') {
+				xml += '\t<float name="length" value="' + parameters["length"] + '"/>\n';
+			}
 
 
 			xml += '</integrator>\n';

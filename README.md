@@ -1,13 +1,20 @@
 ﻿# Nori Webinterface
 
+[![Join the chat at https://gitter.im/alexus37/NoriV2Webinterface](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/alexus37/NoriV2Webinterface?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 The purpose of this web app is to be a web interface for the nori renderer. The whole process is very interactive and self-explanatory and can be done with every state-of-the-art web browser.
 
 # Requirements
 
 - pip (which python version?)
 - npm(/node)
-- imagemagick (with exr support)
 - cmake
+- redis
+`
+sudo apt-get install redis-server
+`
+
+Make sure redis is running
 
 # Bootstrapping
 
@@ -40,23 +47,22 @@ After setting up the project, click the Configure and Generate button. This will
 
 The Build->Build Solution menu item will automatically compile all dependency libraries and Nori itself; the resulting executable is written to the Release or Debug subfolder of your chosen build directory. Note that you will probably see many warning messages while the dependencies are compiled—you can ignore them.
 
-# Run
+# Run (Server) in development environment
 
-Start the server locally by running.
-
-```
-python server.py --logging=error
-```
-
-If you want to see more detailed information just remove the logging option.
-Now open the following link [http://127.0.0.1:7001][webapp] in your favorite
-web browser, preferable google chrome or chromium.
-
-The default Username/Password is: testUser/alex123
+in the server directory run:
+- celery -A noriv2apiserver worker -l info
+- ./wsserver.py
+- ./manage.py runserver
 
 # Data
 
 Note that there is no data included for the default scene.
+
+# Structure
+
+- "server" contains the django server handling user and scene API as well as the connection to the renderer
+- "app" contains the angularjs client frontend
+- "NoriV2" contains the renderer
 
 # Contact
 

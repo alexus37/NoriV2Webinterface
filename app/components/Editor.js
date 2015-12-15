@@ -86,8 +86,10 @@ var Editor = function () {
 	this.renderFunction = null;
 	this.sampler = "independent";
 	this.samplerProps = {sampleCount: 64};
-	this.integrator = "path_mis";
-	this.integratorProps = {};
+	this.integrator = "av";
+	this.integratorProps = {
+		length: 10
+	};
 	this.width = 800;
 	this.height = 600;
 
@@ -189,6 +191,10 @@ Editor.prototype = {
 		//add the integrator
 		xmlOutPut += this.xmlExporter.integratorXML(this.integrator, this.integratorProps);
 
+		if (this.integrator == 'av') {
+			xmlOutPut += '\t<float name=\"length\" value=\"10\"/>\n'
+		}
+
 		//add the sampler
 		xmlOutPut += this.xmlExporter.samplerXML(this.sampler, this.samplerProps);
 
@@ -265,7 +271,7 @@ Editor.prototype = {
 
 				var meshProps = {
 					toWorld: this.xmlExporter.transformMatrixList(this.scene.children[i].children[0].matrixWorld.elements),
-					filename: '../obj/' + this.scene.children[i].name,
+					filename: this.scene.children[i].name,
 					BSDFtype: bsdfType,
 					BSDFparameters: bsdfParameters
 				};
