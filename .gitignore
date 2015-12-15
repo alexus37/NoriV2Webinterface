@@ -11,3 +11,6 @@ app/.idea/*
 node_modules/
 server/static/*
 .ropeproject/
+.PIDServer
+logs/
+celerybeat-schedule
