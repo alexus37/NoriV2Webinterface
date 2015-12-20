@@ -94,13 +94,16 @@ class RenderView(views.APIView):
             f.write(request.data['xmlData'])
 
         task = render_image.delay(input_file, output_file, self.request.user.id)
-
+        TID = 0
+        # dont get the ID if it is a test
+        if not 'test' in request.data:
+            TID = task.id
         return_object = {
             'url': output_file,
             'channelname': request.user.username,
             'percentage': 0,
             'finished': False,
-            'taskId': task.id
+            'taskId': TID
         }
 
         return response.Response(return_object)

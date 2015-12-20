@@ -7,10 +7,17 @@
      			  ui-codemirror-opts="editorOptions"></textarea>
      </div>
      <div class="col-md-6 ">
-	     <canvas render-canvas 
+	     <canvas render-canvas
+                ng-hide="finished"
                 add-patch="addPatch"
                 set-size="setSize"
                 reset="reset"></canvas>
+	     <img
+	          src="{{finalUrl}}"
+            ng-show="finished"
+	          alt="Nothing rendered!"
+	          />
+
      </div>
      <div class="col-md-6 ">
 	     <button type="button"
@@ -23,16 +30,16 @@
             ng-click="sendCancel()" > Cancel rendering</button>
 	 </div>
      <div class="col-md-6 ">
-         <progressbar class="progress-striped active" 
-                      animate="true" 
-                      max="100" 
-                      value="percentage" 
+         <progressbar class="progress-striped active"
+                      animate="true"
+                      max="100"
+                      value="percentage"
                       type="{{progressbarType}}"
                       ng-show="rendering">
         <b>{{percentageMsg}}</b>
     </progressbar>
      </div>
-     
+
 </div>
 
 

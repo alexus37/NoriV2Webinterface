@@ -37,6 +37,7 @@ angular.module('myApp.basicWebSocketPatches')
        $scope.rendering = false;
        $scope.heightSet = false;
        $scope.progressbarType = "";
+       $scope.finished = false;
 
 
        $dragon.onReady(function() {
@@ -70,6 +71,10 @@ angular.module('myApp.basicWebSocketPatches')
                });
                growl.success("Image successfully rendered!", {});
                $scope.rendering = false;
+               $scope.finalUrl = message.data['url'];
+               $scope.finished = true;
+
+               // Reload image
              }
            });
          }
@@ -83,7 +88,7 @@ angular.module('myApp.basicWebSocketPatches')
        $scope.sendCancel = function() {
           swampdragon.callRouter('control', 'update-msg', {command: 'cancel', taskId: $scope.serverTaskId}, function (context, data) {
             if(data['success']) {
-               	growl.success("Rendering successfully canceled!", {});          
+               	growl.success("Rendering successfully canceled!", {});
          	} else {
          		growl.error("An error occurred during the termination!", {});
          	}
