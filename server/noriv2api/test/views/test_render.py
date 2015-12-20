@@ -12,6 +12,7 @@ from noriv2api import views
 
 
 render_image_mock = mock.MagicMock()
+render_image_mock.__getitem__.return_value = 0
 file_mock = mock.mock_open()
 #os_remove_mock = mock.MagicMock()
 
@@ -26,7 +27,7 @@ class RenderTest(APITestCase):
     #@mock.patch('os.remove', os_remove_mock)
     def test_render_success(self):
         url = reverse('render')
-        data = {'xmlData': ''}
+        data = {'xmlData': '', 'test': 1}
 
         self.client.force_authenticate(self.user)
         response = self.client.post(url, data, format='json')
