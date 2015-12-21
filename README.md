@@ -21,39 +21,21 @@ Make sure redis is running
 Run `npm install` and `pip install -r requirements.txt` to install the requirements for the webapp
 
 ## Compile Nori
-
-### Linux / Mac OS X
-
-```
-cd nori
-mkdir build
-cd build
-cmake-gui ..
-```
-(You can use `cmake` instead of `cmake-gui`)
-
-After the Makefiles are generated, simply run make to compile all dependencies and Nori itself.
-
-```
-make -j 4
-```
-
-This can take quite a while; the above command compiles with four processors at the same time. Note that you will probably see many warning messages while the dependencies are compiled you can ignore them.
-
-### Windows
-
-Begin by installing Visual Studio 2013 (older versions won't do) and a reasonably recent (≥ 3.x) version of [CMake][cmake]. Start CMake and navigate to the location where you cloned the Nori repository.
-After setting up the project, click the Configure and Generate button. This will create a file called ***nori.sln*** —double-click it to open Visual Studio.
-
-The Build->Build Solution menu item will automatically compile all dependency libraries and Nori itself; the resulting executable is written to the Release or Debug subfolder of your chosen build directory. Note that you will probably see many warning messages while the dependencies are compiled—you can ignore them.
+Checkout the readme file from the [nori repro][nori].
 
 # Run (Server) in development environment
 
 in the server directory run:
-- celery -A noriv2apiserver worker -l info
-- ./wsserver.py
-- ./manage.py runserver
 
+` 
+./runserver
+`
+
+to stop the server run 
+
+`
+./stopserver
+`
 # Data
 
 Note that there is no data included for the default scene.
@@ -79,5 +61,6 @@ For more information on the nori web interface please contact me.
 [karma]: https://github.com/karma-runner/karma
 [pip]: https://bootstrap.pypa.io/get-pip.py
 [webapp]: http://localhost:7001
+[nori]: https://github.com/alexus37/NoriV2
 
 [linuxCmake]: app/images/linux-cmake.png?raw=true "Set the build type to Unix Makefiles and then press the Configure and Generate buttons."
