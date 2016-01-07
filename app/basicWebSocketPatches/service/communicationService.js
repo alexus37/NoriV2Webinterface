@@ -1,9 +1,9 @@
 'use strict';
 
-var module = angular.module('myApp.basicWebSocket');
+var module = angular.module('myApp.basicWebSocketPatches');
 /**
  * @ngdoc service
- * @name myApp.basicWebSocket.communicationService
+ * @name myApp.basicWebSocketPatches.communicationService
  * @requires $http
  * @requires reArrangingService
  * @author Alexander Lelidis
@@ -13,8 +13,8 @@ var module = angular.module('myApp.basicWebSocket');
 module.service('communicationService', ['$http',  function($http){
     /**
      * @ngdoc
-     * @methodOf myApp.basicWebSocket.communicationService
-     * @name myApp.basicWebSocket.communicationService#communicationService
+     * @methodOf myApp.basicWebSocketPatches.communicationService
+     * @name myApp.basicWebSocketPatches.communicationService#communicationService
      * @description
      * Constructor
      * @param {string} url The url for the server requests.
@@ -25,8 +25,8 @@ module.service('communicationService', ['$http',  function($http){
     };
     /**
      * @ngdoc
-     * @methodOf myApp.basicWebSocket.communicationService
-     * @name myApp.basicWebSocket.communicationService#httpPostRequest
+     * @methodOf myApp.basicWebSocketPatches.communicationService
+     * @name myApp.basicWebSocketPatches.communicationService#httpPostRequest
      * @description
      * Send a http post request.
      * @param {object} geoQuery The query, which is send to the url via http post.
@@ -38,8 +38,8 @@ module.service('communicationService', ['$http',  function($http){
 
     /**
      * @ngdoc
-     * @methodOf myApp.basicWebSocket.communicationService
-     * @name myApp.basicWebSocket.communicationService#httpGetRequest
+     * @methodOf myApp.basicWebSocketPatches.communicationService
+     * @name myApp.basicWebSocketPatches.communicationService#httpGetRequest
      * @description
      * Send a http post request.
      * @param {object} geoQuery The query, which is send to the url via http post.

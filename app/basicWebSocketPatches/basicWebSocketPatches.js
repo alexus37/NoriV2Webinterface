@@ -29,7 +29,8 @@ angular.module('myApp.basicWebSocketPatches')
          lineWrapping : true,
          lineNumbers: true,
          theme:'twilight',
-         mode: 'xml'
+         mode: 'xml',
+         height: 100
        };
        $scope.channel = 'update-msg';
        $scope.percentage = 0;
@@ -38,12 +39,16 @@ angular.module('myApp.basicWebSocketPatches')
        $scope.heightSet = false;
        $scope.progressbarType = "";
        $scope.finished = false;
+       $scope.showResult = false;
 
 
        $dragon.onReady(function() {
          // enable button
          $scope.sendDisabled = false;
        });
+      $scope.codemirrorLoaded = function(_editor) {
+        _editor.setSize("100%","90%");
+      }
 
        $dragon.onChannelMessage(function(channels, message) {
          if (indexOf.call(channels, $scope.channel) > -1) {
@@ -73,6 +78,7 @@ angular.module('myApp.basicWebSocketPatches')
                $scope.rendering = false;
                $scope.finalUrl = message.data['url'];
                $scope.finished = true;
+               $scope.showResult = true;
 
                // Reload image
              }
@@ -108,6 +114,7 @@ angular.module('myApp.basicWebSocketPatches')
          $scope.percentageMsg = "loading models ...";
 
          $scope.rendering = true;
+         $scope.finished = false;
          $scope.heightSet = false;
          $scope.percentage = 100;
          $scope.reset();

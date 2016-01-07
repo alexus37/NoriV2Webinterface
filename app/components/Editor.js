@@ -84,6 +84,7 @@ var Editor = function () {
 	//AX
 	this.currentXML = "";
 	this.renderFunction = null;
+	this.changeFunction = null;
 	this.sampler = "independent";
 	this.samplerProps = {sampleCount: 64};
 	this.integrator = "av";
@@ -182,6 +183,9 @@ Editor.prototype = {
 
 		this.signals.sceneGraphChanged.dispatch();
 
+	},
+	changeView: function(viewName) {
+		this.changeFunction({name: viewName});
 	},
 
 	exportXML: function() {

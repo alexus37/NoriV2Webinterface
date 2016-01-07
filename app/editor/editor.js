@@ -95,6 +95,11 @@ angular.module('myApp.editor')
                     $scope.DOMVars.editorCollapsed = true;
                 }
             };
+
+            $scope.changeFkt = function(name) {
+                $scope.$parent.changeViewModel(name);
+            };
+
             $scope.renderFkt = function(xmlInput) {
                 console.log(xmlInput);
                 $scope.toggleEditor();

@@ -9,7 +9,7 @@ Menubar.File = function ( editor ) {
 
 	var title = new UI.Panel();
 	title.setClass( 'title' );
-	title.setTextContent( 'File' );
+	title.setTextContent( 'Main' );
 	container.add( title );
 
 	var options = new UI.Panel();
@@ -27,6 +27,18 @@ Menubar.File = function ( editor ) {
 
 			editor.clear();
 
+		}
+
+	} );
+	options.add( option );
+
+	// logout
+	var option = new UI.Panel();
+	option.setClass( 'option' );
+	option.setTextContent( 'Logout' );
+	option.onClick( function () {
+		if ( confirm( 'Any unsaved data will be lost. Are you sure?' ) ) {
+			editor.changeView('logout');
 		}
 
 	} );
@@ -55,6 +67,18 @@ Menubar.File = function ( editor ) {
 
 	} );
 	options.add( option );
+
+	// UPload obj
+	var option = new UI.Panel();
+	option.setClass( 'option' );
+	option.setTextContent( 'Upload obj files' );
+	option.onClick( function () {
+
+		editor.changeView('upload');
+
+	} );
+	options.add( option );
+
 
 	//
 

@@ -15,8 +15,6 @@
 angular.module('myApp', [
   'ngRoute',
   'myApp.login',
-  'myApp.basic',
-  'myApp.basicWebSocket',
   'myApp.basicWebSocketPatches',
   'myApp.upload',
   'myApp.editor'
@@ -39,10 +37,20 @@ angular.module('myApp', [
 .controller('MainCtrl', ["$scope", "$http", "$location", "$window", "AuthenticationService",
     function($scope, $http, $location, $window, AuthenticationService) {
     	$scope.viewModel = 'login';
+      $scope.curViewAnimation = 'fade';
       $scope.server = "http://"+location.host;
       $scope.serverhost = location.host;
-      $scope.noLogin = true;
+
       $scope.user = null;
+      var animation = {
+        login2login: 'fade',  // first login
+        login2editor: 'fade',
+        editor2logout: 'fade',
+        editor2upload: 'slideup',
+        upload2editor: 'slidedown',
+        editor2basicWebSocketPatches: 'slideleft',
+        basicWebSocketPatches2editor: 'slideright',
+      };
 
       $scope.logout = function () {
         AuthenticationService.ClearCredentials();
@@ -50,7 +58,15 @@ angular.module('myApp', [
       }
 
       $scope.changeViewModel = function(value) {
-        $window.open('#/' + value, '_self');
+        var viewName = value;
+        if(value == 'logout') {
+          AuthenticationService.ClearCredentials();
+          viewName = 'login'
+        }
+        $scope.curViewAnimation = animation[$scope.viewModel + '2' + value];
+        
+        $scope.viewModel = viewName;
+        $window.open('#/' + viewName, '_self');
       }
 
       $scope.logout();
@@ -71,21 +87,6 @@ angular.module('myApp', [
  */
 angular.module('myApp.login', ['ngRoute', 'ngCookies', 'angular-growl']);
 
-
-
-/**
- * @ngdoc overview
- * @name myApp.basic
- * @author Alexander Lelidis
- * @requires ngRoute
- * @requires ui.bootstrap
- * @requires angular-loading-bar
- * @requires angular-growl
- * @requires ui.codemirror
- * @description
- * Basic text editor 
- */
-angular.module('myApp.basic', ['ngRoute', 'ui.bootstrap', 'angular-loading-bar', 'angular-growl', 'ui.codemirror']);
 /**
  * @ngdoc overview
  * @name myApp.upload
@@ -112,9 +113,6 @@ angular.module('myApp.upload', ['ngRoute', 'ui.bootstrap', 'angular-loading-bar'
  * 
  */
 angular.module('myApp.editor', ['ngRoute', 'ui.bootstrap','ngAnimate', 'angular-loading-bar', 'angular-growl', 'tjsEditor', 'ngWebSocket', 'SwampDragonServices']);
-
-
-angular.module('myApp.basicWebSocket', ['ngRoute', 'ui.bootstrap', 'angular-loading-bar', 'angular-growl', 'ui.codemirror', 'ngWebSocket', 'SwampDragonServices']);
 
 
 /**

@@ -116,7 +116,7 @@ angular.module('myApp.upload')
 
             $scope.$on('$viewContentLoaded', function(){
                 //Here your view content is fully loaded !!
-                $scope.updateFileList();
+                updateFileList();
             });
         }]);
 

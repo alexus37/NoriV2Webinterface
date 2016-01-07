@@ -16,15 +16,14 @@ module.controller('LoginController', ['$scope', 'growl', '$location', 'Authentic
                 $scope.dataLoading = true;
                 AuthenticationService.Login($scope.username, $scope.password, function (response) {
                     if ("user" in response) {
-                        $scope.$parent.noLogin = true;
 
-                        growl.success("Welcome back :" + response["user"], {});
+                        growl.success("Welcome back :" + response["user"]["username"], {});
                         $scope.$parent.user = response["user"];
-                        $location.path('/basic');
+                        $location.path('/editor');
+                        $scope.$parent.viewModel = 'editor';
                     } else {
                         AuthenticationService.ClearCredentials();
                         growl.error(response.detail, {});
-                        $scope.$parent.noLogin = false;
                         $scope.$parent.user = null;
                         $scope.dataLoading = false;
                     }

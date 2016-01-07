@@ -36,30 +36,15 @@
 
 </head>
 <body ng-controller="MainCtrl">
-  <div class="btn-group" ng-show="noLogin">
-      <label  class="btn btn-primary" ng-click="changeViewModel('basic')" 
-              ng-model="viewModel" btn-radio="'basic'">basic</label>
-      <label  class="btn btn-primary" ng-click="changeViewModel('upload')" 
-              ng-model="viewModel" btn-radio="'upload'">upload</label>
-      <label  class="btn btn-primary" ng-click="changeViewModel('basicWebSocket')" 
-              ng-model="viewModel" btn-radio="'basicWebSocket'">basicWebSocket</label>
-      <label  class="btn btn-primary" ng-click="changeViewModel('basicWebSocketPatches')" 
-              ng-model="viewModel" btn-radio="'basicWebSocketPatches'">basicWebSocketPatches</label>
-      <label  class="btn btn-primary" ng-click="changeViewModel('editor')" 
-              ng-model="viewModel" btn-radio="'editor'">Editor</label>
+  <div class="content">
+    <div ng-view ng-class="curViewAnimation"></div>
   </div>
-  <div class="btn-group pull-right" ng-show="noLogin">
-      <label class="btn btn-primary" ng-click="logout()"><i class="fa fa-sign-out">Log out</i></label>
-  </div>
-
-  <hr ng-show="noLogin">
-  <div ng-view></div>
 
   <!-- JQUERY BEFORE ANGULAR -->
   <script src="bower_components/jquery/dist/jquery.min.js"></script>
   <script src="bower_components/jquery-ui/ui/minified/jquery-ui.min.js"></script>
 
-  <script src="http://nervgh.github.io/js/es5-shim.min.js"></script>
+  <script src="components/es5-shim.min.js"></script>
 
 
   <script src="bower_components/angular/angular.js"></script>
@@ -77,6 +62,8 @@
   <script src="bower_components/angular-file-upload/dist/angular-file-upload.min.js"></script>
   <script src="bower_components/angular-cookies/angular-cookies.min.js"></script>
   <script src="bower_components/angular-websocket/angular-websocket.min.js"></script>
+  <script src="bower_components/angular-animate/angular-animate.min.js"></script>
+
   <script type="text/javascript" src="bower_components/angular-ui-codemirror/ui-codemirror.js"></script>
 
 
@@ -210,16 +197,13 @@
   <script src="editor/directive/tjsEditor.js"></script>
 
   <!--SERVICES-->
-  <script src="basic/service/communicationService.js"></script>
-  <script src="basicWebSocket/service/communicationService.js"></script>
+  <script src="basicWebSocketPatches/service/communicationService.js"></script>
 
   <!--FACTORIES-->
   <script src="login/factory/loginFactory.js"></script>
 
   <!--CONTROLLERS-->
   <script src="login/login.js"></script>
-  <script src="basic/basic.js"></script>
-  <script src="basicWebSocket/basicWebSocket.js"></script>
   <script src="basicWebSocketPatches/basicWebSocketPatches.js"></script>
   <script src="upload/upload.js"></script>
   <script src="editor/editor.js"></script>

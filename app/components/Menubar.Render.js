@@ -16,7 +16,7 @@ Menubar.Render = function ( editor ) {
 	options.setClass( 'options' );
 	container.add( options );
 
-	// Undo
+	// Render
 
 	var option = new UI.Panel();
 	option.setClass( 'option' );
@@ -24,6 +24,14 @@ Menubar.Render = function ( editor ) {
 	option.onClick( function () {
 		editor.exportXML();
 	} );
+	options.add( option );
+
+	var option = new UI.Panel();
+	option.setClass( 'option' );
+	option.setTextContent( 'See scene xml' );
+	option.onClick( function () {
+		editor.changeView('basicWebSocketPatches');
+	});
 	options.add( option );
 
 

@@ -1,11 +1,11 @@
 <div growl></div>
-
+<!--
 <button type="button" class="btn btn-default" ng-click="toggleEditor()">Toggle Editor</button>
 <button type="button" class="btn btn-default" ng-click="toggleImage()">Toggle Result</button>
-<hr>
+<hr>-->
 <div collapse="DOMVars.editorCollapsed">
     <div id="tjsEditor">
-        <tjs-editor render-function="renderFkt(xml)"></tjs-editor>
+        <tjs-editor render-function="renderFkt(xml)" change-function="changeFkt(name)" class="Editor"></tjs-editor>
     </div>
 </div>
 <div collapse="DOMVars.imageCollapsed">
