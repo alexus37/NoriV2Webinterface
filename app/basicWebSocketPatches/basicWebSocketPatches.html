@@ -3,6 +3,7 @@
   <div id="container2">
     <div class="container"  style="margin-top: 20px;">
       <div class="row">
+        <h1>{{$parent.filename}}</h1>
         <div class="col-md-12">
           <button type="button"
                   class="btn btn-success"
@@ -16,7 +17,15 @@
           <button type="button"
                   class="btn btn-info"              
                   ng-show="finished"
-                  ng-click="showResult = !showResult" > Toggle Result \ xml </button>        
+                  ng-click="showResult = !showResult" > Toggle Result \ xml </button>
+          <button type="button"
+                  class="btn btn-info"              
+                  ng-show="finished"
+                  ng-click="download('png')" > Download rendering </button> 
+          <button type="button"
+                  class="btn btn-info"              
+                  ng-show="finished"
+                  ng-click="download('xml')" > Download scene xml </button>    
           <button type="button" 
                   class="btn pull-right btn-info btn-s" 
                   ng-click="$parent.changeViewModel('editor')">
@@ -28,7 +37,7 @@
         <div class="col-md-12">
           <div ui-codemirror="{ onLoad : codemirrorLoaded }"
                   id="xmlInput"
-                  ng-model="xmlInput"
+                  ng-model="$parent.xmlInput"
                   ui-codemirror-opts="editorOptions"></div>
         </div>
       </div>

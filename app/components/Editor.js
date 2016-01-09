@@ -83,6 +83,8 @@ var Editor = function () {
 	this.sceneHelpers = new THREE.Scene();
 	//AX
 	this.currentXML = "";
+	this.setxmlFkt = null;
+	this.showresultFunction = null;
 	this.renderFunction = null;
 	this.changeFunction = null;
 	this.sampler = "independent";
@@ -187,8 +189,7 @@ Editor.prototype = {
 	changeView: function(viewName) {
 		this.changeFunction({name: viewName});
 	},
-
-	exportXML: function() {
+	getSceneXML: function(){
 		var xmlOutPut = '<?xml version="1.0" encoding="utf-8"?>\n';
 		xmlOutPut += '<scene>\n';
 
@@ -284,10 +285,13 @@ Editor.prototype = {
 		}
 
 		xmlOutPut += '</scene>';
-
-		//console.log(xmlOutPut);
-        this.renderFunction({xml: xmlOutPut});
 		return xmlOutPut;
+	},
+
+	exportXML: function() {
+		//console.log(xmlOutPut);
+		var xmlOutPut = this.getSceneXML();
+        this.renderFunction({xml: xmlOutPut});
 	},
 
 	nameObject: function ( object, name ) {

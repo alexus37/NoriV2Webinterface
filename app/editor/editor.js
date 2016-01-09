@@ -20,17 +20,54 @@ angular.module('myApp.editor')
      * @description
      * This controller does most of the computation.
      */
-    .controller('editorCtrl', ["$scope", "growl", "communicationService", "$dragon",
-        function ($scope, growl, communicationService, $dragon) {
+    .controller('editorCtrl', ["$scope", "growl", "communicationService", "$dragon", "ngDialog", "$http",
+        function ($scope, growl, communicationService, $dragon, ngDialog, $http) {
             $scope.DOMVars = {
-                editorCollapsed: false,
-                imageCollapsed: true,
+                showEditor: true,
                 percentage: 0,
                 rendering: false,
                 heightSet: false,
                 progressbarType: "",
-                percentageMsg: ""
+                percentageMsg: "",
+                finalUrl: "images/testImage.png",
+                finished: false
             };
+            $scope.testString ="Alex";
+            $scope.uploadedFiles = [];
+            function updateFileList(){
+                var url = $scope.$parent.user.url + 'resource';
+                $http.get(url).success(function updateList(payload){
+                    $scope.uploadedFiles = payload;
+                });
+            };
+            
+            updateFileList();
+
+            $scope.selectOBJ = function() {
+                ngDialog.openConfirm({
+                    template: 'firstDialogId',
+                    data: {objFiles: $scope.uploadedFiles},
+                    controller: ['$scope', function($scope) {
+                        // controller logic
+                        $scope.confirmValue = "Nothing selected";
+                        $scope.select = function(objFile) {
+                            $scope.confirmValue = objFile;
+                        }
+                    }]
+                }).then(function (value) {
+                    console.log('Modal promise resolved. Value: ', value);
+                }, function (reason) {
+                    console.log('Modal promise rejected. Reason: ', reason);
+                });            
+            }
+            $scope.download = function(type) {
+                if(type === "png") {
+
+                } else {
+
+                }
+                alert("Implement me!");
+            }
             $scope.channel = 'update-msg';
 
             $dragon.onReady(function() {
@@ -61,11 +98,17 @@ angular.module('myApp.editor')
                             $dragon.unsubscribe('update-msg', $scope.channel, {}).then(function(response) {});
                             growl.success("Image successfully rendered!", {});
                             $scope.DOMVars.rendering = false;
+                            $scope.DOMVars.finished = true;
+                            $scope.DOMVars.finalUrl = message.data['url'];
                         }
                     });
                 }
             });
-
+            
+            $scope.showresultFkt = function() {
+                $scope.DOMVars.showEditor = false;
+                $scope.$apply();
+            }
 
             // set up a communication service
             var comServ = new communicationService('../render/');
@@ -81,29 +124,17 @@ angular.module('myApp.editor')
                 });
             };
 
-            $scope.toggleEditor = function() {
-                $scope.DOMVars.editorCollapsed = !$scope.DOMVars.editorCollapsed;
-                if (false == $scope.DOMVars.editorCollapsed) {
-                    $scope.DOMVars.imageCollapsed = true;
-                }
-
-            };
-
-            $scope.toggleImage = function() {
-                $scope.DOMVars.imageCollapsed = !$scope.DOMVars.imageCollapsed;
-                if (false == $scope.DOMVars.imageCollapsed) {
-                    $scope.DOMVars.editorCollapsed = true;
-                }
-            };
 
             $scope.changeFkt = function(name) {
                 $scope.$parent.changeViewModel(name);
             };
+            $scope.setxmlFkt = function(xml) {
+                $scope.$parent.xmlInput = xml;
+            }
 
             $scope.renderFkt = function(xmlInput) {
                 console.log(xmlInput);
-                $scope.toggleEditor();
-                $scope.toggleImage();
+                $scope.DOMVars.showEditor = false;                
                 sendRequest(false, xmlInput, "text.xml", $scope.$parent.user.email)
             };
             function sendRequest(sendMail, xmlInput, fileName, mailAddr){
@@ -118,6 +149,7 @@ angular.module('myApp.editor')
                 $scope.DOMVars.percentageMsg = "loading models ...";
 
                 $scope.DOMVars.rendering = true;
+                $scope.finished = false;
                 $scope.heightSet = false;
                 $scope.DOMVars.percentage = 100;
                 $scope.reset();

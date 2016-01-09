@@ -26,11 +26,25 @@ Menubar.Render = function ( editor ) {
 	} );
 	options.add( option );
 
+	// xml
+
 	var option = new UI.Panel();
 	option.setClass( 'option' );
 	option.setTextContent( 'See scene xml' );
 	option.onClick( function () {
+		var xmlOutPut = editor.getSceneXML();
+		editor.setxmlFkt({xml: xmlOutPut});
 		editor.changeView('basicWebSocketPatches');
+	});
+	options.add( option );
+
+	// show result
+
+	var option = new UI.Panel();
+	option.setClass( 'option' );
+	option.setTextContent( 'Show rendering' );
+	option.onClick( function () {
+		editor.showresultFunction({});	
 	});
 	options.add( option );
 

@@ -40,6 +40,8 @@ angular.module('myApp', [
       $scope.curViewAnimation = 'fade';
       $scope.server = "http://"+location.host;
       $scope.serverhost = location.host;
+      $scope.xmlInput = "";//<scene>\n\t<sampler type=\"independent\">\n\t\t<integer name=\"sampleCount\" value=\"2\"/>\n\t</sampler>\n\t<integrator type=\"av\">\n\t\t<float name=\"length\" value=\"10\"/>\n\t</integrator>\n\t<camera type=\"perspective\">\n\t\t<transform name=\"toWorld\">\n\t\t\t<lookat target=\"-64.8161, 47.2211, 23.8576\" origin=\"-65.6055, 47.5762, 24.3583\" up=\"0.299858, 0.934836, -0.190177\"/>\n\t\t</transform>\n\t\t<float name=\"fov\" value=\"30\"/>\n\t\t<integer name=\"width\" value=\"768\"/>\n\t\t<integer name=\"height\" value=\"768\"/>\n\t</camera>\n\t<mesh type=\"obj\">\n\t\t<string name=\"filename\" value=\"ajax.obj\"/>\n\t\t<bsdf type=\"diffuse\"/>\n\t</mesh>\n\t<mesh type=\"obj\">\n\t\t<string name=\"filename\" value=\"plane.obj\"/>\n\t\t<bsdf type=\"diffuse\"/>\n\t\t<transform name=\"toWorld\">\n\t\t\t<scale value=\"100,1,100\"/>\n\t\t</transform>\n\t</mesh>\n</scene>\n";
+      $scope.fileName = "Scene1.xml";
 
       $scope.user = null;
       var animation = {
@@ -112,7 +114,7 @@ angular.module('myApp.upload', ['ngRoute', 'ui.bootstrap', 'angular-loading-bar'
  * @description
  * 
  */
-angular.module('myApp.editor', ['ngRoute', 'ui.bootstrap','ngAnimate', 'angular-loading-bar', 'angular-growl', 'tjsEditor', 'ngWebSocket', 'SwampDragonServices']);
+angular.module('myApp.editor', ['ngRoute', 'ui.bootstrap','ngAnimate', 'angular-loading-bar', 'angular-growl', 'tjsEditor', 'ngWebSocket', 'SwampDragonServices', 'ngDialog']);
 
 
 /**

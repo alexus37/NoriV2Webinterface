@@ -6,7 +6,9 @@ angular.module("tjsEditor", [])
 				restrict: "E",
 				scope: {
                     renderFkt: "&renderFunction", 
-                    changeFkt: "&changeFunction"
+                    changeFkt: "&changeFunction",
+                    setxmlFkt: "&setxmlFunction",
+                    showresultFkt: "&showresultFunction"
 				},
 				link: function (scope, elem, attr) {
 
@@ -22,6 +24,9 @@ angular.module("tjsEditor", [])
 
                     editor.renderFunction = scope.renderFkt;
                     editor.changeFunction = scope.changeFkt;
+					editor.showresultFunction = scope.showresultFkt;
+
+                    editor.setxmlFkt = scope.setxmlFkt;
 					var viewport = new Viewport( editor );
 					elem[0].appendChild( viewport.dom );
 

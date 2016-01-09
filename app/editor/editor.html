@@ -3,29 +3,80 @@
 <button type="button" class="btn btn-default" ng-click="toggleEditor()">Toggle Editor</button>
 <button type="button" class="btn btn-default" ng-click="toggleImage()">Toggle Result</button>
 <hr>-->
-<div collapse="DOMVars.editorCollapsed">
+<script type="text/ng-template" id="firstDialogId">
+    <h1>Select obj to add</h1>
+    <form>
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-addon"><span class="glyphicon glyphicon-search"></span></div>
+          <input type="text" class="form-control" placeholder="Search obj" ng-model="searchObj">
+        </div>      
+      </div>
+    </form>
+    <table class="table table-bordered table-striped">
+    
+    <thead>
+      <tr>
+        <td>
+          File name
+        </td>        
+      </tr>
+    </thead>
+    
+    <tbody>
+      <tr ng-repeat="f in ngDialogData.objFiles | filter:searchObj" 
+          ng-click="select(f)"
+          ng-class="{success: confirmValue == f}">
+          <td >{{ f }}</td>
+      </tr>
+    </tbody>
+    
+  </table>
+  <div class="ngdialog-buttons">
+      <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="confirm(confirmValue)">Confirm</button>
+      <button type="button" class="ngdialog-button ngdialog-button-secondary" ng-click="closeThisDialog()">Cancel</button>
+  </div>
+</script>
+<div ng-show="DOMVars.showEditor">
     <div id="tjsEditor">
-        <tjs-editor render-function="renderFkt(xml)" change-function="changeFkt(name)" class="Editor"></tjs-editor>
+        <tjs-editor render-function="renderFkt(xml)" 
+                    change-function="changeFkt(name)"
+                    showresult-function = "showresultFkt()"
+                    setxml-function="setxmlFkt(xml)" class="Editor"></tjs-editor>
     </div>
 </div>
-<div collapse="DOMVars.imageCollapsed">
+<div ng-hide="DOMVars.showEditor">
     <div class="row">
+      <h1>{{$parent.filename}}</h1>
       <div class="col-md-12">
-  	    <canvas render-canvas 
-                  add-patch="addPatch"
-                  set-size="setSize"
-                  reset="reset"></canvas>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-2">
-      	<button type="button"
+        <button type="button"
               class="btn btn-default"
               ng-show="DOMVars.rendering"
               ng-click="sendCancel()" > Cancel rendering</button>
+        <button type="button"
+                class="btn btn-info"              
+                ng-show="DOMVars.finished"
+                ng-click="download('png')" > Download rendering </button> 
+        <button type="button"
+                class="btn btn-info"              
+                ng-show="DOMVars.finished"
+                ng-click="download('xml')" > Download scene xml </button>    
+        <button type="button" 
+                class="btn pull-right btn-info btn-s" 
+                ng-click="DOMVars.showEditor = !DOMVars.showEditor">
+                  <span class="glyphicon glyphicon-upload"></span> Go back </button>
       </div>
-      <div class="col-md-8">
-          <progressbar class="progress-striped active" 
+      <div class="col-md-12">
+        <canvas render-canvas 
+                ng-hide="DOMVars.finished"
+                add-patch="addPatch"
+                set-size="setSize"
+                reset="reset"></canvas>
+        <img  src="{{DOMVars.finalUrl}}"
+              ng-show="DOMVars.finished"
+              alt="Nothing rendered!"
+                    />
+        <progressbar class="progress-striped active" 
                         animate="true" 
                         max="100" 
                         value="DOMVars.percentage" 
@@ -33,7 +84,7 @@
                         ng-show="DOMVars.rendering">
           	<b>{{DOMVars.percentageMsg}}</b>
       	</progressbar>
-  	</div>
+      </div>
   </div>
 </div>
 
