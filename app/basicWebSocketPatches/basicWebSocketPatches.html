@@ -25,7 +25,7 @@
           <button type="button"
                   class="btn btn-info"              
                   ng-show="finished"
-                  ng-click="download('xml')" > Download scene xml </button>    
+                  ng-click="download('xml')" > Download scene xml </button>   
           <button type="button" 
                   class="btn pull-right btn-info btn-s" 
                   ng-click="$parent.changeViewModel('editor')">
@@ -44,11 +44,13 @@
       <div class="row">
         <div class="col-md-12" ng-show="showResult || rendering">
           <canvas render-canvas
+                  id="renderingCanvas"
                   ng-hide="finished"
                   add-patch="addPatch"
                   set-size="setSize"
                   reset="reset"></canvas>
           <img src="{{finalUrl}}"
+               id="renderedIMG" 
                ng-show="finished"
                alt="Nothing rendered!"
                   />

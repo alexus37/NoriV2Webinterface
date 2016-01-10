@@ -60,13 +60,40 @@ angular.module('myApp.editor')
                     console.log('Modal promise rejected. Reason: ', reason);
                 });            
             }
+            // Create a dataURL from an img element 
+            function getImageDataURL(img) {
+                // Create an empty canvas element 
+                var canvas = document.createElement("canvas");
+
+                // Copy the image contents to the canvas 
+                canvas.width = img.width;
+                canvas.height = img.height;
+                var ctx = canvas.getContext("2d");
+                ctx.drawImage(img, 0, 0);
+                var data = canvas.toDataURL("image/png");
+                canvas.remove();
+                return data;
+            }
             $scope.download = function(type) {
+                var anchor = angular.element('<a/>');
+                anchor.css({display: 'none'}); // Make sure it's not visible
+                angular.element(document.body).append(anchor); // Attach to document
+
                 if(type === "png") {
-
+                  var img = document.getElementById("renderedIMG");
+                  anchor.attr({
+                    href: getImageDataURL(img),
+                    target: '_blank',
+                    download: 'rendering.png'
+                  })[0].click();
                 } else {
-
+                  anchor.attr({
+                    href: 'data:attachment/csv;charset=utf-8,' + encodeURI($scope.$parent.xmlInput),
+                    target: '_blank',
+                    download: 'scene.xml'
+                  })[0].click();
                 }
-                alert("Implement me!");
+                anchor.remove();
             }
             $scope.channel = 'update-msg';
 
@@ -145,6 +172,7 @@ angular.module('myApp.editor')
                     sendMail: sendMail,
                     email: mailAddr
                 };
+                $scope.$parent.xmlInput = xmlInput;
                 $scope.DOMVars.progressbarType = "info";
                 $scope.DOMVars.percentageMsg = "loading models ...";
 

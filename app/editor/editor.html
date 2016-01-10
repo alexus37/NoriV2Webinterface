@@ -50,7 +50,7 @@
       <h1>{{$parent.filename}}</h1>
       <div class="col-md-12">
         <button type="button"
-              class="btn btn-default"
+              class="btn btn-danger"
               ng-show="DOMVars.rendering"
               ng-click="sendCancel()" > Cancel rendering</button>
         <button type="button"
@@ -73,6 +73,7 @@
                 set-size="setSize"
                 reset="reset"></canvas>
         <img  src="{{DOMVars.finalUrl}}"
+              id="renderedIMG" 
               ng-show="DOMVars.finished"
               alt="Nothing rendered!"
                     />
