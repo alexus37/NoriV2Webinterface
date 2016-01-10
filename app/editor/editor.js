@@ -43,7 +43,7 @@ angular.module('myApp.editor')
             
             updateFileList();
 
-            $scope.selectOBJ = function() {
+            $scope.importobjFkt = function(callback) {
                 ngDialog.openConfirm({
                     template: 'firstDialogId',
                     data: {objFiles: $scope.uploadedFiles},
@@ -55,6 +55,12 @@ angular.module('myApp.editor')
                         }
                     }]
                 }).then(function (value) {
+                    if(value != "" && value != "Nothing selected") {
+                        var url = $scope.$parent.user.username + "/" + value;
+                        $http.get(url).success(function updateList(payload){
+                            callback(payload, value);
+                        });
+                    }
                     console.log('Modal promise resolved. Value: ', value);
                 }, function (reason) {
                     console.log('Modal promise rejected. Reason: ', reason);

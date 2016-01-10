@@ -49,6 +49,7 @@ Menubar.File = function ( editor ) {
 	options.add( new UI.HorizontalRule() );
 
 	// Import
+	/*
 
 	var fileInput = document.createElement( 'input' );
 	fileInput.type = 'file';
@@ -65,6 +66,15 @@ Menubar.File = function ( editor ) {
 
 		fileInput.click();
 
+	} );
+	options.add( option );
+	*/
+	// ADD obj to scene
+	var option = new UI.Panel();
+	option.setClass( 'option' );
+	option.setTextContent( 'Add obj file' );
+	option.onClick( function () {
+		editor.importobj();
 	} );
 	options.add( option );
 

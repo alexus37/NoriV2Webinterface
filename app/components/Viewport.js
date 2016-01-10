@@ -492,6 +492,9 @@ var Viewport = function ( editor ) {
 		camera.aspect = container.dom.offsetWidth / container.dom.offsetHeight;
 		camera.updateProjectionMatrix();
 
+		editor.width = container.dom.offsetWidth;
+		editor.height = container.dom.offsetHeight
+
 		renderer.setSize( container.dom.offsetWidth, container.dom.offsetHeight );
 
 		render();

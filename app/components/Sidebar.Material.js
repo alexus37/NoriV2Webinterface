@@ -188,6 +188,25 @@ Sidebar.Material = function ( editor ) {
 
 	container.add( materialWireframeRow );
 
+    // area emiter
+    var materialEmitterRow = new UI.Panel();
+    var materialEmitter = new UI.Checkbox( false ).onChange( update );
+    
+    materialEmitterRow.add( new UI.Text( 'Emitter' ).setWidth( '90px' ) );
+    materialEmitterRow.add( materialEmitter );
+    
+    container.add( materialEmitterRow );
+
+    var radiance = new UI.Panel();
+    var radianceR = new UI.Number().setWidth( '50px' ).onChange(update);
+    var radianceG = new UI.Number().setWidth( '50px' ).onChange(update);
+    var radianceB = new UI.Number().setWidth( '50px' ).onChange(update);
+
+    radiance.add(new UI.Text( 'Radiance' ).setWidth( '90px' ) );
+    radiance.add(radianceR, radianceG, radianceB);
+
+    container.add(radiance);
+
 	//
 
 	function update() {
@@ -201,9 +220,13 @@ Sidebar.Material = function ( editor ) {
 
 
 		if ( material ) {
-            if ( material instanceof THREE[ materialClass.getValue() ] === false ) {
+            var mClass = materialClass.getValue();
+            if(mClass == "") {
+                mClass = "DIFFUSE";
+            }
+            if (material instanceof THREE[mClass] === false ) {
 
-                material = new THREE[ materialClass.getValue() ]();
+                material = new THREE[mClass]();
 
                 object.material = material;
             }
@@ -239,6 +262,13 @@ Sidebar.Material = function ( editor ) {
                 material.alpha = RoughnessAlpha.getValue();
             }
 
+            if(material.emitter) {
+                material.radiance.red = radianceR.getValue();
+                material.radiance.green = radianceG.getValue();
+                material.radiance.blue = radianceB.getValue();
+            }
+            material.emitter = materialEmitter.getValue();
+
 
 
 			refreshUi(false);
@@ -261,6 +291,7 @@ Sidebar.Material = function ( editor ) {
         extIOR.setDisplay('none');
         intIOR.setDisplay('none');
         albedo.setDisplay('none');
+        radiance.setDisplay('none');
     }
 	//
 
@@ -272,6 +303,10 @@ Sidebar.Material = function ( editor ) {
 
 		var material = currentObject.material;
         setAllInvisble();
+
+        if(material["emitter"]) {
+            radiance.setDisplay('');
+        }
 
         if (material["type" ] == 'conductor') {
             conductorType.setDisplay('');
@@ -306,6 +341,12 @@ Sidebar.Material = function ( editor ) {
 
 
 		materialClass.setValue( material.type.toUpperCase() );
+
+        if(material.emitter) {
+            radianceR.setValue(material.radiance.red);
+            radianceG.setValue(material.radiance.green);
+            radianceB.setValue(material.radiance.blue);
+        }
 
         if(material.type == 'diffuse') {
             albedoR.setValue(material.albedo.red);

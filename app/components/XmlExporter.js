@@ -96,6 +96,9 @@ var XmlExporter = function () {
 			xml += '\t </transform>\n';
 			xml += '\t<string name="filename" value="' + parameters["filename"] + '"/>\n';
             xml += this.bsdfXML(parameters["BSDFtype"], parameters["BSDFparameters"]);
+            if(parameters["emitter"]) {
+            	xml += this.emitterXML("area", parameters);
+            }
 
             xml += '</mesh>\n';
 			return xml;
@@ -131,9 +134,19 @@ var XmlExporter = function () {
             return xml;
         },
 		emitterXML: function(eType, parameters) {
-			var xml = '\t<emitter type="point">\n';
-			xml += '\t \t<point name="position" value="7.232569,-10.756189,10.827317"/>\n';
-			xml += '\t \t<color name="power" value="500,250,250"/>\n';
+			var xml = '\t<emitter type="';
+			xml += eType + '">\n';
+			switch(eType) {
+				case "area":
+					xml += '\t \t <color name="radiance" value="' + parameters['radiance'][0] + ', ' + parameters['radiance'][1] + ', ' + parameters['radiance'][2] +'"/>\n';
+					break;
+				case "point":
+					xml += '\t \t<point name="position" value="' + parameters['position'][0] + ', ' + parameters['position'][1] + ', ' + parameters['position'][2] +'"/>\n';
+					xml += '\t \t<color name="power" value="' + parameters['power'][0] + ', ' + parameters['power'][1] + ', ' + parameters['power'][2] +'"/>\n';
+				break;
+			}
+			
+			
 			xml += '\t</emitter>\n';
 			return xml;
 		}

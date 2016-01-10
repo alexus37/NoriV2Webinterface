@@ -8,6 +8,13 @@ var Loader = function ( editor ) {
 	var signals = editor.signals;
 
 	this.texturePath = '';
+	this.loadObj = function(contents, filename) {
+		var object = new THREE.OBJLoader().parse( contents );
+		object.name = filename;
+
+		editor.addObject( object );
+		editor.select( object );
+	}
 
 	this.loadFile = function ( file ) {
 

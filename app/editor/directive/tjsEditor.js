@@ -8,7 +8,8 @@ angular.module("tjsEditor", [])
                     renderFkt: "&renderFunction", 
                     changeFkt: "&changeFunction",
                     setxmlFkt: "&setxmlFunction",
-                    showresultFkt: "&showresultFunction"
+                    showresultFkt: "&showresultFunction",
+                    importobjFkt: "&importobjFunction"
 				},
 				link: function (scope, elem, attr) {
 
@@ -23,6 +24,7 @@ angular.module("tjsEditor", [])
                     // set the render function for the editor
 
                     editor.renderFunction = scope.renderFkt;
+                    editor.importobjFunction = scope.importobjFkt;
                     editor.changeFunction = scope.changeFkt;
 					editor.showresultFunction = scope.showresultFkt;
 

@@ -72,10 +72,7 @@ var Editor = function () {
 	this.storage = new Storage();
 	this.loader = new Loader( this );
 
-	this.camera = new THREE.PerspectiveCamera( 50, 1, 1, 100000 );
-	this.camera.position.set( 500, 250, 500 );
-	this.camera.lookAt( new THREE.Vector3() );
-	this.camera.name = 'Camera';
+	
 
 	this.scene = new THREE.Scene();
 	this.scene.name = 'Scene';
@@ -87,16 +84,26 @@ var Editor = function () {
 	this.showresultFunction = null;
 	this.renderFunction = null;
 	this.changeFunction = null;
+	this.importobjFunction = null;
 	this.sampler = "independent";
 	this.samplerProps = {sampleCount: 64};
 	this.integrator = "av";
 	this.integratorProps = {
-		length: 10
+		length: 10,
+		photonCount: 0,
+		photonRadius: 0
 	};
-	this.width = 800;
-	this.height = 600;
+
+	this.width = 0;
+	this.height = 0;
 
 	//AX end
+	this.camera = new THREE.PerspectiveCamera( 50, 1, 1, 100000 );
+	this.camera.position.set( 500, 250, 500 );
+	this.camera.lookAt( new THREE.Vector3() );
+	this.camera.name = 'Camera';
+
+
 	this.object = {};
 	this.geometries = {};
 	this.materials = {};
@@ -189,6 +196,9 @@ Editor.prototype = {
 	changeView: function(viewName) {
 		this.changeFunction({name: viewName});
 	},
+	importobj : function() {
+		this.importobjFunction({callback: this.loader.loadObj});
+	},
 	getSceneXML: function(){
 		var xmlOutPut = '<?xml version="1.0" encoding="utf-8"?>\n';
 		xmlOutPut += '<scene>\n';
@@ -196,18 +206,18 @@ Editor.prototype = {
 		//add the integrator
 		xmlOutPut += this.xmlExporter.integratorXML(this.integrator, this.integratorProps);
 
-		if (this.integrator == 'av') {
-			xmlOutPut += '\t<float name=\"length\" value=\"10\"/>\n'
-		}
 
 		//add the sampler
 		xmlOutPut += this.xmlExporter.samplerXML(this.sampler, this.samplerProps);
 
 		var transposeCamMat = this.xmlExporter.transformMatrixList(this.camera.matrixWorld.elements);
+
 		//add the camera
+		var aspect = this.width / this.height;
+		var hFOV = 2 * Math.atan( Math.tan( this.camera.fov * Math.PI / 180 / 2 ) * aspect ) * 180 / Math.PI; // degrees
 		var cameraProps = {
 			toWorld: transposeCamMat,
-			fov: this.camera.fov,
+			fov: hFOV, //this.camera.fov,
 			nearClip: this.camera.near,
 			farClip: this.camera.far,
 			width: this.width,
@@ -219,9 +229,6 @@ Editor.prototype = {
 		}
 
 		xmlOutPut += this.xmlExporter.cameraXML(camType, cameraProps);
-
-		//TEMP ADD POINT LIGHT
-		xmlOutPut += this.xmlExporter.emitterXML("", "");
 
 		for(var i = 0; i < this.scene.children.length; i++) {
 			if(this.scene.children[i].type == "Object3D") {
@@ -278,7 +285,9 @@ Editor.prototype = {
 					toWorld: this.xmlExporter.transformMatrixList(this.scene.children[i].children[0].matrixWorld.elements),
 					filename: this.scene.children[i].name,
 					BSDFtype: bsdfType,
-					BSDFparameters: bsdfParameters
+					BSDFparameters: bsdfParameters,
+					emitter: material.emitter,
+					radiance: material.emitter? [material.radiance.red, material.radiance.green, material.radiance.blue]: []
 				};
 				xmlOutPut += this.xmlExporter.meshXML(meshType, meshProps);
 			}
