@@ -10,6 +10,7 @@ app/.idea/*
 /build
 node_modules/
 server/static/*
+!server/static/default/
 .ropeproject/
 .PIDServer
 logs/

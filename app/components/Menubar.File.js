@@ -91,6 +91,7 @@ Menubar.File = function ( editor ) {
 
 
 	//
+	/*
 
 	options.add( new UI.HorizontalRule() );
 
@@ -333,6 +334,7 @@ Menubar.File = function ( editor ) {
 		link.dispatchEvent(event);
 
 	};
+	*/
 
 	return container;
 

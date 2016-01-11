@@ -82,6 +82,7 @@ Menubar.Edit = function ( editor ) {
 	options.add( option );
 
 	// Minify shaders
+	/*
 
 	var option = new UI.Panel();
 	option.setClass( 'option' );
@@ -153,6 +154,7 @@ Menubar.Edit = function ( editor ) {
 
 	} );
 	options.add( option );
+	*/
 
 
 	return container;

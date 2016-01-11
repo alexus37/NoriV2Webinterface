@@ -192,6 +192,11 @@ Sidebar.Project = function ( editor ) {
 	//INTEGRATOR
 	var integratorTypes = {
 		'path_mis': 'Path tracer MIS',
+		'path_mats': 'Path tracer Matrial',
+		'direct': 'Direct',
+		'direct_mis': 'Direct MIS',
+		'direct_ems': 'Direct EMS',
+		'direct_mats': 'Direct MATS',
 		'photonmapper':'Photon mapper',
 		'av': 'Average visiblity'
 	};

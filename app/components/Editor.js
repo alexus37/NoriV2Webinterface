@@ -80,11 +80,12 @@ var Editor = function () {
 	this.sceneHelpers = new THREE.Scene();
 	//AX
 	this.currentXML = "";
-	this.setxmlFkt = null;
+	this.setxmlFunction = null;
 	this.showresultFunction = null;
 	this.renderFunction = null;
 	this.changeFunction = null;
 	this.importobjFunction = null;
+	this.defaultobjFunction = null;
 	this.sampler = "independent";
 	this.samplerProps = {sampleCount: 64};
 	this.integrator = "av";
@@ -199,6 +200,9 @@ Editor.prototype = {
 	importobj : function() {
 		this.importobjFunction({callback: this.loader.loadObj});
 	},
+	importDefaultObj: function(dType) {
+		this.defaultobjFunction({callback: this.loader.loadObj, geometry: dType});		
+	}, 
 	getSceneXML: function(){
 		var xmlOutPut = '<?xml version="1.0" encoding="utf-8"?>\n';
 		xmlOutPut += '<scene>\n';
@@ -237,59 +241,73 @@ Editor.prototype = {
                 var bsdfParameters = {
                     albedo: [0.201901, 0.116948, 0.078615]
                 };
-                var material = this.scene.children[i].children[0].material;
-                if(material.type == 'diffuse') {
-                    bsdfType = "diffuse";
-                    bsdfParameters = {
-                        albedo: [material.albedo.red, material.albedo.green, material.albedo.blue]
-                    };
-                }
+                if(this.scene.children[i].children.length > 0) {
+	                var material = this.scene.children[i].children[0].material;
+	                if(material.type == 'diffuse') {
+	                    bsdfType = "diffuse";
+	                    bsdfParameters = {
+	                        albedo: [material.albedo.red, material.albedo.green, material.albedo.blue]
+	                    };
+	                }
 
-                if ( material.type == 'conductor') {
-                    bsdfType = "conductor";
-                    bsdfParameters = {
-                        materialName: material.conductorType
-                    };
-                }
+	                if ( material.type == 'conductor') {
+	                    bsdfType = "conductor";
+	                    bsdfParameters = {
+	                        materialName: material.conductorType
+	                    };
+	                }
 
-                if ( material.type == 'dielectric') {
-                    bsdfType = "dielectric";
-                    bsdfParameters = {
-                        intIOR: material.intIor,
-                        extIOR: material.extIor
-                    };
-                }
+	                if ( material.type == 'dielectric') {
+	                    bsdfType = "dielectric";
+	                    bsdfParameters = {
+	                        intIOR: material.intIor,
+	                        extIOR: material.extIor
+	                    };
+	                }
 
-                if ( material.type == 'microfacetBRDF') {
-                    bsdfType = "microfacet";
-                    bsdfParameters = {
-                        kd: [material.albedo.red, material.albedo.green, material.albedo.blue],
-                        alpha: material.alpha
-                    };
-                }
+	                if ( material.type == 'microfacetBRDF') {
+	                    bsdfType = "microfacet";
+	                    bsdfParameters = {
+	                        kd: [material.albedo.red, material.albedo.green, material.albedo.blue],
+	                        alpha: material.alpha
+	                    };
+	                }
 
-                if ( material.type == 'mirror') {
-                    bsdfType = "mirror";
-                }
+	                if ( material.type == 'mirror') {
+	                    bsdfType = "mirror";
+	                }
 
-                if ( material.type == 'roughconductor') {
-                    bsdfType = "roughConductor";
-                    bsdfParameters = {
-                        materialName: material.conductorType,
-                        alpha: material.alpha
-                    };
-                }
+	                if ( material.type == 'roughconductor') {
+	                    bsdfType = "roughConductor";
+	                    bsdfParameters = {
+	                        materialName: material.conductorType,
+	                        alpha: material.alpha
+	                    };
+	                }
 
 
-				var meshProps = {
-					toWorld: this.xmlExporter.transformMatrixList(this.scene.children[i].children[0].matrixWorld.elements),
-					filename: this.scene.children[i].name,
-					BSDFtype: bsdfType,
-					BSDFparameters: bsdfParameters,
-					emitter: material.emitter,
-					radiance: material.emitter? [material.radiance.red, material.radiance.green, material.radiance.blue]: []
-				};
-				xmlOutPut += this.xmlExporter.meshXML(meshType, meshProps);
+					var meshProps = {
+						toWorld: this.xmlExporter.transformMatrixList(this.scene.children[i].children[0].matrixWorld.elements),
+						filename: this.scene.children[i].name,
+						BSDFtype: bsdfType,
+						BSDFparameters: bsdfParameters,
+						emitter: material.emitter,
+						radiance: material.emitter? [material.radiance.red, material.radiance.green, material.radiance.blue]: []
+					};
+					xmlOutPut += this.xmlExporter.meshXML(meshType, meshProps);
+				}
+			}
+			if(this.scene.children[i].type == "PointLight") {
+				var intensity = this.scene.children[i].intensity;
+				var pointLightProperties = {
+					position: [	this.scene.children[i].position.x, 
+								this.scene.children[i].position.y, 
+								this.scene.children[i].position.z],
+					power:[this.scene.children[i].color.r * 255 * intensity, 
+						   this.scene.children[i].color.g * 255 * intensity,
+						   this.scene.children[i].color.b * 255 * intensity]
+				}
+				xmlOutPut += this.xmlExporter.emitterXML("point", pointLightProperties)
 			}
 		}
 

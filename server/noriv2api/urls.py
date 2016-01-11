@@ -9,6 +9,8 @@ urlpatterns = [
         views.UserDetail.as_view(), name='user-detail'),
     url(r'^users/(?P<pk>[0-9]+)/resource$',
         views.UserResourceView.as_view(), name='user-resource'),
+    url(r'^defaultgeometry/$',
+        views.DefaultGeometryView.as_view(), name='default-geometry'),
     url(r'^scenes/$',
         views.SceneList.as_view(), name='scene-list'),
     url(r'^scenes/(?P<pk>[0-9]+)$',

@@ -33,7 +33,7 @@ Menubar.Render = function ( editor ) {
 	option.setTextContent( 'See scene xml' );
 	option.onClick( function () {
 		var xmlOutPut = editor.getSceneXML();
-		editor.setxmlFkt({xml: xmlOutPut});
+		editor.setxmlFunction({xml: xmlOutPut});
 		editor.changeView('basicWebSocketPatches');
 	});
 	options.add( option );

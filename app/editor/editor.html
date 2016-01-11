@@ -43,6 +43,7 @@
                     change-function="changeFkt(name)"
                     showresult-function = "showresultFkt()"
                     importobj-function = "importobjFkt(callback)"
+                    defaultobj-function = "defaultobjFkt(callback, geometry)"
                     setxml-function="setxmlFkt(xml)" class="Editor"></tjs-editor>
     </div>
 </div>
@@ -75,7 +76,7 @@
                 reset="reset"></canvas>
         <img  src="{{DOMVars.finalUrl}}"
               id="renderedIMG" 
-              ng-show="DOMVars.finished"
+              ng-show="DOMVars.finished && !DOMVarsrendering"
               alt="Nothing rendered!"
                     />
         <progressbar class="progress-striped active" 

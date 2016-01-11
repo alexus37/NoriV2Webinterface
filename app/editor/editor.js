@@ -36,7 +36,7 @@ angular.module('myApp.editor')
             $scope.uploadedFiles = [];
             function updateFileList(){
                 var url = $scope.$parent.user.url + 'resource';
-                $http.get(url).success(function updateList(payload){
+                $http.get(url).success(function(payload){
                     $scope.uploadedFiles = payload;
                 });
             };
@@ -57,7 +57,7 @@ angular.module('myApp.editor')
                 }).then(function (value) {
                     if(value != "" && value != "Nothing selected") {
                         var url = $scope.$parent.user.username + "/" + value;
-                        $http.get(url).success(function updateList(payload){
+                        $http.get(url).success(function(payload){
                             callback(payload, value);
                         });
                     }
@@ -163,7 +163,21 @@ angular.module('myApp.editor')
             };
             $scope.setxmlFkt = function(xml) {
                 $scope.$parent.xmlInput = xml;
-            }
+            };
+
+            $scope.defaultobjFkt = function(callback, geometry) {
+                // add the file to the user directory
+
+                var url = '../defaultgeometry/';
+                var query = {type: geometry};
+                $http.post(url, query).success(function(){
+                    var url = $scope.$parent.user.username + "/" + geometry + ".obj";
+                    $http.get(url).success(function(payload){
+                        callback(payload, geometry + ".obj");
+                    });
+                });
+                               
+            };
 
             $scope.renderFkt = function(xmlInput) {
                 console.log(xmlInput);
@@ -187,6 +201,7 @@ angular.module('myApp.editor')
                 $scope.heightSet = false;
                 $scope.DOMVars.percentage = 100;
                 $scope.reset();
+                $scope.$apply();
 
                 var promise = comServ.httpPostRequest(xmlQuery);
                 promise.success(function updateLines(payload){
