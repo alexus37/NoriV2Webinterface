@@ -43,6 +43,14 @@ angular.module('myApp.editor')
             
             updateFileList();
 
+            $scope.loadmodelFkt = function(callback, model, transform) {
+             if(model != "" && model != "Nothing selected") {
+                    var url = $scope.$parent.user.username + "/" + model;
+                    $http.get(url).success(function(payload){
+                        callback(payload, model, transform);
+                    });
+                }                
+            }
             $scope.importobjFkt = function(callback) {
                 ngDialog.openConfirm({
                     template: 'firstDialogId',
@@ -54,15 +62,9 @@ angular.module('myApp.editor')
                             $scope.confirmValue = objFile;
                         }
                     }]
-                }).then(function (value) {
-                    if(value != "" && value != "Nothing selected") {
-                        var url = $scope.$parent.user.username + "/" + value;
-                        $http.get(url).success(function(payload){
-                            callback(payload, value);
-                        });
-                    }
-                    console.log('Modal promise resolved. Value: ', value);
-                }, function (reason) {
+                }).then(function (model) {
+                        $scope.loadmodelFkt(callback, model, []);
+                    }, function (reason) {
                     console.log('Modal promise rejected. Reason: ', reason);
                 });            
             }
@@ -156,6 +158,24 @@ angular.module('myApp.editor')
                     $scope.DOMVars.rendering = false;
                 });
             };
+
+            $scope.loadxmlFkt = function(callback, editor) {
+                // load xml scenes
+                var url = "http://localhost:8000/static/ax/testScene.xml";
+                $http.get(url,
+                {
+                transformResponse: function (cnv) {
+                  var x2js = new X2JS();
+                  var aftCnv = x2js.xml_str2json(cnv);
+                  return aftCnv;
+                }
+              }).success(function(response) {
+                    callback(response.scene, editor)
+                });            
+            }
+
+
+
 
 
             $scope.changeFkt = function(name) {

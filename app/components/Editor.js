@@ -86,6 +86,8 @@ var Editor = function () {
 	this.changeFunction = null;
 	this.importobjFunction = null;
 	this.defaultobjFunction = null;
+	this.loadxmlFunction = null;
+	this.loadmodelFunction = null;
 	this.sampler = "independent";
 	this.samplerProps = {sampleCount: 64};
 	this.integrator = "av";
@@ -169,6 +171,228 @@ Editor.prototype = {
 		this.signals.objectAdded.dispatch( object );
 		this.signals.sceneGraphChanged.dispatch();
 
+	},
+	setCamera: function(camera, editor) {
+		var str2tjsVec = function(str) {
+			var elm = str.split(",");
+			return  new THREE.Vector3(elm[0], elm[1], elm[2]);
+		};
+		var handleFloat = function(floatObj, editor) {
+			switch(floatObj._name) {
+				case "fov":
+					//editor.camera.fov = floatObj._value;
+				break;
+				case "nearClip":
+					editor.camera.near = floatObj._value;
+				break;
+				case "farClip":
+					editor.camera.far = floatObj._value;
+				break;
+				default:
+					console.log("camera float not handled");
+			}
+
+		}
+		var handleInteger = function(integerObj, editor) {
+			switch(integerObj._name) {
+				case "width":
+					editor.width = integerObj._value;
+				break;
+				case "height":
+					editor.height = integerObj._value;
+				break;
+
+				default:
+					console.log("camera integer not handled");
+			}
+		}
+		switch(camera._type){
+			case "perspective":
+				if("transform" in camera) {
+					var transformMatrix = [];
+					if(camera.transform._name == "toWorld") {
+						if("matrix" in camera.transform) {
+							transformMatrix = camera.transform.matrix._value.split(",");
+							// ToDo
+							console.log("implment me (camera matrix transform)!");
+							editor.camera.matrixWorld.set(transformMatrix[0],
+														  transformMatrix[1],
+														  transformMatrix[2],
+														  transformMatrix[3],
+
+														  transformMatrix[4],
+														  transformMatrix[5],
+														  transformMatrix[6],
+														  transformMatrix[7],
+
+														  transformMatrix[8],
+														  transformMatrix[9],
+														  transformMatrix[10],
+														  transformMatrix[11],
+
+														  transformMatrix[12],
+														  transformMatrix[13],
+														  transformMatrix[14],
+														  transformMatrix[15]);
+							editor.scene.updateMatrixWorld()
+/*
+							editor.camera.matrixWorld.set(transformMatrix[0],
+														  transformMatrix[4],
+														  transformMatrix[8],
+														  transformMatrix[12],
+
+														  transformMatrix[1],
+														  transformMatrix[5],
+														  transformMatrix[9],
+														  transformMatrix[13],
+
+														  transformMatrix[2],
+														  transformMatrix[6],
+														  transformMatrix[10],
+														  transformMatrix[14],
+
+														  transformMatrix[3],
+														  transformMatrix[7],
+														  transformMatrix[11],
+														  transformMatrix[15]);*/
+						} else if("lookat" in camera.transform) {
+							var elm = camera.transform.lookat._origin.split(",");
+							editor.camera.position.set(elm[0], elm[1], elm[2] );
+							editor.camera.up = str2tjsVec(camera.transform.lookat._up);
+							editor.camera.lookAt(str2tjsVec(camera.transform.lookat._target));
+						} else {
+							// ToDo: handle other transforms (scale rotation)
+							console.log("Transform not handled camera");
+						}
+
+					}
+					
+					if("float" in camera){
+						if(camera.float instanceof Array) {
+							for (var i = 0; i < camera.float.length; i++) {
+								handleFloat(camera.float[i], editor)
+							};
+						} else {
+							handleFloat(camera.float, editor);
+						}
+					}
+					if("integer" in camera){
+						if(camera.integer instanceof Array) {
+							for (var i = 0; i < camera.integer.length; i++) {
+								handleInteger(camera.integer[i], editor)
+							};
+						} else {
+							handleInteger(camera.integer, editor);
+						}
+					}
+					var aspect = editor.width / editor.height;
+					editor.camera.aspect = aspect;
+
+					editor.camera.updateProjectionMatrix();
+
+				}
+				break;
+			default:
+				console.log("Camera type not jet supperted!");
+		}
+	},
+	setEmitter: function(emiter) {
+		console.log(emitter);
+	},
+	setMesh: function(mesh, editor) {
+		switch(mesh._type){
+			case "obj":
+				if("string" in mesh) {
+					if(mesh.string._name == "filename"){
+						if("transform" in mesh) {
+							var transformMatrix = [];
+							if(mesh.transform._name == "toWorld") {
+								if("matrix" in mesh.transform) {
+									transformMatrix = mesh.transform.matrix._value.split(",");
+								} else {
+									// ToDo: handle other transforms (scale rotation)
+									console.log("Transform not handled mesh");
+								}
+
+							} 
+
+							editor.loadmodelFunction({callback: editor.loader.loadObj,
+												model: mesh.string._value,
+												transform: transformMatrix});	
+						} else {
+							editor.loadmodelFunction({callback: editor.loader.loadObj,												
+												model: mesh.string._value,
+												transform: []})
+						}
+
+						//Todo: handle bsdfs
+
+					}
+				}
+				
+				break;
+			default:
+				alert("Camera type not jet supperted!");
+		}
+		console.log(mesh);
+
+	},
+	setIntegrator: function(integrator, editor) {
+		switch(integrator._type){
+			case "av":
+				editor.integrator = "av";
+				if("float" in integrator) {
+					if(integrator.float._name == "length") {
+						editor.integratorProps.length = integrator.float._value;
+					}
+				}
+				break;
+			default:
+				console.log("integrator type not jet supperted!");
+		}
+	},
+	setSampler: function(sampler, editor) {
+		switch(sampler._type){
+			case "independent":
+				editor.sampler = "independent";
+				
+				if("integer" in sampler) {
+					if(sampler.integer._name == "sampleCount") {
+						editor.samplerProps.sampleCount = sampler.integer._value;
+					}
+				}
+				break;
+			default:
+				console.log("sampler type not jet supperted!");
+		}
+	},
+
+	setSceneXML: function(scene, editor) {
+		//set the camera
+		if("camera" in scene) {
+			editor.setCamera(scene.camera, editor)
+		}
+		if("integrator" in scene) {
+			editor.setIntegrator(scene.integrator, editor)
+		}
+		if("mesh" in scene) {
+			if(scene.mesh instanceof Array) {
+				for (var i = scene.mesh.length - 1; i >= 0; i--) {
+					editor.setMesh(scene.mesh[i], editor);
+				};
+			} else {
+				//only one mesh
+				editor.setMesh(scene.mesh, editor)
+			}
+		}
+		if("sampler" in scene) {
+			editor.setSampler(scene.sampler, editor)
+		}
+
+	},
+
+	getScene: function() {
+		this.loadxmlFunction({callback: this.setSceneXML, editor: this})
 	},
 
 	moveObject: function ( object, parent, before ) {

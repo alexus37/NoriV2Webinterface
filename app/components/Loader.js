@@ -8,13 +8,17 @@ var Loader = function ( editor ) {
 	var signals = editor.signals;
 
 	this.texturePath = '';
-	this.loadObj = function(contents, filename) {
+	this.loadObj = function(contents, filename, transform) {
 		var object = new THREE.OBJLoader().parse( contents );
 		object.name = filename;
+		
+		// ToDo: set transform matrix
+
 
 		editor.addObject( object );
 		editor.select( object );
 	}
+
 
 	this.loadFile = function ( file ) {
 

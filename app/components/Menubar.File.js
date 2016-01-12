@@ -32,6 +32,22 @@ Menubar.File = function ( editor ) {
 	} );
 	options.add( option );
 
+	// Load scene
+
+	var option = new UI.Panel();
+	option.setClass( 'option' );
+	option.setTextContent( 'Load scene' );
+	option.onClick( function () {
+		editor.getScene();
+		/*
+		if ( confirm( 'Any unsaved data will be lost. Are you sure?' ) ) {
+			editor.clear();
+		}
+		*/
+
+	} );
+	options.add( option );
+
 	// logout
 	var option = new UI.Panel();
 	option.setClass( 'option' );

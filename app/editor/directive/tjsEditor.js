@@ -10,7 +10,9 @@ angular.module("tjsEditor", [])
                     setxmlFkt: "&setxmlFunction",
                     showresultFkt: "&showresultFunction",
                     importobjFkt: "&importobjFunction",
-                    defaultobjFkt: "&defaultobjFunction"
+                    loadxmlFkt: "&loadxmlFunction",
+                    defaultobjFkt: "&defaultobjFunction",
+                    loadmodelFkt: "&loadmodelFunction"
 				},
 				link: function (scope, elem, attr) {
 
@@ -29,6 +31,8 @@ angular.module("tjsEditor", [])
                     editor.changeFunction = scope.changeFkt;
 					editor.showresultFunction = scope.showresultFkt;
 					editor.defaultobjFunction = scope.defaultobjFkt;
+					editor.loadxmlFunction = scope.loadxmlFkt;
+					editor.loadmodelFunction = scope.loadmodelFkt;
 
                     editor.setxmlFunction = scope.setxmlFkt;
 					var viewport = new Viewport( editor );

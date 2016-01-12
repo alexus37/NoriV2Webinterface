@@ -43,8 +43,12 @@
                     change-function="changeFkt(name)"
                     showresult-function = "showresultFkt()"
                     importobj-function = "importobjFkt(callback)"
+                    loadxml-function = "loadxmlFkt(callback, editor)"
+                    loadmodel-function = "loadmodelFkt(callback, model)"
                     defaultobj-function = "defaultobjFkt(callback, geometry)"
-                    setxml-function="setxmlFkt(xml)" class="Editor"></tjs-editor>
+                    setxml-function="setxmlFkt(xml)" 
+                    class="Editor">
+        </tjs-editor>
     </div>
 </div>
 <div ng-hide="DOMVars.showEditor">
