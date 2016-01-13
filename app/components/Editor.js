@@ -172,36 +172,40 @@ Editor.prototype = {
 		this.signals.sceneGraphChanged.dispatch();
 
 	},
-	setCamera: function(camera, editor) {
+	setCamera: function(camera) {
 		var str2tjsVec = function(str) {
 			var elm = str.split(",");
 			return  new THREE.Vector3(elm[0], elm[1], elm[2]);
 		};
-		var handleFloat = function(floatObj, editor) {
-			switch(floatObj._name) {
+		var handleFloat = function(floatObj) {
+			var val = parseFloat(floatObj._value);
+			switch(floatObj._name) {				
 				case "fov":
-					//editor.camera.fov = floatObj._value;
+					var hFov = val;
+					var invAspect = this.height / this.width;
+					this.camera.fov = 2 * Math.atan( Math.tan( hFov * Math.PI / 180 / 2 ) * invAspect ) * 180 / Math.PI; // degrees;
+					
 				break;
 				case "nearClip":
-					editor.camera.near = floatObj._value;
+					this.camera.near = val;
 				break;
 				case "farClip":
-					editor.camera.far = floatObj._value;
+					this.camera.far = val;
 				break;
 				default:
 					console.log("camera float not handled");
 			}
 
 		}
-		var handleInteger = function(integerObj, editor) {
+		var handleInteger = function(integerObj) {
+			var val =  parseInt(integerObj._value);
 			switch(integerObj._name) {
 				case "width":
-					editor.width = integerObj._value;
+					this.width = val;
 				break;
 				case "height":
-					editor.height = integerObj._value;
+					this.height = val;
 				break;
-
 				default:
 					console.log("camera integer not handled");
 			}
@@ -209,86 +213,62 @@ Editor.prototype = {
 		switch(camera._type){
 			case "perspective":
 				if("transform" in camera) {
-					var transformMatrix = [];
+					var T = [];
 					if(camera.transform._name == "toWorld") {
 						if("matrix" in camera.transform) {
-							transformMatrix = camera.transform.matrix._value.split(",");
-							// ToDo
-							console.log("implment me (camera matrix transform)!");
-							editor.camera.matrixWorld.set(transformMatrix[0],
-														  transformMatrix[1],
-														  transformMatrix[2],
-														  transformMatrix[3],
+							T = this.string2Arr(camera.transform.matrix._value);
+							// 
+							var m = new THREE.Matrix4();
+							var position = new THREE.Vector3();
+							var quaternion = new THREE.Quaternion();
+							var scale = new THREE.Vector3();
 
-														  transformMatrix[4],
-														  transformMatrix[5],
-														  transformMatrix[6],
-														  transformMatrix[7],
+							m.set(T[0], T[1], T[2], T[3],
+								  T[4], T[5], T[6], T[7],
+								  T[8], T[9], T[10], T[11],
+								  T[12], T[13], T[14], T[15]);
 
-														  transformMatrix[8],
-														  transformMatrix[9],
-														  transformMatrix[10],
-														  transformMatrix[11],
-
-														  transformMatrix[12],
-														  transformMatrix[13],
-														  transformMatrix[14],
-														  transformMatrix[15]);
-							editor.scene.updateMatrixWorld()
-/*
-							editor.camera.matrixWorld.set(transformMatrix[0],
-														  transformMatrix[4],
-														  transformMatrix[8],
-														  transformMatrix[12],
-
-														  transformMatrix[1],
-														  transformMatrix[5],
-														  transformMatrix[9],
-														  transformMatrix[13],
-
-														  transformMatrix[2],
-														  transformMatrix[6],
-														  transformMatrix[10],
-														  transformMatrix[14],
-
-														  transformMatrix[3],
-														  transformMatrix[7],
-														  transformMatrix[11],
-														  transformMatrix[15]);*/
+							m.decompose( position, quaternion, scale );
+		
+							this.camera.quaternion.copy( quaternion );
+							this.camera.position.copy(position);
+							
+							this.camera.updateMatrixWorld(true);
+							
 						} else if("lookat" in camera.transform) {
-							var elm = camera.transform.lookat._origin.split(",");
-							editor.camera.position.set(elm[0], elm[1], elm[2] );
-							editor.camera.up = str2tjsVec(camera.transform.lookat._up);
-							editor.camera.lookAt(str2tjsVec(camera.transform.lookat._target));
+							var elm = this.string2Arr(camera.transform.lookat._origin);
+							this.camera.position.set(elm[0], elm[1], elm[2] );
+							this.camera.up = str2tjsVec(camera.transform.lookat._up);
+							this.camera.lookAt(str2tjsVec(camera.transform.lookat._target));
 						} else {
 							// ToDo: handle other transforms (scale rotation)
-							console.log("Transform not handled camera");
+							console.log("Transform " + camera.transform._name + " not handled (setCamera)");
 						}
 
-					}
-					
-					if("float" in camera){
-						if(camera.float instanceof Array) {
-							for (var i = 0; i < camera.float.length; i++) {
-								handleFloat(camera.float[i], editor)
-							};
-						} else {
-							handleFloat(camera.float, editor);
-						}
 					}
 					if("integer" in camera){
 						if(camera.integer instanceof Array) {
 							for (var i = 0; i < camera.integer.length; i++) {
-								handleInteger(camera.integer[i], editor)
+								handleInteger(camera.integer[i])
 							};
 						} else {
-							handleInteger(camera.integer, editor);
+							handleInteger(camera.integer);
 						}
 					}
-					var aspect = editor.width / editor.height;
-					editor.camera.aspect = aspect;
+					var aspect = this.width / this.height;
+					this.camera.aspect = aspect;
+					if("float" in camera){
+						if(camera.float instanceof Array) {
+							for (var i = 0; i < camera.float.length; i++) {
+								handleFloat.call(this, camera.float[i])
+							};
+						} else {
+							handleFloat.call(this, camera.float);
+						}
+					}
+					
 
-					editor.camera.updateProjectionMatrix();
+					this.camera.updateProjectionMatrix();
 
 				}
 				break;
@@ -299,33 +279,108 @@ Editor.prototype = {
 	setEmitter: function(emiter) {
 		console.log(emitter);
 	},
-	setMesh: function(mesh, editor) {
+	string2Arr: function(str) {
+		var elm = str.split(',');
+		if(elm.length == 1) {
+			elm = str.split(' ');
+		}
+		return elm;
+	},
+	setMesh: function(mesh) {
+		var handledEmitter = function(emitter) {
+			return {type: "area",
+					radiance: this.string2Arr(emitter.color._value)}
+		};
+		var handleBSDF = function(bsdf) {
+			var cBSDF = {};
+			cBSDF["type"] = bsdf._type;
+			switch(cBSDF["type"]) {
+				case 'diffuse':
+					cBSDF["albedo"] = [0, 0, 0];
+                    if ("color" in bsdf) {
+                    	cBSDF["albedo"] = this.string2Arr(bsdf.color._value);
+                    }	                
+	                break;
+	            case'conductor':
+            		cBSDF["materialName"] = "Au";
+            		if("string" in bsdf && bsdf.string._name == "materialName"){
+						cBSDF["materialName"] = bsdf.string._value;
+            		}
+	                
+	                break;
+	            case 'dielectric':
+	            		cBSDF["intIOR"] = 1.5;
+	            		cBSDF["extIOR"] = 1.0;
+	            		if("float" in bsdf) {
+	            			for (var i = 0; i < bsdf.float.length; i++) {
+	            				var val = parseFloat(bsdf.float[i]._value);
+	            				if(bsdf.float[i]._name =="intIOR") {
+	            					cBSDF["intIOR"] = val;
+	            				} else {
+	            					cBSDF["extIOR"] = val;
+	            				}
+	            			}
+	            		}                   	            
+	                break;
+
+	            case 'mirror':
+	            	cBSDF["type"] = 'mirror';
+	                break;
+	            case 'roughconductor':
+            		cBSDF["materialName"] = "Au";
+            		if("string" in bsdf && bsdf.string._name == "materialName"){
+						cBSDF["materialName"] = bsdf.string._value;
+            		}
+            		cBSDF["alpha"] = 0.3;	            		
+            		if("float" in bsdf  && bsdf.float._name == "alpha") {
+            			cBSDF["alpha"] = parseFloat(bsdf.float._value);
+            		}	                    
+	               
+	                break;
+				default:
+					console.log("BSDF " + cBSDF["type"] +" not handled yet");
+					return undefined;
+			}
+			return cBSDF;
+
+		};
 		switch(mesh._type){
 			case "obj":
 				if("string" in mesh) {
 					if(mesh.string._name == "filename"){
-						if("transform" in mesh) {
-							var transformMatrix = [];
-							if(mesh.transform._name == "toWorld") {
-								if("matrix" in mesh.transform) {
-									transformMatrix = mesh.transform.matrix._value.split(",");
-								} else {
-									// ToDo: handle other transforms (scale rotation)
-									console.log("Transform not handled mesh");
-								}
-
+						var m = undefined;
+						var curEmitter = undefined;
+						var curBSDF = undefined;
+						if("transform" in mesh && mesh.transform._name == "toWorld") {							
+							var m = new THREE.Matrix4();
+							m.identity();
+							if("matrix" in mesh.transform) {
+								var T = mesh.transform.matrix._value.split(",");
+								m.set(T[0], T[1], T[2], T[3],
+									  T[4], T[5], T[6], T[7],
+									  T[8], T[9], T[10], T[11],
+									  T[12], T[13], T[14], T[15]);
+							} else {
+								// ToDo: handle other transforms (scale rotation)
+								console.log("Transform " + mesh.transform._name + " not handled (setMesh)");
 							} 
-
-							editor.loadmodelFunction({callback: editor.loader.loadObj,
-												model: mesh.string._value,
-												transform: transformMatrix});	
-						} else {
-							editor.loadmodelFunction({callback: editor.loader.loadObj,												
-												model: mesh.string._value,
-												transform: []})
+						} 
+						if("bsdf" in mesh) {
+							curBSDF = handleBSDF(mesh.bsdf);
 						}
 
-						//Todo: handle bsdfs
+						if("emitter" in mesh) {
+							curEmitter = handledEmitter(mesh.emitter);
+						}
+
+
+						this.loadmodelFunction({callback: this.loader.loadObj,												
+												model: mesh.string._value,
+												transform: m,
+												bsdf: curBSDF,
+												emitter: curEmitter})
+
+						
 
 					}
 				}
@@ -337,58 +392,58 @@ Editor.prototype = {
 		console.log(mesh);
 
 	},
-	setIntegrator: function(integrator, editor) {
+	setIntegrator: function(integrator) {
 		switch(integrator._type){
 			case "av":
-				editor.integrator = "av";
+				this.integrator = "av";
 				if("float" in integrator) {
 					if(integrator.float._name == "length") {
-						editor.integratorProps.length = integrator.float._value;
+						this.integratorProps.length = parseInt(integrator.float._value);
 					}
 				}
 				break;
 			default:
-				console.log("integrator type not jet supperted!");
+				console.log("integrator type " + integrator._type + " not jet supperted!");
 		}
 	},
-	setSampler: function(sampler, editor) {
+	setSampler: function(sampler) {
 		switch(sampler._type){
 			case "independent":
-				editor.sampler = "independent";
+				this.sampler = "independent";
 				
 				if("integer" in sampler) {
 					if(sampler.integer._name == "sampleCount") {
-						editor.samplerProps.sampleCount = sampler.integer._value;
+						this.samplerProps.sampleCount = parseFloat(sampler.integer._value);
 					}
 				}
 				break;
 			default:
-				console.log("sampler type not jet supperted!");
+				console.log("sampler type " + sampler._type +" not jet supperted!");
 		}
 	},
 
-	setSceneXML: function(scene, editor) {
+	setSceneXML: function(scene) {
 		//set the camera
 		if("camera" in scene) {
-			editor.setCamera(scene.camera, editor)
+			this.setCamera(scene.camera)
 		}
 		if("integrator" in scene) {
-			editor.setIntegrator(scene.integrator, editor)
+			this.setIntegrator(scene.integrator)
 		}
 		if("mesh" in scene) {
 			if(scene.mesh instanceof Array) {
 				for (var i = scene.mesh.length - 1; i >= 0; i--) {
-					editor.setMesh(scene.mesh[i], editor);
+					this.setMesh(scene.mesh[i]);
 				};
 			} else {
 				//only one mesh
-				editor.setMesh(scene.mesh, editor)
+				this.setMesh(scene.mesh)
 			}
 		}
 		if("sampler" in scene) {
-			editor.setSampler(scene.sampler, editor)
+			this.setSampler(scene.sampler)
 		}
-
+		this.signals.sceneGraphChanged.dispatch();
 	},
 
 	getScene: function() {

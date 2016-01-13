@@ -43,11 +43,11 @@ angular.module('myApp.editor')
             
             updateFileList();
 
-            $scope.loadmodelFkt = function(callback, model, transform) {
+            $scope.loadmodelFkt = function(callback, model, transform, bsdf, emitter) {
              if(model != "" && model != "Nothing selected") {
                     var url = $scope.$parent.user.username + "/" + model;
                     $http.get(url).success(function(payload){
-                        callback(payload, model, transform);
+                        callback(payload, model, transform, bsdf, emitter);
                     });
                 }                
             }
@@ -170,7 +170,7 @@ angular.module('myApp.editor')
                   return aftCnv;
                 }
               }).success(function(response) {
-                    callback(response.scene, editor)
+                    callback.call(editor, response.scene)
                 });            
             }
 

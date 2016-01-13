@@ -8,7 +8,7 @@ var Loader = function ( editor ) {
 	var signals = editor.signals;
 
 	this.texturePath = '';
-	this.loadObj = function(contents, filename, transform) {
+	this.loadObj = function(contents, filename, transform, bsdf, emitter) {
 		var object = new THREE.OBJLoader().parse( contents );
 		object.name = filename;
 		
