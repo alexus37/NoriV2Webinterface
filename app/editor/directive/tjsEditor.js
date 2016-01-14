@@ -12,7 +12,8 @@ angular.module("tjsEditor", [])
                     importobjFkt: "&importobjFunction",
                     loadxmlFkt: "&loadxmlFunction",
                     defaultobjFkt: "&defaultobjFunction",
-                    loadmodelFkt: "&loadmodelFunction"
+                    loadmodelFkt: "&loadmodelFunction",
+                    savesceneFkt: "&savesceneFunction"
 				},
 				link: function (scope, elem, attr) {
 
@@ -33,6 +34,7 @@ angular.module("tjsEditor", [])
 					editor.defaultobjFunction = scope.defaultobjFkt;
 					editor.loadxmlFunction = scope.loadxmlFkt;
 					editor.loadmodelFunction = scope.loadmodelFkt;
+					editor.savesceneFunction = scope.savesceneFkt;
 
                     editor.setxmlFunction = scope.setxmlFkt;
 					var viewport = new Viewport( editor );
@@ -52,6 +54,9 @@ angular.module("tjsEditor", [])
 					editor.setTheme( editor.config.getKey( 'theme' ) );
 					editor.storage.init( function () {
 						editor.storage.get( function ( state ) {
+							
+							
+							
 							if ( state !== undefined ) {
 								editor.fromJSON( state );
 							}

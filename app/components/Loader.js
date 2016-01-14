@@ -10,10 +10,26 @@ var Loader = function ( editor ) {
 	this.texturePath = '';
 	this.loadObj = function(contents, filename, transform, bsdf, emitter) {
 		var object = new THREE.OBJLoader().parse( contents );
-		object.name = filename;
+		object.name = filename || "";
 		
-		// ToDo: set transform matrix
+		if(transform instanceof THREE.Matrix4) {
+			var position = new THREE.Vector3();
+			var quaternion = new THREE.Quaternion();
+			var scale = new THREE.Vector3();
+			transform.decompose( position, quaternion, scale );
 
+			object.quaternion.copy( quaternion );
+			object.position.copy(position);
+			object.scale.copy(scale);			
+			object.updateMatrixWorld(true);
+		}
+
+		var bsdfType = "diffuse";
+
+		if(bsdf !== undefined) {
+			bsdfType = bsdf.type;
+		} 
+		object.children[0].material = new THREE[bsdfType](bsdf, emitter);
 
 		editor.addObject( object );
 		editor.select( object );

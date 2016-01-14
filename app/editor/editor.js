@@ -32,7 +32,7 @@ angular.module('myApp.editor')
                 finalUrl: "images/testImage.png",
                 finished: false
             };
-            $scope.testString ="Alex";
+
             $scope.uploadedFiles = [];
             function updateFileList(){
                 var url = $scope.$parent.user.url + 'resource';
@@ -51,9 +51,29 @@ angular.module('myApp.editor')
                     });
                 }                
             }
+            $scope.savesceneFkt = function(){
+                ngDialog.openConfirm({
+                    template: 'saveSceneDialog',
+                    overlay: true
+                }).then(function (title) {
+                        var query = {
+                            "title": title + ".xml",
+                            "content": $scope.$parent.xmlInput,
+                            "owner": $scope.$parent.user.url
+                        }
+                        var url = '../scenes/';
+                        $http.post(url, query).success(function(response){
+                            growl.success("Scene successfully saved!", {});
+                        })
+                    }, function (reason) {
+                    console.log('Modal promise rejected. Reason: ', reason);
+                });
+            }
+
             $scope.importobjFkt = function(callback) {
                 ngDialog.openConfirm({
                     template: 'firstDialogId',
+                    overlay: true,
                     data: {objFiles: $scope.uploadedFiles},
                     controller: ['$scope', function($scope) {
                         // controller logic
@@ -158,20 +178,46 @@ angular.module('myApp.editor')
                     $scope.DOMVars.rendering = false;
                 });
             };
-
-            $scope.loadxmlFkt = function(callback, editor) {
-                // load xml scenes
-                var url = "http://localhost:8000/static/ax/testScene.xml";
+            $scope.loadScene = function(url, editor, callback) {
+                if(url == "") {
+                    return;
+                }
                 $http.get(url,
                 {
                 transformResponse: function (cnv) {
-                  var x2js = new X2JS();
-                  var aftCnv = x2js.xml_str2json(cnv);
-                  return aftCnv;
+                    var jRes = JSON.parse(cnv);
+                    var x2js = new X2JS();
+                    var aftCnv = x2js.xml_str2json(jRes.content);
+                    return aftCnv;
                 }
-              }).success(function(response) {
-                    callback.call(editor, response.scene)
-                });            
+                  }).success(function(response) {
+                        callback.call(editor, response.scene)
+                });
+            }
+            $scope.loadxmlFkt = function(callback, editor) {
+                if($scope.$parent.user.user_scenes.length == 0) {
+                    growl.error("No scenes found, please save a scene!", {});
+                    return;
+                }
+                ngDialog.openConfirm({
+                    template: 'scenePickerDialog',
+                    overlay: true,
+                    data: {userScenes: $scope.$parent.user.user_scenes},
+                    controller: ['$scope', function($scope) {
+                        // controller logic
+                        $scope.confirmValue = "";
+                        $scope.select = function(scene) {
+                            $scope.confirmValue = scene;
+                        }
+                    }]
+                }).then(function (url) {
+                        $scope.loadScene(url,editor, callback);
+                    }, function (reason) {
+                    console.log('Modal promise rejected. Reason: ', reason);
+                });
+                // load xml scenes
+                var url = "http://localhost:8000/static/ax/testScene.xml";
+                            
             }
 
 
@@ -201,7 +247,7 @@ angular.module('myApp.editor')
 
             $scope.renderFkt = function(xmlInput) {
                 console.log(xmlInput);
-                $scope.DOMVars.showEditor = false;                
+                $scope.DOMVars.showEditor = false;               
                 sendRequest(false, xmlInput, "text.xml", $scope.$parent.user.email)
             };
             function sendRequest(sendMail, xmlInput, fileName, mailAddr){
@@ -217,7 +263,7 @@ angular.module('myApp.editor')
                 $scope.DOMVars.percentageMsg = "loading models ...";
 
                 $scope.DOMVars.rendering = true;
-                $scope.finished = false;
+                $scope.DOMVars.finished = false;
                 $scope.heightSet = false;
                 $scope.DOMVars.percentage = 100;
                 $scope.reset();

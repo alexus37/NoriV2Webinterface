@@ -32,6 +32,16 @@ Menubar.File = function ( editor ) {
 	} );
 	options.add( option );
 
+	// SAVE
+
+	var option = new UI.Panel();
+	option.setClass( 'option' );
+	option.setTextContent( 'Save scene' );
+	option.onClick( function () {
+			editor.saveScene();		
+	} );
+	options.add( option );
+
 	// Load scene
 
 	var option = new UI.Panel();

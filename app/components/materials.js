@@ -1,8 +1,8 @@
 /**
  * @author alexander
  */
-//DIFFUSE MATERIAL
-THREE.DIFFUSE = function() {
+//diffuse MATERIAL
+THREE.diffuse = function(bsdfParameters, emitterParameters) {
     THREE.Material.call( this );
     this.type = 'diffuse';
     this.albedo = {
@@ -15,14 +15,26 @@ THREE.DIFFUSE = function() {
             'red': 15,
             'green': 15,
             'blue': 15
-        }; 
+        };
+    if(bsdfParameters !== undefined) {
+        this.albedo.red = bsdfParameters.albedo[0];
+        this.albedo.green = bsdfParameters.albedo[1];
+        this.albedo.blue = bsdfParameters.albedo[2];
+    }
+
+    if(emitterParameters !== undefined) {
+        this.emitter = true;
+        this.radiance.red = emitterParameters.radiance[0];
+        this.radiance.green = emitterParameters.radiance[1];
+        this.radiance.blue = emitterParameters.radiance[2];
+    }
 
     this.setValues();
 };
 
-THREE.DIFFUSE.prototype = Object.create( THREE.Material.prototype );
-THREE.DIFFUSE.prototype.constructor = THREE.DIFFUSE;
-THREE.DIFFUSE.prototype.copy = function ( source ) {
+THREE.diffuse.prototype = Object.create( THREE.Material.prototype );
+THREE.diffuse.prototype.constructor = THREE.diffuse;
+THREE.diffuse.prototype.copy = function ( source ) {
 
     THREE.Material.prototype.copy.call( this, source );
     this.albedo['red'] = source.albedo['red'];
@@ -39,8 +51,8 @@ THREE.DIFFUSE.prototype.copy = function ( source ) {
 
 };
 
-//CONDUCTOR MATERIAL
-THREE.CONDUCTOR = function() {
+//conductor MATERIAL
+THREE.conductor = function(bsdfParameters, emitterParameters) {
     THREE.Material.call( this );
     this.type = 'conductor';
     this.conductorType = 'Au';
@@ -51,12 +63,23 @@ THREE.CONDUCTOR = function() {
             'blue': 15
         }; 
 
+    if(bsdfParameters !== undefined) {
+        this.conductorType = bsdfParameters.materialName;        
+    }
+
+    if(emitterParameters !== undefined) {
+        this.emitter = true;
+        this.radiance.red = emitterParameters.radiance[0];
+        this.radiance.green = emitterParameters.radiance[1];
+        this.radiance.blue = emitterParameters.radiance[2];
+    }
+
     this.setValues();
 };
 
-THREE.CONDUCTOR.prototype = Object.create( THREE.Material.prototype );
-THREE.CONDUCTOR.prototype.constructor = THREE.CONDUCTOR;
-THREE.CONDUCTOR.prototype.copy = function ( source ) {
+THREE.conductor.prototype = Object.create( THREE.Material.prototype );
+THREE.conductor.prototype.constructor = THREE.conductor;
+THREE.conductor.prototype.copy = function ( source ) {
 
     THREE.Material.prototype.copy.call( this, source );
     this.conductorType = source.conductorType;
@@ -71,8 +94,8 @@ THREE.CONDUCTOR.prototype.copy = function ( source ) {
 
 };
 
-//DIELECTRIC MATERIAL
-THREE.DIELECTRIC = function() {
+//dielectric MATERIAL
+THREE.dielectric = function(bsdfParameters, emitterParameters) {
     THREE.Material.call( this );
     this.type = 'dielectric';
     this.intIor = 1.00028;
@@ -84,14 +107,24 @@ THREE.DIELECTRIC = function() {
             'green': 15,
             'blue': 15
         }; 
+    if(bsdfParameters !== undefined) {
+        this.intIor = bsdfParameters.intIor;
+        this.extIor = bsdfParameters.extIor;
+    }
 
+    if(emitterParameters !== undefined) {
+        this.emitter = true;
+        this.radiance.red = emitterParameters.radiance[0];
+        this.radiance.green = emitterParameters.radiance[1];
+        this.radiance.blue = emitterParameters.radiance[2];
+    }
 
     this.setValues();
 };
 
-THREE.DIELECTRIC.prototype = Object.create( THREE.Material.prototype );
-THREE.DIELECTRIC.prototype.constructor = THREE.DIELECTRIC;
-THREE.DIELECTRIC.prototype.copy = function ( source ) {
+THREE.dielectric.prototype = Object.create( THREE.Material.prototype );
+THREE.dielectric.prototype.constructor = THREE.dielectric;
+THREE.dielectric.prototype.copy = function ( source ) {
 
     THREE.Material.prototype.copy.call( this, source );
     this.intIor = source.intIor;
@@ -107,8 +140,8 @@ THREE.DIELECTRIC.prototype.copy = function ( source ) {
 
 };
 
-//MICROFACETBRDF MATERIAL
-THREE.MICROFACETBRDF = function() {
+//microfacetBRDF MATERIAL
+THREE.microfacetBRDF = function(bsdfParameters, emitterParameters) {
     THREE.Material.call( this );
     this.type = 'microfacetBRDF';
     this.albedo = {
@@ -124,13 +157,26 @@ THREE.MICROFACETBRDF = function() {
             'green': 15,
             'blue': 15
         }; 
+    if(bsdfParameters !== undefined) {
+        this.alpha = bsdfParameters.alpha;
+        this.albedo.red = bsdfParameters.albedo[0];
+        this.albedo.green = bsdfParameters.albedo[1];
+        this.albedo.blue = bsdfParameters.albedo[2];
+    }
+
+    if(emitterParameters !== undefined) {
+        this.emitter = true;
+        this.radiance.red = emitterParameters.radiance[0];
+        this.radiance.green = emitterParameters.radiance[1];
+        this.radiance.blue = emitterParameters.radiance[2];
+    }
 
     this.setValues();
 };
 
-THREE.MICROFACETBRDF.prototype = Object.create( THREE.Material.prototype );
-THREE.MICROFACETBRDF.prototype.constructor = THREE.MICROFACETBRDF;
-THREE.MICROFACETBRDF.prototype.copy = function ( source ) {
+THREE.microfacetBRDF.prototype = Object.create( THREE.Material.prototype );
+THREE.microfacetBRDF.prototype.constructor = THREE.microfacetBRDF;
+THREE.microfacetBRDF.prototype.copy = function ( source ) {
 
     THREE.Material.prototype.copy.call( this, source );
 
@@ -149,8 +195,8 @@ THREE.MICROFACETBRDF.prototype.copy = function ( source ) {
 
 };
 
-//MIRROR MATERIAL
-THREE.MIRROR = function() {
+//mirror MATERIAL
+THREE.mirror = function(bsdfParameters, emitterParameters) {
     THREE.Material.call( this );
     this.type = 'mirror';
 
@@ -161,12 +207,19 @@ THREE.MIRROR = function() {
             'blue': 15
         }; 
 
+    if(emitterParameters !== undefined) {
+        this.emitter = true;
+        this.radiance.red = emitterParameters.radiance[0];
+        this.radiance.green = emitterParameters.radiance[1];
+        this.radiance.blue = emitterParameters.radiance[2];
+    }
+
     this.setValues();
 };
 
-THREE.MIRROR.prototype = Object.create( THREE.Material.prototype );
-THREE.MIRROR.prototype.constructor = THREE.MIRROR;
-THREE.MIRROR.prototype.copy = function ( source ) {
+THREE.mirror.prototype = Object.create( THREE.Material.prototype );
+THREE.mirror.prototype.constructor = THREE.mirror;
+THREE.mirror.prototype.copy = function ( source ) {
 
     THREE.Material.prototype.copy.call( this, source );
 
@@ -180,8 +233,8 @@ THREE.MIRROR.prototype.copy = function ( source ) {
 
 };
 
-//ROUGHCONDUCTOR MATERIAL
-THREE.ROUGHCONDUCTOR = function() {
+//roughconductor MATERIAL
+THREE.roughconductor = function(bsdfParameters, emitterParameters) {
     THREE.Material.call( this );
     this.type = 'roughconductor';
     this.conductorType = 'Au';
@@ -193,12 +246,24 @@ THREE.ROUGHCONDUCTOR = function() {
             'blue': 15
         }; 
 
+    if(bsdfParameters !== undefined) {
+        this.conductorType = bsdfParameters.materialName;
+        this.alpha = bsdfParameters.alpha;
+    }
+
+    if(emitterParameters !== undefined) {
+        this.emitter = true;
+        this.radiance.red = emitterParameters.radiance[0];
+        this.radiance.green = emitterParameters.radiance[1];
+        this.radiance.blue = emitterParameters.radiance[2];
+    }
+
     this.setValues();
 };
 
-THREE.ROUGHCONDUCTOR.prototype = Object.create( THREE.Material.prototype );
-THREE.ROUGHCONDUCTOR.prototype.constructor = THREE.ROUGHCONDUCTOR;
-THREE.ROUGHCONDUCTOR.prototype.copy = function ( source ) {
+THREE.roughconductor.prototype = Object.create( THREE.Material.prototype );
+THREE.roughconductor.prototype.constructor = THREE.roughconductor;
+THREE.roughconductor.prototype.copy = function ( source ) {
 
     THREE.Material.prototype.copy.call( this, source );
     this.conductorType = source.conductorType;

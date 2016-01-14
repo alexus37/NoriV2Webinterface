@@ -24,12 +24,12 @@ Sidebar.Material = function ( editor ) {
 
 	var materialClassRow = new UI.Panel();
 	var materialClass = new UI.Select().setOptions( {
-		'CONDUCTOR': 'Conductor',
-		'DIELECTRIC': 'Dielectric',
-		'DIFFUSE': 'Diffuse',
-		'MICROFACETBRDF': 'Microfacet',
-		'MIRROR': 'Mirror',
-		'ROUGHCONDUCTOR': 'Roughconductor'
+		'conductor': 'Conductor',
+		'dielectric': 'Dielectric',
+		'diffuse': 'Diffuse',
+		'microfacetBRDF': 'Microfacet',
+		'mirror': 'Mirror',
+		'roughconductor': 'Roughconductor'
 	} ).setWidth( '150px' ).setFontSize( '12px' ).onChange( update );
 
 	materialClassRow.add( new UI.Text( 'Type' ).setWidth( '90px' ) );
@@ -118,7 +118,7 @@ Sidebar.Material = function ( editor ) {
     container.add(extIOR);
 
 
-    //CONDUCTOR TYPE
+    //conductor TYPE
     var conductorType = new UI.Panel();
     var conductorTypeOpt = new UI.Select().setOptions( {
         'aC'  : 'Actinium',
@@ -222,7 +222,7 @@ Sidebar.Material = function ( editor ) {
 		if ( material ) {
             var mClass = materialClass.getValue();
             if(mClass == "") {
-                mClass = "DIFFUSE";
+                mClass = "diffuse";
             }
             if (material instanceof THREE[mClass] === false ) {
 
@@ -340,7 +340,7 @@ Sidebar.Material = function ( editor ) {
 
 
 
-		materialClass.setValue( material.type.toUpperCase() );
+		materialClass.setValue( material.type );
 
         if(material.emitter) {
             radianceR.setValue(material.radiance.red);

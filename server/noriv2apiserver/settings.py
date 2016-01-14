@@ -43,7 +43,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'rest_framework',
     'noriv2api',
-    'swampdragon'
+    'swampdragon',
+    'django_extensions'
 )
 
 MIDDLEWARE_CLASSES = (

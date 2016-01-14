@@ -88,6 +88,7 @@ var Editor = function () {
 	this.defaultobjFunction = null;
 	this.loadxmlFunction = null;
 	this.loadmodelFunction = null;
+	this.savesceneFunction = null;
 	this.sampler = "independent";
 	this.samplerProps = {sampleCount: 64};
 	this.integrator = "av";
@@ -276,14 +277,68 @@ Editor.prototype = {
 				console.log("Camera type not jet supperted!");
 		}
 	},
-	setEmitter: function(emiter) {
-		console.log(emitter);
+	setEmitter: function(emitter) {
+		var componentToHex = function (c) {
+    		var hex = c.toString(16);
+    		return hex.length == 1 ? "0" + hex : hex;
+		}
+
+		var rgbToHex = function (r, g, b) {
+    		return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+		}
+		switch(emitter._type){
+			case 'point':
+				var color = 0xffffff;
+				var intensity = 1;
+				var distance = 0;
+
+				if("color" in emitter && emitter.color._name == "power") {
+					var elm = this.string2Arr(emitter.color._value);
+					elm[0] /= 255;
+					elm[1] /= 255;
+					elm[2] /= 255;
+					// index of the max
+					var rgb = [0, 0, 0];
+					var x = elm.indexOf(Math.max.apply(Math, elm));
+					intensity = elm[x];
+					rgb[x] = 1;
+					for (var i = 0; i < 3; i++) {
+						if(i != x) {
+							rgb[i] = elm[i] / intensity;
+						}
+					}
+					color = rgbToHex(rgb[0] * 255, rgb[1] * 255, rgb[2] * 255);
+				}
+
+
+				var light = new THREE.PointLight( color, intensity, distance );
+				light.name = 'PointLight';
+
+				if("point" in emitter && emitter.point._name == "position") {
+					var elm = this.string2Arr(emitter.point._value);
+					light.position.set(elm[0], elm[1], elm[2]);
+					light.updateMatrixWorld(true);
+				}
+
+				this.addObject( light );				
+
+			break;
+			default:
+				console.log("Emitter type " + emitter._type + " not jet supported");
+		}
+
+
+		
+
 	},
 	string2Arr: function(str) {
 		var elm = str.split(',');
 		if(elm.length == 1) {
 			elm = str.split(' ');
 		}
+		for (var i = 0; i < elm.length; i++) {
+			elm[i] = parseFloat(elm[i]);
+		}; 
 		return elm;
 	},
 	setMesh: function(mesh) {
@@ -366,11 +421,11 @@ Editor.prototype = {
 							} 
 						} 
 						if("bsdf" in mesh) {
-							curBSDF = handleBSDF(mesh.bsdf);
+							curBSDF = handleBSDF.call(this, mesh.bsdf);
 						}
 
 						if("emitter" in mesh) {
-							curEmitter = handledEmitter(mesh.emitter);
+							curEmitter = handledEmitter.call(this, mesh.emitter);
 						}
 
 
@@ -440,6 +495,16 @@ Editor.prototype = {
 				this.setMesh(scene.mesh)
 			}
 		}
+		if("emitter" in scene) {
+			if(scene.emitter instanceof Array) {
+				for (var i = scene.emitter.length - 1; i >= 0; i--) {
+					this.setEmitter(scene.emitter[i]);
+				};
+			} else {
+				//only one mesh
+				this.setEmitter(scene.emitter)
+			}
+		}
 		if("sampler" in scene) {
 			this.setSampler(scene.sampler)
 		}
@@ -475,6 +540,11 @@ Editor.prototype = {
 	},
 	changeView: function(viewName) {
 		this.changeFunction({name: viewName});
+	},
+	saveScene: function() {
+		var xmlOutPut = this.getSceneXML();
+		this.setxmlFunction({xml: xmlOutPut});
+		this.savesceneFunction();
 	},
 	importobj : function() {
 		this.importobjFunction({callback: this.loader.loadObj});
