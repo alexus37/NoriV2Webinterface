@@ -64,4 +64,5 @@ class AuthenticationTest(APITestCase):
         expected_user_data['user_scenes'] = ['http://testserver' + scene_url]
         self.assertDictContainsSubset(expected_user_data, response.data['user'])
 
+
         # check auth?

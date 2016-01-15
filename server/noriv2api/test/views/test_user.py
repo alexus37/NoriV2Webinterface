@@ -66,7 +66,7 @@ class UserTest(APITestCase):
         url = reverse('user-list')
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual([dict(u) for u in response.data if u.pop('password', None)],
+        self.assertEqual([dict(u) for u in response.data if not u.pop('password', None)],
                          [{'url': 'http://testserver/users/1/',
                            'username': 'jacob',
                            'email': 'jacob@web.de',
