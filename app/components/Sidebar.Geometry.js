@@ -111,9 +111,6 @@ Sidebar.Geometry = function ( editor ) {
 
 	container.add( new Sidebar.Geometry.Geometry( signals ) );
 
-	// buffergeometry
-
-	container.add( new Sidebar.Geometry.BufferGeometry( signals ) );
 
 	// parameters
 

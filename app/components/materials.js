@@ -1,9 +1,20 @@
 /**
  * @author alexander
  */
+
 //diffuse MATERIAL
 THREE.diffuse = function(bsdfParameters, emitterParameters) {
-    THREE.Material.call( this );
+
+    THREE.ShaderMaterial.call(this, {
+
+        vertexShader: THREE.ShaderLib['lambert'].vertexShader,
+        fragmentShader: THREE.ShaderLib['lambert'].fragmentShader,
+        uniforms: THREE.ShaderLib['lambert'].uniforms,
+        lights: true
+    });
+
+
+    //THREE.MeshLambertMaterial.call( this );
     this.type = 'diffuse';
     this.albedo = {
 			'red': 0.8,
@@ -28,9 +39,10 @@ THREE.diffuse = function(bsdfParameters, emitterParameters) {
         this.radiance.green = emitterParameters.radiance[1];
         this.radiance.blue = emitterParameters.radiance[2];
     }
-
+    
     this.setValues();
 };
+
 
 THREE.diffuse.prototype = Object.create( THREE.Material.prototype );
 THREE.diffuse.prototype.constructor = THREE.diffuse;
@@ -53,7 +65,13 @@ THREE.diffuse.prototype.copy = function ( source ) {
 
 //conductor MATERIAL
 THREE.conductor = function(bsdfParameters, emitterParameters) {
-    THREE.Material.call( this );
+    THREE.ShaderMaterial.call(this, {
+
+        vertexShader: THREE.ShaderLib['lambert'].vertexShader,
+        fragmentShader: THREE.ShaderLib['lambert'].fragmentShader,
+        uniforms: THREE.ShaderLib['lambert'].uniforms,
+        lights: true
+    });
     this.type = 'conductor';
     this.conductorType = 'Au';
     this.emitter = false;
@@ -96,7 +114,13 @@ THREE.conductor.prototype.copy = function ( source ) {
 
 //dielectric MATERIAL
 THREE.dielectric = function(bsdfParameters, emitterParameters) {
-    THREE.Material.call( this );
+    THREE.ShaderMaterial.call(this, {
+
+        vertexShader: THREE.ShaderLib['lambert'].vertexShader,
+        fragmentShader: THREE.ShaderLib['lambert'].fragmentShader,
+        uniforms: THREE.ShaderLib['lambert'].uniforms,
+        lights: true
+    });
     this.type = 'dielectric';
     this.intIor = 1.00028;
     this.extIor = 1.3330;
@@ -142,7 +166,13 @@ THREE.dielectric.prototype.copy = function ( source ) {
 
 //microfacetBRDF MATERIAL
 THREE.microfacetBRDF = function(bsdfParameters, emitterParameters) {
-    THREE.Material.call( this );
+    THREE.ShaderMaterial.call(this, {
+
+        vertexShader: THREE.ShaderLib['lambert'].vertexShader,
+        fragmentShader: THREE.ShaderLib['lambert'].fragmentShader,
+        uniforms: THREE.ShaderLib['lambert'].uniforms,
+        lights: true
+    });    
     this.type = 'microfacetBRDF';
     this.albedo = {
         'red': 0.8,
@@ -197,8 +227,13 @@ THREE.microfacetBRDF.prototype.copy = function ( source ) {
 
 //mirror MATERIAL
 THREE.mirror = function(bsdfParameters, emitterParameters) {
-    THREE.Material.call( this );
-    this.type = 'mirror';
+    THREE.ShaderMaterial.call(this, {
+
+        vertexShader: THREE.ShaderLib['lambert'].vertexShader,
+        fragmentShader: THREE.ShaderLib['lambert'].fragmentShader,
+        uniforms: THREE.ShaderLib['lambert'].uniforms,
+        lights: true
+    });    this.type = 'mirror';
 
     this.emitter = false;
     this.radiance = {
@@ -235,7 +270,13 @@ THREE.mirror.prototype.copy = function ( source ) {
 
 //roughconductor MATERIAL
 THREE.roughconductor = function(bsdfParameters, emitterParameters) {
-    THREE.Material.call( this );
+    THREE.ShaderMaterial.call(this, {
+
+        vertexShader: THREE.ShaderLib['lambert'].vertexShader,
+        fragmentShader: THREE.ShaderLib['lambert'].fragmentShader,
+        uniforms: THREE.ShaderLib['lambert'].uniforms,
+        lights: true
+    });
     this.type = 'roughconductor';
     this.conductorType = 'Au';
     this.alpha = 0.3;

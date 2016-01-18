@@ -199,24 +199,25 @@ angular.module('myApp.editor')
                     growl.error("No scenes found, please save a scene!", {});
                     return;
                 }
-                ngDialog.openConfirm({
-                    template: 'scenePickerDialog',
-                    overlay: true,
-                    data: {userScenes: $scope.$parent.user.user_scenes},
-                    controller: ['$scope', function($scope) {
-                        // controller logic
-                        $scope.confirmValue = "";
-                        $scope.select = function(scene) {
-                            $scope.confirmValue = scene;
-                        }
-                    }]
-                }).then(function (url) {
-                        $scope.loadScene(url,editor, callback);
-                    }, function (reason) {
-                    console.log('Modal promise rejected. Reason: ', reason);
+                var sceneURL = "../scenes/";
+                $http.get(sceneURL).success(function(response){
+                    ngDialog.openConfirm({
+                        template: 'scenePickerDialog',
+                        overlay: true,
+                        data: {userScenes: response},
+                        controller: ['$scope', function($scope) {
+                            // controller logic
+                            $scope.confirmValue = "";
+                            $scope.select = function(scene) {
+                                $scope.confirmValue = scene.url;
+                            }
+                        }]
+                    }).then(function (url) {
+                            $scope.loadScene(url,editor, callback);
+                        }, function (reason) {
+                        console.log('Modal promise rejected. Reason: ', reason);
+                    });
                 });
-                // load xml scenes
-                var url = "http://localhost:8000/static/ax/testScene.xml";
                             
             }
 

@@ -235,6 +235,7 @@ Sidebar.Material = function ( editor ) {
                 material.albedo.red = albedoR.getValue();
                 material.albedo.green = albedoG.getValue();
                 material.albedo.blue = albedoB.getValue();
+                    
             }
 
             if ( material.type == 'conductor') {
@@ -352,6 +353,7 @@ Sidebar.Material = function ( editor ) {
             albedoR.setValue(material.albedo.red);
             albedoG.setValue(material.albedo.green);
             albedoB.setValue(material.albedo.blue);
+            
         }
 
         if ( material.type == 'conductor') {

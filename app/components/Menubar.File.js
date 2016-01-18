@@ -48,14 +48,12 @@ Menubar.File = function ( editor ) {
 	option.setClass( 'option' );
 	option.setTextContent( 'Load scene' );
 	option.onClick( function () {
-		editor.getScene();
-		/*
 		if ( confirm( 'Any unsaved data will be lost. Are you sure?' ) ) {
-			editor.clear();
-		}
-		*/
 
-	} );
+			editor.clear();
+			editor.getScene();
+		}		
+	});
 	options.add( option );
 
 	// logout

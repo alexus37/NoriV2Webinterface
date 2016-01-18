@@ -44,8 +44,8 @@
     <tbody>
       <tr ng-repeat="f in ngDialogData.userScenes | filter:searchScene" 
           ng-click="select(f)"
-          ng-class="{success: confirmValue == f}">
-          <td >{{ f }}</td>
+          ng-class="{success: confirmValue == f.url}">
+          <td >{{ f.title }}</td>
       </tr>
     </tbody>
     
@@ -144,7 +144,8 @@
                 add-patch="addPatch"
                 set-size="setSize"
                 reset="reset"></canvas>
-        <img  src="{{DOMVars.finalUrl}}"
+        <img  ng-src="{{DOMVars.finalUrl !== undefined && DOMVars.finalUrl || ''}}"
+              ng-if="DOMVars.finalUrl"
               id="renderedIMG" 
               ng-show="DOMVars.finished && !DOMVars.rendering"
               alt="Nothing rendered!"

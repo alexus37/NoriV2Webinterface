@@ -444,19 +444,37 @@ Editor.prototype = {
 			default:
 				alert("Camera type not jet supperted!");
 		}
-		console.log(mesh);
-
 	},
 	setIntegrator: function(integrator) {
+		this.integrator = integrator._type;
 		switch(integrator._type){
 			case "av":
-				this.integrator = "av";
 				if("float" in integrator) {
 					if(integrator.float._name == "length") {
+						// parseInt is correct 
 						this.integratorProps.length = parseInt(integrator.float._value);
 					}
 				}
 				break;
+			case "photonmapper":
+				if("integer" in integrator) {
+					if(integrator.integer._name == "photonCount") {
+						this.integratorProps.photonCount = parseInt(integrator.integer._value);
+					}
+				}
+				if("float" in integrator) {
+					if(integrator.float._name == "photonRadius") {
+						this.integratorProps.photonRadius = parseFloat(integrator.float._value);
+					}
+				}
+			case "path_mis":
+			case "path_mats":
+			case "direct":
+			case "direct_mis":
+			case "direct_ems":
+			case "direct_mats":
+			break;
+				
 			default:
 				console.log("integrator type " + integrator._type + " not jet supperted!");
 		}
