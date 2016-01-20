@@ -59,6 +59,10 @@ var XmlExporter = function () {
             xml += '\t <float name="fov" value="'  + parameters["fov"] + '"/>\n';
             xml += '\t <float name="nearClip" value="'  + parameters["nearClip"] + '"/>\n';
             xml += '\t <float name="farClip" value="'  + parameters["farClip"] + '"/>\n';
+            if("apertureRadius" in parameters && "focusDistance" in parameters){
+            	xml += '\t <float name="apertureRadius" value="'  + parameters["apertureRadius"] + '"/>\n';
+            	xml += '\t <float name="focusDistance" value="'  + parameters["focusDistance"] + '"/>\n';
+            }
 
             xml += '\t <integer name="width" value="'  + parameters["width"] + '"/>\n';
             xml += '\t <integer name="height" value="'  + parameters["height"] + '"/>\n';

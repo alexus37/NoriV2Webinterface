@@ -100,6 +100,9 @@ var Editor = function () {
 
 	this.width = 0;
 	this.height = 0;
+	this.thinLensCam = false;
+	this.focusPoint = new THREE.Vector3(0, 0, 0);
+	this.aperture = 0.05;
 
 	//AX end
 	this.camera = new THREE.PerspectiveCamera( 50, 1, 1, 100000 );
@@ -193,6 +196,15 @@ Editor.prototype = {
 				case "farClip":
 					this.camera.far = val;
 				break;
+				case "apertureRadius":
+					this.aperture = val;
+				break;
+				case "focusDistance":
+					//compute the point fitting to the focus distance
+					var lookAtVector = new THREE.Vector3(0,0, -1);
+					lookAtVector.applyQuaternion(this.camera.quaternion);
+					this.focusPoint.add(this.camera.position, lookAtVector.multiplyScalar(val)) ;
+				break;
 				default:
 					console.log("camera float not handled");
 			}
@@ -211,71 +223,71 @@ Editor.prototype = {
 					console.log("camera integer not handled");
 			}
 		}
-		switch(camera._type){
-			case "perspective":
-				if("transform" in camera) {
-					var T = [];
-					if(camera.transform._name == "toWorld") {
-						if("matrix" in camera.transform) {
-							T = this.string2Arr(camera.transform.matrix._value);
-							// 
-							var m = new THREE.Matrix4();
-							var position = new THREE.Vector3();
-							var quaternion = new THREE.Quaternion();
-							var scale = new THREE.Vector3();
+		//switch(camera._type){
+			//case "perspective":
+		if("transform" in camera) {
+			var T = [];
+			if(camera.transform._name == "toWorld") {
+				if("matrix" in camera.transform) {
+					T = this.string2Arr(camera.transform.matrix._value);
+					// 
+					var m = new THREE.Matrix4();
+					var position = new THREE.Vector3();
+					var quaternion = new THREE.Quaternion();
+					var scale = new THREE.Vector3();
 
-							m.set(T[0], T[1], T[2], T[3],
-								  T[4], T[5], T[6], T[7],
-								  T[8], T[9], T[10], T[11],
-								  T[12], T[13], T[14], T[15]);
+					m.set(T[0], T[1], T[2], T[3],
+						  T[4], T[5], T[6], T[7],
+						  T[8], T[9], T[10], T[11],
+						  T[12], T[13], T[14], T[15]);
 
-							m.decompose( position, quaternion, scale );
-		
-							this.camera.quaternion.copy( quaternion );
-							this.camera.position.copy(position);
-							
-							this.camera.updateMatrixWorld(true);
-							
-						} else if("lookat" in camera.transform) {
-							var elm = this.string2Arr(camera.transform.lookat._origin);
-							this.camera.position.set(elm[0], elm[1], elm[2] );
-							this.camera.up = str2tjsVec(camera.transform.lookat._up);
-							this.camera.lookAt(str2tjsVec(camera.transform.lookat._target));
-						} else {
-							// ToDo: handle other transforms (scale rotation)
-							console.log("Transform " + camera.transform._name + " not handled (setCamera)");
-						}
+					m.decompose( position, quaternion, scale );
 
-					}
-					if("integer" in camera){
-						if(camera.integer instanceof Array) {
-							for (var i = 0; i < camera.integer.length; i++) {
-								handleInteger(camera.integer[i])
-							};
-						} else {
-							handleInteger(camera.integer);
-						}
-					}
-					var aspect = this.width / this.height;
-					this.camera.aspect = aspect;
-					if("float" in camera){
-						if(camera.float instanceof Array) {
-							for (var i = 0; i < camera.float.length; i++) {
-								handleFloat.call(this, camera.float[i])
-							};
-						} else {
-							handleFloat.call(this, camera.float);
-						}
-					}
+					this.camera.quaternion.copy( quaternion );
+					this.camera.position.copy(position);
 					
-
-					this.camera.updateProjectionMatrix();
-
+					this.camera.updateMatrixWorld(true);
+					
+				} else if("lookat" in camera.transform) {
+					var elm = this.string2Arr(camera.transform.lookat._origin);
+					this.camera.position.set(elm[0], elm[1], elm[2] );
+					this.camera.up = str2tjsVec(camera.transform.lookat._up);
+					this.camera.lookAt(str2tjsVec(camera.transform.lookat._target));
+				} else {
+					// ToDo: handle other transforms (scale rotation)
+					console.log("Transform " + camera.transform._name + " not handled (setCamera)");
 				}
-				break;
+
+			}
+			if("integer" in camera){
+				if(camera.integer instanceof Array) {
+					for (var i = 0; i < camera.integer.length; i++) {
+						handleInteger(camera.integer[i])
+					};
+				} else {
+					handleInteger(camera.integer);
+				}
+			}
+			var aspect = this.width / this.height;
+			this.camera.aspect = aspect;
+			if("float" in camera){
+				if(camera.float instanceof Array) {
+					for (var i = 0; i < camera.float.length; i++) {
+						handleFloat.call(this, camera.float[i])
+					};
+				} else {
+					handleFloat.call(this, camera.float);
+				}
+			}
+			
+
+			this.camera.updateProjectionMatrix();
+
+		}
+				/*break;
 			default:
 				console.log("Camera type not jet supperted!");
-		}
+		}*/
 	},
 	setEmitter: function(emitter) {
 		var componentToHex = function (c) {
@@ -594,9 +606,15 @@ Editor.prototype = {
 			width: this.width,
 			height: this.height
 		};
+		var camType = "perspective";
+		if(this.thinLensCam) {
+			camType = "thinlens";
+			cameraProps["apertureRadius"] = this.aperture;
 
-		if(this.camera.type == "PerspectiveCamera"){
-			var camType = "perspective";
+			var camPos = this.camera.position;
+			var distVec = new THREE.Vector3();
+			distVec.sub(camPos, this.focusPoint);
+			cameraProps["focusDistance"] = distVec.length();
 		}
 
 		xmlOutPut += this.xmlExporter.cameraXML(camType, cameraProps);

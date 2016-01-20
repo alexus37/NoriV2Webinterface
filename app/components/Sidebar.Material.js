@@ -20,6 +20,22 @@ Sidebar.Material = function ( editor ) {
 	container.addStatic( new UI.Text().setValue( 'MATERIAL' ) );
 	container.add( new UI.Break() );
 
+    // clamp a value between 0 and 1
+    function clamp(x) {
+        if(x > 1.0) return 1.0;
+        if(x < 0.0) return 0.0;
+        return x;
+    }
+
+    // tonemap a value and return a THREE.color
+    function tonemap(r,g,b, gamma) {
+        return new THREE.Color(clamp(Math.pow(r, 1.0 / gamma)),
+                               clamp(Math.pow(g, 1.0 / gamma)),
+                               clamp(Math.pow(b, 1.0 / gamma))
+
+            );
+    }
+
 	// class
 
 	var materialClassRow = new UI.Panel();
@@ -40,9 +56,9 @@ Sidebar.Material = function ( editor ) {
     // ALBEDO
 
     var albedo = new UI.Panel();
-    var albedoR = new UI.Number().setWidth( '50px' ).onChange(update);
-    var albedoG = new UI.Number().setWidth( '50px' ).onChange(update);
-    var albedoB = new UI.Number().setWidth( '50px' ).onChange(update);
+    var albedoR = new UI.Number().setWidth( '50px' ).setRange(0.0, Infinity).onChange(update);
+    var albedoG = new UI.Number().setWidth( '50px' ).setRange(0.0, Infinity).onChange(update);
+    var albedoB = new UI.Number().setWidth( '50px' ).setRange(0.0, Infinity).onChange(update);
 
     albedo.add(new UI.Text( 'Albedo' ).setWidth( '90px' ) );
     albedo.add(albedoR, albedoG, albedoB);
@@ -235,6 +251,15 @@ Sidebar.Material = function ( editor ) {
                 material.albedo.red = albedoR.getValue();
                 material.albedo.green = albedoG.getValue();
                 material.albedo.blue = albedoB.getValue();
+
+                // change the color
+                var gamma = 2.2;
+
+                material.uniforms.diffuse.value.set(tonemap(material.albedo.red,
+                                                            material.albedo.green,
+                                                            material.albedo.blue,
+                                                            gamma
+                                                    ));
                     
             }
 

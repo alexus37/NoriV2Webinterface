@@ -1,7 +1,20 @@
 /**
  * @author alexander
  */
+function clamp(x) {
+        if(x > 1.0) return 1.0;
+        if(x < 0.0) return 0.0;
+        return x;
+    }
 
+// tonemap a value and return a THREE.color
+function tonemap(r,g,b, gamma) {
+    return new THREE.Color(clamp(Math.pow(r, 1.0 / gamma)),
+                           clamp(Math.pow(g, 1.0 / gamma)),
+                           clamp(Math.pow(b, 1.0 / gamma))
+
+        );
+}
 //diffuse MATERIAL
 THREE.diffuse = function(bsdfParameters, emitterParameters) {
 
@@ -39,6 +52,11 @@ THREE.diffuse = function(bsdfParameters, emitterParameters) {
         this.radiance.green = emitterParameters.radiance[1];
         this.radiance.blue = emitterParameters.radiance[2];
     }
+    this.uniforms.diffuse.value.set(tonemap(this.albedo.red,
+                                            this.albedo.green,
+                                            this.albedo.blue,
+                                            2.2
+                                            ));
     
     this.setValues();
 };
@@ -56,6 +74,12 @@ THREE.diffuse.prototype.copy = function ( source ) {
     this.radiance['red'] = source.radiance['red'];
     this.radiance['green'] = source.radiance['green'];
     this.radiance['blue'] = source.radiance['blue'];
+
+    this.uniforms.diffuse.value.set(tonemap(this.albedo.red,
+                                            this.albedo.green,
+                                            this.albedo.blue,
+                                            2.2
+                                            ));
     
     this.emitter = source.emitter;
 
@@ -91,6 +115,7 @@ THREE.conductor = function(bsdfParameters, emitterParameters) {
         this.radiance.green = emitterParameters.radiance[1];
         this.radiance.blue = emitterParameters.radiance[2];
     }
+    
 
     this.setValues();
 };

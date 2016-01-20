@@ -66,9 +66,7 @@ Sidebar.Project = function ( editor ) {
 	container.add( rendererTypeRow );
 
 	if ( config.getKey( 'project/renderer' ) !== undefined ) {
-
 		rendererType.setValue( config.getKey( 'project/renderer' ) );
-
 	}
 
 	// antialiasing
@@ -106,20 +104,58 @@ Sidebar.Project = function ( editor ) {
 
 	container.add( rendererPropertiesRow );
 
-	// VR
+	// thinlens
 
 	var vrRow = new UI.Panel();
-	var vr = new UI.Checkbox( config.getKey( 'project/vr' ) ).setLeft( '100px' ).onChange( function () {
+	var thinLensCam = new UI.Checkbox( config.getKey( 'project/vr' ) ).setLeft( '100px' ).onChange( function () {
 
-		config.setKey( 'project/vr', this.getValue() );
-		// updateRenderer();
+		config.setKey( 'project/thinLensCam', this.getValue() );
+		editor.thinLensCam = this.getValue();
+		update();
 
 	} );
 
-	vrRow.add( new UI.Text( 'VR' ).setWidth( '90px' ) );
-	vrRow.add( vr );
+	vrRow.add( new UI.Text( 'Use thin lens camera' ).setWidth( '90px' ) );
+	vrRow.add( thinLensCam );
 
 	container.add( vrRow );
+
+	var thinLensCamPropertiesRow = new UI.Panel();
+
+	thinLensCamPropertiesRow.add( new UI.Text( 'Aperture size' ).setWidth( '90px' ) );
+	var apertureUI = new UI.Number()
+									.setRange( 0.0, Infinity )
+									.setWidth( '50px' )
+									.onChange( function() {
+			editor.aperture = this.getValue();
+			config.setKey( 'project/thinLensCam/aperture', editor.aperture);
+
+		}
+	);
+
+	if ( config.getKey( 'project/thinLensCam/aperture' ) !== undefined ) {
+		apertureUI.setValue( config.getKey( 'project/thinLensCam/aperture' ) );
+		editor.aperture = apertureUI.getValue();
+	}
+
+	thinLensCamPropertiesRow.add(apertureUI);
+
+	var pickFocusPoint = new UI.Button( 'Focus selcted' ).setMarginLeft( '7px' ).onClick( function () {
+
+		if(editor.selected && editor.selected.position && editor.selected.position instanceof THREE.Vector3) {
+			editor.focusPoint = editor.selected.position;
+			config.setKey( 'project/thinLensCam/focusPoint/x', editor.focusPoint.x);		
+			config.setKey( 'project/thinLensCam/focusPoint/y', editor.focusPoint.y);
+			config.setKey( 'project/thinLensCam/focusPoint/z', editor.focusPoint.z);
+		} else {
+			alert("Please selected an object.");
+		}
+
+	} );
+
+	thinLensCamPropertiesRow.add(pickFocusPoint);
+
+	container.add( thinLensCamPropertiesRow );
 
 	//
 
@@ -149,6 +185,7 @@ Sidebar.Project = function ( editor ) {
 	var samplerTypes = {
 		'independent': 'independent'
 	};
+	
 	var samplerTypeRow = new UI.Panel();
 	var samplerType = new UI.Select().setOptions( samplerTypes ).setWidth( '150px' ).onChange( function () {
 
@@ -167,16 +204,21 @@ Sidebar.Project = function ( editor ) {
 		editor.sampler = value;
 		config.setKey( 'project/sampler', value );
 	} );
-
+	if ( config.getKey( 'project/sampler' ) !== undefined ) {
+		samplerType.setValue( config.getKey( 'project/sampler' ) );
+		editor.sampler = samplerType.getValue();
+	}
 	samplerTypeRow.add( new UI.Text( 'Sampler' ).setWidth( '90px' ) );
 	samplerTypeRow.add( samplerType );
 
 	container.add( samplerTypeRow );
 
+	
 	// sampler properties
 	var samplerPropertiesRow = new UI.Panel();
+
 	samplerPropertiesRow.add( new UI.Text( 'Sample count' ).setWidth( '90px' ) );
-	samplerPropertiesRow.add( new UI.Integer( 64 )
+	var sampleCountUI = new UI.Integer( 64 )
 									.setRange( 1, Infinity )
 									.setWidth( '50px' )
 									.onChange( function() {
@@ -185,7 +227,14 @@ Sidebar.Project = function ( editor ) {
 			config.setKey( 'project/sampler/sampleCount', value );
 
 		}
-	));
+	);
+
+	if ( config.getKey( 'project/sampler/sampleCount' ) !== undefined ) {
+		sampleCountUI.setValue( config.getKey( 'project/sampler/sampleCount' ) );
+		editor.samplerProps["sampleCount"] = sampleCountUI.getValue();
+	}
+
+	samplerPropertiesRow.add(sampleCountUI);
 
 	container.add( samplerPropertiesRow );
 
@@ -200,6 +249,7 @@ Sidebar.Project = function ( editor ) {
 		'photonmapper':'Photon mapper',
 		'av': 'Average visiblity'
 	};
+
 	var integratorTypeRow = new UI.Panel();
 	var integratorType = new UI.Select().setOptions( integratorTypes ).setWidth( '150px' ).onChange( function () {
 
@@ -209,6 +259,12 @@ Sidebar.Project = function ( editor ) {
 		config.setKey( 'project/integrator', value );
 		update();
 	} );
+	if ( config.getKey( 'project/integrator' ) !== undefined ) {
+		integratorType.setValue(config.getKey( 'project/integrator'));
+		editor.integrator = integratorType.getValue();
+	} else {
+		integratorType.setValue(editor.integrator);
+	}
 
 	integratorTypeRow.add( new UI.Text( 'Integrator' ).setWidth( '90px' ) );
 	integratorTypeRow.add( integratorType );
@@ -252,20 +308,44 @@ Sidebar.Project = function ( editor ) {
 		.onChange( function() {
 			var value = this.getValue();
 			editor.integratorProps["length"] = value;
-			config.setKey( 'project/integrator/photonCount', value );
+			config.setKey( 'project/integrator/length', value );
 		}
 	)
 	avPropertiesRow.add(length);
 	container.add(avPropertiesRow);
 	function init() {
-		var value = editor.integrator;
-		integratorType.setValue(value);
+		var value = integratorType.setValue(value);
 		if(value === 'photonmapper'){
-			photonRadius.setValue(editor.integratorProps["photonRadius"]);
-			photonCount.setValue(editor.integratorProps["photonCount"]);
+			if (config.getKey( 'project/integrator/photonCount' ) !== undefined &&
+				config.getKey( 'project/integrator/photonRadius' ) !== undefined) {
+				photonRadius.setValue(config.getKey( 'project/integrator/photonRadius' ));
+				photonCount.setValue(config.getKey( 'project/integrator/photonCount' ));
+				editor.integratorProps["photonRadius"] = photonRadius.getValue();
+				editor.integratorProps["photonCount"] = photonCount.getValue();
+			} else {
+				photonRadius.setValue(editor.integratorProps["photonRadius"]);
+				photonCount.setValue(editor.integratorProps["photonCount"]);
+			}
 		}
 		if(value === 'av') {
-			length.setValue(editor.integratorProps["length"]);
+			if (config.getKey( 'project/integrator/length' ) !== undefined) {
+				length.setValue(config.getKey( 'project/integrator/length' ));
+				editor.integratorProps["length"] = length.getValue();
+			} else {
+				length.setValue(editor.integratorProps["length"]);
+			}
+		}
+		if(config.getKey( 'project/thinLensCam' ) !== undefined) {
+			thinLensCam.setValue(config.getKey( 'project/thinLensCam' ));
+			editor.thinLensCam = thinLensCam.getValue();
+		} else {
+			thinLensCam.setValue(editor.thinLensCam);
+		}
+		if(config.getKey( 'project/thinLensCam/focusPoint/x' ) !== undefined) {
+			var x = config.getKey( 'project/thinLensCam/focusPoint/x' ) ;
+			var y = config.getKey( 'project/thinLensCam/focusPoint/y' ) ;
+			var z = config.getKey( 'project/thinLensCam/focusPoint/z' ) ;
+			editor.focusPoint = new THREE.Vector3(x, y, z);
 		}
 	}
 	init();
@@ -285,6 +365,11 @@ Sidebar.Project = function ( editor ) {
 		if (value == 'path_mis') {
 			integratorPropertiesRow.setDisplay( 'none' ); 
 			avPropertiesRow.setDisplay( 'none' );
+		}
+		if(editor.thinLensCam) {
+			thinLensCamPropertiesRow.setDisplay( '' );
+		} else {
+			thinLensCamPropertiesRow.setDisplay( 'none' );
 		}
 	}
 	update();

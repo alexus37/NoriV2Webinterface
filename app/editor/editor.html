@@ -9,7 +9,7 @@
     <form>
       <div class="form-group">
         <div class="input-group">
-          <div class="input-group-addon"></div>
+           <div class="input-group-addon"><span class="glyphicon glyphicon-pencil"></span></div>
           <input type="text" class="form-control" placeholder="scene1" ng-model="confirmValue">
         </div>      
       </div>
@@ -145,6 +145,8 @@
                 set-size="setSize"
                 reset="reset"></canvas>
         <img  ng-src="{{DOMVars.finalUrl !== undefined && DOMVars.finalUrl || ''}}"
+              dyn-image
+              url="DOMVars.finalUrl"
               ng-if="DOMVars.finalUrl"
               id="renderedIMG" 
               ng-show="DOMVars.finished && !DOMVars.rendering"
