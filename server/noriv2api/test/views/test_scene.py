@@ -90,6 +90,41 @@ class SceneTest(APITestCase):
             Scene.objects.filter(pk=response.data['url'][-1]).
             first().title, scene_dict['title'])
 
+    def test_delete_scene(self):
 
-    # TODO make tests that you just see your own scenes and can only change and
-    # edit your own scenes and create scene only possible as authorized
+        self.client.force_authenticate(self.user)
+
+        # test scene existence
+        self.assertTrue(Scene.objects.filter(pk=self.scene.id).exists())
+
+        # delete scene
+        url = reverse('scene-detail', kwargs={'pk': self.scene.id})
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+        # test scene non-existence
+        self.assertFalse(Scene.objects.filter(pk=self.scene.id).exists())
+
+    def test_modify_scene(self):
+        self.client.force_authenticate(self.user)
+
+        scene_dict = {
+            'title': 'different scene title',
+            'content': '<xml>different xml</xml>',
+        }
+
+        scene = Scene.objects.filter(pk=self.scene.id).first()
+        self.assertEqual(scene.title, self.scene_dict['title'])
+        self.assertEqual(scene.content, self.scene_dict['content'])
+
+        scene.title = scene_dict['title']
+        scene.content = scene_dict['content']
+        scene.save()
+
+        scene = Scene.objects.filter(pk=self.scene.id).first()
+        self.assertEqual(scene.title, scene_dict['title'])
+        self.assertEqual(scene.content, scene_dict['content'])
+
+
+# TODO make tests that you just see your own scenes and can only change and
+# edit your own scenes and create scene only possible as authorized
