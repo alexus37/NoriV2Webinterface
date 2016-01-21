@@ -31,25 +31,27 @@
         </div>      
       </div>
     </form>
-    <table class="table table-bordered table-striped">
-    
-    <thead>
-      <tr>
-        <td>
-          File name
-        </td>        
-      </tr>
-    </thead>
-    
-    <tbody>
-      <tr ng-repeat="f in ngDialogData.userScenes | filter:searchScene" 
-          ng-click="select(f)"
-          ng-class="{success: confirmValue == f.url}">
-          <td >{{ f.title }}</td>
-      </tr>
-    </tbody>
-    
-  </table>
+    <div style="height:200px;overflow-y:scroll;">
+      <table class="table table-bordered table-striped">
+      
+      <thead>
+        <tr>
+          <td>
+            File name
+          </td>        
+        </tr>
+      </thead>
+      
+      <tbody>
+        <tr ng-repeat="f in ngDialogData.userScenes | filter:searchScene" 
+            ng-click="select(f)"
+            ng-class="{success: confirmValue == f.url}">
+            <td >{{ f.title }}</td>
+        </tr>
+      </tbody>
+      
+    </table>
+  </div>
   <div class="ngdialog-buttons">
       <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="confirm(confirmValue)">Confirm</button>
       <button type="button" class="ngdialog-button ngdialog-button-secondary" ng-click="closeThisDialog()">Cancel</button>
@@ -65,25 +67,27 @@
         </div>      
       </div>
     </form>
-    <table class="table table-bordered table-striped">
-    
-    <thead>
-      <tr>
-        <td>
-          File name
-        </td>        
-      </tr>
-    </thead>
-    
-    <tbody>
-      <tr ng-repeat="f in ngDialogData.objFiles | filter:searchObj" 
-          ng-click="select(f)"
-          ng-class="{success: confirmValue == f}">
-          <td >{{ f }}</td>
-      </tr>
-    </tbody>
-    
-  </table>
+    <div style="height:200px;overflow-y:scroll;">
+      <table class="table table-bordered table-striped">
+      
+      <thead>
+        <tr>
+          <td>
+            File name
+          </td>        
+        </tr>
+      </thead>
+      
+      <tbody>
+        <tr ng-repeat="f in ngDialogData.objFiles | filter:searchObj" 
+            ng-click="select(f)"
+            ng-class="{success: confirmValue == f}">
+            <td >{{ f }}</td>
+        </tr>
+      </tbody>
+      
+    </table>
+  </div>
   <div class="ngdialog-buttons">
       <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="confirm(confirmValue)">Confirm</button>
       <button type="button" class="ngdialog-button ngdialog-button-secondary" ng-click="closeThisDialog()">Cancel</button>
