@@ -15,7 +15,7 @@
 angular.module('myApp', [
   'ngRoute',
   'myApp.login',
-  'myApp.basicWebSocketPatches',
+  'myApp.sceneXMLView',
   'myApp.upload',
   'myApp.editor'
 ])
@@ -50,8 +50,8 @@ angular.module('myApp', [
         editor2logout: 'fade',
         editor2upload: 'slideup',
         upload2editor: 'slidedown',
-        editor2basicWebSocketPatches: 'slideleft',
-        basicWebSocketPatches2editor: 'slideright',
+        editor2sceneXMLView: 'slideleft',
+        sceneXMLView2editor: 'slideright',
       };
 
       $scope.logout = function () {
@@ -129,5 +129,5 @@ angular.module('myApp.editor', ['ngRoute', 'ui.bootstrap','ngAnimate', 'angular-
  * @description
  * Main view, does most of the computation, handles the charts and interaction with the leaflet map.
  */
-angular.module('myApp.basicWebSocketPatches', ['ngRoute', 'ui.bootstrap', 'angular-loading-bar', 'angular-growl', 'ui.codemirror', 'ngWebSocket', 'SwampDragonServices']);
+angular.module('myApp.sceneXMLView', ['ngRoute', 'ui.bootstrap', 'angular-loading-bar', 'angular-growl', 'ui.codemirror', 'ngWebSocket', 'SwampDragonServices']);
 

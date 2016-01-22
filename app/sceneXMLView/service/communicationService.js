@@ -1,9 +1,9 @@
 'use strict';
 
-var module = angular.module('myApp.basicWebSocketPatches');
+var module = angular.module('myApp.sceneXMLView');
 /**
  * @ngdoc service
- * @name myApp.basicWebSocketPatches.communicationService
+ * @name myApp.sceneXMLView.communicationService
  * @requires $http
  * @requires reArrangingService
  * @author Alexander Lelidis
@@ -13,8 +13,8 @@ var module = angular.module('myApp.basicWebSocketPatches');
 module.service('communicationService', ['$http',  function($http){
     /**
      * @ngdoc
-     * @methodOf myApp.basicWebSocketPatches.communicationService
-     * @name myApp.basicWebSocketPatches.communicationService#communicationService
+     * @methodOf myApp.sceneXMLView.communicationService
+     * @name myApp.sceneXMLView.communicationService#communicationService
      * @description
      * Constructor
      * @param {string} url The url for the server requests.
@@ -25,8 +25,8 @@ module.service('communicationService', ['$http',  function($http){
     };
     /**
      * @ngdoc
-     * @methodOf myApp.basicWebSocketPatches.communicationService
-     * @name myApp.basicWebSocketPatches.communicationService#httpPostRequest
+     * @methodOf myApp.sceneXMLView.communicationService
+     * @name myApp.sceneXMLView.communicationService#httpPostRequest
      * @description
      * Send a http post request.
      * @param {object} geoQuery The query, which is send to the url via http post.
@@ -38,8 +38,8 @@ module.service('communicationService', ['$http',  function($http){
 
     /**
      * @ngdoc
-     * @methodOf myApp.basicWebSocketPatches.communicationService
-     * @name myApp.basicWebSocketPatches.communicationService#httpGetRequest
+     * @methodOf myApp.sceneXMLView.communicationService
+     * @name myApp.sceneXMLView.communicationService#httpGetRequest
      * @description
      * Send a http post request.
      * @param {object} geoQuery The query, which is send to the url via http post.

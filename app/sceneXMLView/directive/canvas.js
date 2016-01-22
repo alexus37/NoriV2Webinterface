@@ -1,6 +1,6 @@
 'use strict';
 
-var module = angular.module('myApp.basicWebSocketPatches');
+var module = angular.module('myApp.sceneXMLView');
 
 module.directive('renderCanvas', function() {
 	return {

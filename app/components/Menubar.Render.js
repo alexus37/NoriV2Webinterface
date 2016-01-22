@@ -34,7 +34,7 @@ Menubar.Render = function ( editor ) {
 	option.onClick( function () {
 		var xmlOutPut = editor.getSceneXML();
 		editor.setxmlFunction({xml: xmlOutPut});
-		editor.changeView('basicWebSocketPatches');
+		editor.changeView('sceneXMLView');
 	});
 	options.add( option );
 

@@ -8,3 +8,4 @@ swampdragon
 djutils
 celery
 redis
+requests

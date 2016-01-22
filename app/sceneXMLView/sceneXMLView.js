@@ -1,10 +1,10 @@
 'use strict';
-angular.module('myApp.basicWebSocketPatches')
+angular.module('myApp.sceneXMLView')
 //configure the $routeProvider, that if the /basic url is called that View1Ctrl is the current controller
 .config(['$routeProvider', 'growlProvider', function ($routeProvider, growlProvider) {
-    $routeProvider.when('/basicWebSocketPatches', {
-        templateUrl: 'basicWebSocketPatches/basicWebSocketPatches.html',
-        controller: 'basicWebSocketPatches1Ctrl'
+    $routeProvider.when('/sceneXMLView', {
+        templateUrl: 'sceneXMLView/sceneXMLView.html',
+        controller: 'sceneXMLView1Ctrl'
     }).otherwise({redirectTo: '/login'});
     growlProvider.globalTimeToLive(3000);
 }])
@@ -20,7 +20,7 @@ angular.module('myApp.basicWebSocketPatches')
  * @description
  * This controller does most of the computation.
  */
- .controller('basicWebSocketPatches1Ctrl', ["$scope", "growl", "communicationService", "$dragon",
+ .controller('sceneXMLView1Ctrl', ["$scope", "growl", "communicationService", "$dragon",
      function ($scope, growl, communicationService, $dragon) {       
        $scope.imageData = "images/testImage.png";
        $scope.editorOptions = {
@@ -101,18 +101,20 @@ angular.module('myApp.basicWebSocketPatches')
              	$scope.heightSet = true;
              }
 
-             $scope.addPatch(offsetX, offsetY, pWidth, pHeight, b64Data);
 
              if(message.data['finished'] == true) {
                $dragon.unsubscribe('update-msg', $scope.channel, {}).then(function(response) {
                });
                growl.success("Image successfully rendered!", {});
+               // Reload image
                $scope.rendering = false;
                $scope.finalUrl = message.data['url'];
                $scope.finished = true;
                $scope.showResult = true;
 
                // Reload image
+             } else {
+               $scope.addPatch(offsetX, offsetY, pWidth, pHeight, b64Data);
              }
            });
          }
@@ -145,6 +147,7 @@ angular.module('myApp.basicWebSocketPatches')
          $scope.progressbarType = "info";
          $scope.percentageMsg = "loading models ...";
 
+         $scope.finished = false;
          $scope.rendering = true;
          $scope.finished = false;
          $scope.heightSet = false;

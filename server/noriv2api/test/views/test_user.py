@@ -5,7 +5,7 @@ from django.core.urlresolvers import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from noriv2api.models import User
+from noriv2api.models import User, Scene
 
 from noriv2apiserver import settings
 
@@ -13,17 +13,26 @@ class UserTest(APITestCase):
 
     def setUp(self):
         self.user_dict = {
-                'username': 'jacob',
-                'email': 'jacob@web.de',
-                'password': 'top_secret'
-                }
+            'username': 'jacob',
+            'email': 'jacob@web.de',
+            'password': 'top_secret'
+        }
+
         self.user = User.objects.create_user(**self.user_dict)
+
+        self.scene_dict = {
+            'title': 'myscene',
+            'content': '<xml>uiae</xml>',
+            'owner': self.user
+        }
+        self.scene = Scene.objects.create(**self.scene_dict)
 
         pathlib.Path(settings.RENDERER_DATA_DIR, self.user.username).mkdir()
 
         self.test_file = pathlib.Path(settings.RENDERER_DATA_DIR, self.user.username, 'testfile.obj')
         self.test_file.touch()
         self.test_file2 = pathlib.Path(settings.RENDERER_DATA_DIR, self.user.username, 'testfile2.obj')
+
 
     def tearDown(self):
         self.test_file.unlink()
@@ -45,7 +54,7 @@ class UserTest(APITestCase):
                          {'url': 'http://testserver/users/{}/'.format(self.user.id),
                           'username': 'jacob',
                           'email': 'jacob@web.de',
-                          'user_scenes': []})
+                          'user_scenes': ['http://testserver/scenes/{}'.format(self.scene.id)]})
 
     def test_get_user_unauthenticated(self):
         url = reverse('user-detail', kwargs={'pk': self.user.id})
@@ -57,11 +66,11 @@ class UserTest(APITestCase):
         url = reverse('user-list')
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual([dict(u) for u in response.data if u.pop('password', None)],
+        self.assertEqual([dict(u) for u in response.data if not u.pop('password', None)],
                          [{'url': 'http://testserver/users/1/',
                            'username': 'jacob',
                            'email': 'jacob@web.de',
-                           'user_scenes': []}])
+                           'user_scenes': ['http://testserver/scenes/{}'.format(self.scene.id)]}])
 
     def test_get_users_unauthenticated(self):
         url = reverse('user-list')
@@ -70,10 +79,10 @@ class UserTest(APITestCase):
 
     def test_create_user(self):
         user_dict = {
-                'username': 'marco',
-                'email': 'marco@marco.de',
-                'password': 'hardhard'
-                }
+            'username': 'marco',
+            'email': 'marco@marco.de',
+            'password': 'hardhard'
+        }
         url = reverse('user-list')
         response = self.client.post(url, user_dict, format='json')
 
@@ -84,7 +93,7 @@ class UserTest(APITestCase):
 
         self.assertTrue(
             User.objects.filter(username=user_dict['username']).first(). \
-                                    check_password(user_dict['password']))
+            check_password(user_dict['password']))
 
     def test_upload(self):
         self.client.force_authenticate(self.user)
@@ -92,7 +101,7 @@ class UserTest(APITestCase):
         file_name = 'testfile2.obj'
         test = pathlib.Path(settings.RENDERER_DATA_DIR,  file_name)
         test.touch()
-        
+
         f = open(str(test.resolve()), 'w+')
         content = encode_multipart('BoUnDaRyStRiNg',  {'file': f})
         content_type = 'multipart/form-data; boundary=BoUnDaRyStRiNg'
@@ -103,8 +112,8 @@ class UserTest(APITestCase):
         result = pathlib.Path(settings.RENDERER_DATA_DIR, self.user.username, file_name)
         self.assertTrue(result.is_file())
         self.assertEqual(result.name, file_name)
-        
-        test.unlink()        
+
+        test.unlink()
         if result.is_file():
             result.unlink()
 
