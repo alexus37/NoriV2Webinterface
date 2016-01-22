@@ -2,9 +2,11 @@ import uuid
 import os
 import pathlib
 
+from django.http import HttpResponse
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework import generics, permissions, views, response  # , filters
 from rest_framework.permissions import IsAuthenticated
+import requests
 
 from noriv2api.models import Scene, User
 from noriv2api.serializers import SceneSerializer, UserSerializer
@@ -96,7 +98,7 @@ class RenderView(views.APIView):
         task = render_image.delay(input_file, output_file, self.request.user.id)
         TID = 0
         # dont get the ID if it is a test
-        if not 'test' in request.data:
+        if 'test' not in request.data:
             TID = task.id
         return_object = {
             'url': output_file,
@@ -107,3 +109,11 @@ class RenderView(views.APIView):
         }
 
         return response.Response(return_object)
+
+
+def get_settings(request):
+    result = requests.get('http://localhost:9999/settings.js')
+    resp = HttpResponse(result.text)
+    resp['Etag'] = result.headers['Etag']
+    resp['Content-Type'] = result.headers['Content-Type']
+    return resp
