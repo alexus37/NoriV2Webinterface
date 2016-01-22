@@ -64,17 +64,17 @@ angular.module('myApp.basicWebSocketPatches')
              	$scope.heightSet = true;
              }
 
-             $scope.addPatch(offsetX, offsetY, pWidth, pHeight, b64Data);
 
              if(message.data['finished'] == true) {
                $dragon.unsubscribe('update-msg', $scope.channel, {}).then(function(response) {
                });
                growl.success("Image successfully rendered!", {});
+               // Reload image
                $scope.rendering = false;
                $scope.finalUrl = message.data['url'];
                $scope.finished = true;
-
-               // Reload image
+             } else {
+               $scope.addPatch(offsetX, offsetY, pWidth, pHeight, b64Data);
              }
            });
          }
@@ -107,6 +107,7 @@ angular.module('myApp.basicWebSocketPatches')
          $scope.progressbarType = "info";
          $scope.percentageMsg = "loading models ...";
 
+         $scope.finished = false;
          $scope.rendering = true;
          $scope.heightSet = false;
          $scope.percentage = 100;
