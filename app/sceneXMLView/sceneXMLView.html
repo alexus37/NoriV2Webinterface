@@ -1,0 +1,72 @@
+<div growl></div>
+<div id="container1">
+  <div id="container2">
+    <div class="container"  style="margin-top: 20px;">
+      <div class="row">
+        <h1>{{$parent.filename}}</h1>
+        <div class="col-md-12">
+          <button type="button"
+                  class="btn btn-success"
+                  ng-disabled="sendDisabled"
+                  ng-hide="rendering"
+                  ng-click="sendRequest()" > Send to server </button>
+          <button type="button"
+                  class="btn btn-danger"
+                  ng-show="rendering"
+                  ng-click="sendCancel()" > Cancel rendering</button>
+          <button type="button"
+                  class="btn btn-info"              
+                  ng-show="finished"
+                  ng-click="showResult = !showResult" > Toggle Result \ xml </button>
+          <button type="button"
+                  class="btn btn-info"              
+                  ng-show="finished"
+                  ng-click="download('png')" > Download rendering </button> 
+          <button type="button"
+                  class="btn btn-info"              
+                  ng-show="finished"
+                  ng-click="download('xml')" > Download scene xml </button>   
+          <button type="button" 
+                  class="btn pull-right btn-info btn-s" 
+                  ng-click="$parent.changeViewModel('editor')">
+                    <span class="glyphicon glyphicon-upload"></span> Go back </button>
+        </div>
+      </div>
+      <hr>
+      <div class="row" ng-hide="rendering || showResult">
+        <div class="col-md-12">
+          <div ui-codemirror="{ onLoad : codemirrorLoaded }"
+                  id="xmlInput"
+                  ng-model="$parent.xmlInput"
+                  ui-codemirror-opts="editorOptions"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12" ng-show="showResult || rendering">
+          <canvas render-canvas
+                  id="renderingCanvas"
+                  ng-hide="finished"
+                  add-patch="addPatch"
+                  set-size="setSize"
+                  reset="reset"></canvas>
+          <img src="{{finalUrl}}"
+               id="renderedIMG" 
+               ng-show="finished"
+               alt="Nothing rendered!"
+                  />
+          <progressbar class="progress-striped active"
+                            animate="true"
+                            max="100"
+                            value="percentage"
+                            type="{{progressbarType}}"
+                            ng-show="rendering">
+              <b>{{percentageMsg}}</b>
+          </progressbar>
+        <div class="col-md-12">
+      </div>     
+    </div>
+  </div>
+</div>
+
+
+

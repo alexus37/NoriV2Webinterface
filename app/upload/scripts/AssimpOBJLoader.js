@@ -3,15 +3,15 @@
  * @author wadeb / http://wadeb.com/
  */
 
-THREE.OBJLoader = function ( manager ) {
+THREE.OBJLoaderAX = function ( manager ) {
 
 	this.manager = ( manager !== undefined ) ? manager : THREE.DefaultLoadingManager;
 
 };
 
-THREE.OBJLoader.prototype = {
+THREE.OBJLoaderAX.prototype = {
 
-	constructor: THREE.OBJLoader,
+	constructor: THREE.OBJLoaderAX,
 
 	load: function ( url, onLoad, onProgress, onError ) {
 

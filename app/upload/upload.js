@@ -34,6 +34,7 @@ angular.module('myApp.upload')
 
             var uploadedFiles = $scope.uploadedFiles = [];
             $scope.assimpModelUrl = "";
+
             var uploader = $scope.uploader = new FileUploader({
                 url: url,
                 method: 'PUT',
@@ -61,8 +62,9 @@ angular.module('myApp.upload')
                 $http.get(url).success(function updateList(payload){
                     $scope.uploadedFiles = uploadedFiles = payload;
                 });
-            }
-            updateFileList();
+            };
+
+
 
             $scope.loadObjModel = function(item) {
                 $scope.assimpModelUrl = $scope.$parent.user.username + "/" + item;
@@ -111,6 +113,11 @@ angular.module('myApp.upload')
                 updateFileList();
                 console.info('onCompleteAll');
             };
+
+            $scope.$on('$viewContentLoaded', function(){
+                //Here your view content is fully loaded !!
+                updateFileList();
+            });
         }]);
 
 

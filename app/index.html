@@ -24,27 +24,30 @@
   <link rel="stylesheet" type="text/css" href="bower_components/codemirror/lib/codemirror.css">
   <link rel="stylesheet" type="text/css" href="bower_components/codemirror/theme/twilight.css">
 
+  <link rel="stylesheet" type="text/css" href="bower_components/ng-dialog/css/ngDialog.css">
+  <link rel="stylesheet" type="text/css" href="bower_components/ng-dialog/css/ngDialog-theme-default.min.css">
+
+  <link href="css/main.css" rel="stylesheet" />
+  <link id="theme" href="css/light.css" rel="stylesheet" />
+
+  <link rel="stylesheet" href="components/libs/codemirror/addon/dialog.css">
+  <link rel="stylesheet" href="components/libs/codemirror/addon/show-hint.css">
+  <link rel="stylesheet" href="components/libs/codemirror/addon/tern.css">
+  <link rel="stylesheet" href="components/libs/codemirror/codemirror.css">
+  <link rel="stylesheet" href="components/libs/codemirror/theme/monokai.css">
+  
 
 </head>
 <body ng-controller="MainCtrl">
-  <div class="btn-group" ng-show="noLogin">
-      <label class="btn btn-primary" ng-click="changeViewModel('basic')" ng-model="viewModel" btn-radio="'basic'">basic</label>
-      <label class="btn btn-primary" ng-click="changeViewModel('upload')" ng-model="viewModel" btn-radio="'upload'">upload</label>
-      <label class="btn btn-primary" ng-click="changeViewModel('basicWebSocket')" ng-model="viewModel" btn-radio="'basicWebSocket'">basicWebSocket</label>
-      <label class="btn btn-primary" ng-click="changeViewModel('basicWebSocketPatches')" ng-model="viewModel" btn-radio="'basicWebSocketPatches'">basicWebSocketPatches</label>
+  <div class="content">
+    <div ng-view ng-class="curViewAnimation"></div>
   </div>
-  <div class="btn-group pull-right" ng-show="noLogin">
-      <label class="btn btn-primary" ng-click="logout()"><i class="fa fa-sign-out">Log out</i></label>
-  </div>
-
-  <hr ng-show="noLogin">
-  <div ng-view></div>
 
   <!-- JQUERY BEFORE ANGULAR -->
   <script src="bower_components/jquery/dist/jquery.min.js"></script>
   <script src="bower_components/jquery-ui/ui/minified/jquery-ui.min.js"></script>
 
-  <script src="http://nervgh.github.io/js/es5-shim.min.js"></script>
+  <script src="components/es5-shim.min.js"></script>
 
 
   <script src="bower_components/angular/angular.js"></script>
@@ -55,12 +58,16 @@
 
   <script src="bower_components/angular-loading-bar/src/loading-bar.js"></script>
   <script src="bower_components/angular-growl-v2/build/angular-growl.min.js"></script>
+  <script src="bower_components/angular-animate/angular-animate.min.js"></script>
   <script src="bower_components/codemirror/lib/codemirror.js"></script>
   <script src="bower_components/codemirror/mode/xml/xml.js"></script>
   <script src="bower_components/three.js/build/three.js"></script>
   <script src="bower_components/angular-file-upload/dist/angular-file-upload.min.js"></script>
   <script src="bower_components/angular-cookies/angular-cookies.min.js"></script>
   <script src="bower_components/angular-websocket/angular-websocket.min.js"></script>
+  <script src="bower_components/angular-animate/angular-animate.min.js"></script>
+  <script src="bower_components/ng-dialog/js/ngDialog.min.js"></script>
+
   <script type="text/javascript" src="bower_components/angular-ui-codemirror/ui-codemirror.js"></script>
 
 
@@ -71,6 +78,106 @@
 
   <script src="app.js"></script>
 
+  <!-- COMPONENTS -->
+
+    <script src="components/libs/system.min.js"></script>
+
+    <script src="components/controls/EditorControls.js"></script>
+    <script src="components/controls/TransformControls.js"></script>
+
+    <script src="components/libs/jszip.min.js"></script>
+    <script src="components/loaders/AMFLoader.js"></script>
+    <script src="components/loaders/AWDLoader.js"></script>
+    <script src="components/loaders/BabylonLoader.js"></script>
+    <script src="components/loaders/ColladaLoader.js"></script>
+    <script src="components/loaders/KMZLoader.js"></script>
+    <script src="components/loaders/MD2Loader.js"></script>
+    <script src="components/loaders/OBJLoader.js"></script>
+    <script src="components/loaders/PLYLoader.js"></script>
+    <script src="components/loaders/STLLoader.js"></script>
+    <script src="components/loaders/UTF8Loader.js"></script>
+    <script src="components/loaders/VRMLLoader.js"></script>
+    <script src="components/loaders/VTKLoader.js"></script>
+    <script src="components/loaders/ctm/lzma.js"></script>
+    <script src="components/loaders/ctm/ctm.js"></script>
+    <script src="components/loaders/ctm/CTMLoader.js"></script>
+    <script src="components/exporters/OBJExporter.js"></script>
+    <script src="components/exporters/STLExporter.js"></script>
+
+    <script src="components/loaders/deprecated/SceneLoader.js"></script>
+
+    <script src="components/renderers/Projector.js"></script>
+    <script src="components/renderers/CanvasRenderer.js"></script>
+    <script src="components/renderers/RaytracingRenderer.js"></script>
+    <script src="components/renderers/SoftwareRenderer.js"></script>
+    <script src="components/renderers/SVGRenderer.js"></script>
+
+  
+    <script src="components/libs/codemirror/mode/javascript.js"></script>
+    <script src="components/libs/esprima.js"></script>
+    <script src="components/libs/jsonlint.js"></script>
+    <script src="components/libs/glslprep.min.js"></script>
+
+    <script src="components/libs/codemirror/mode/glsl.js"></script>
+
+
+    <script src="components/libs/codemirror/addon/dialog.js"></script>
+    <script src="components/libs/codemirror/addon/show-hint.js"></script>
+    <script src="components/libs/codemirror/addon/tern.js"></script>
+    <script src="components/libs/acorn/acorn.js"></script>
+    <script src="components/libs/acorn/acorn_loose.js"></script>
+    <script src="components/libs/acorn/walk.js"></script>
+    <script src="components/libs/ternjs/polyfill.js"></script>
+    <script src="components/libs/ternjs/signal.js"></script>
+    <script src="components/libs/ternjs/tern.js"></script>
+    <script src="components/libs/ternjs/def.js"></script>
+    <script src="components/libs/ternjs/comment.js"></script>
+    <script src="components/libs/ternjs/infer.js"></script>
+    <script src="components/libs/ternjs/doc_comment.js"></script>
+    <script src="components/libs/tern-threejs/threejs.js"></script>
+
+    <script src="components/libs/sortable.min.js"></script>
+    <script src="components/libs/signals.min.js"></script>
+    <script src="components/libs/ui.js"></script>
+    <script src="components/libs/ui.three.js"></script>
+
+    <!--<script src="components/libs/app.js"></script>-->
+    <script src="components/materials.js"></script>
+    <script src="components/Script.js"></script>
+
+    <script src="components/effects/VREffect.js"></script>
+    <script src="components/controls/VRControls.js"></script>
+
+    <script src="components/Storage.js"></script>
+
+    <script src="components/Editor.js"></script>
+    <script src="components/Config.js"></script>
+    <script src="components/History.js"></script>
+    <script src="components/Loader.js"></script>
+    <script src="components/XmlExporter.js"></script>
+    <script src="components/Menubar.js"></script>
+    <script src="components/Menubar.File.js"></script>
+    <script src="components/Menubar.Edit.js"></script>
+    <script src="components/Menubar.Add.js"></script>
+    <script src="components/Menubar.Examples.js"></script>
+    <script src="components/Menubar.Help.js"></script>
+    <script src="components/Menubar.Render.js"></script>
+    <script src="components/Menubar.Status.js"></script>
+    <script src="components/Sidebar.js"></script>
+    <script src="components/Sidebar.Project.js"></script>
+    <script src="components/Sidebar.Scene.js"></script>
+    <script src="components/Sidebar.Object3D.js"></script>
+    <script src="components/Sidebar.Geometry.js"></script>
+    <script src="components/Sidebar.Geometry.Geometry.js"></script>
+    <script src="components/Sidebar.Geometry.Modifiers.js"></script>
+    <script src="components/Sidebar.Material.js"></script>
+    <script src="components/Toolbar.js"></script>
+    <script src="components/Viewport.js"></script>
+    <script src="components/Viewport.Info.js"></script>
+    <script src="components/xml2json.min.js"></script>
+
+
+
   <!--SCRIPTS-->
   <script src="upload/scripts/console-shame.js"></script>
   <script src="upload/scripts/AssimpOBJLoader.js"></script>
@@ -79,21 +186,20 @@
 
   <!--DIRECTIVES-->
   <script src="upload/directive/tjsModelViewer.js"></script>
-  <script src="basicWebSocketPatches/directive/canvas.js"></script>
+  <script src="sceneXMLView/directive/canvas.js"></script>
+  <script src="editor/directive/tjsEditor.js"></script>
 
   <!--SERVICES-->
-  <script src="basic/service/communicationService.js"></script>
-  <script src="basicWebSocket/service/communicationService.js"></script>
+  <script src="sceneXMLView/service/communicationService.js"></script>
 
   <!--FACTORIES-->
   <script src="login/factory/loginFactory.js"></script>
 
   <!--CONTROLLERS-->
   <script src="login/login.js"></script>
-  <script src="basic/basic.js"></script>
-  <script src="basicWebSocket/basicWebSocket.js"></script>
-  <script src="basicWebSocketPatches/basicWebSocketPatches.js"></script>
+  <script src="sceneXMLView/sceneXMLView.js"></script>
   <script src="upload/upload.js"></script>
+  <script src="editor/editor.js"></script>
 
 
 </body>

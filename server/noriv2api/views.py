@@ -1,6 +1,7 @@
 import uuid
 import os
 import pathlib
+import shutil 
 
 from django.http import HttpResponse
 from rest_framework.parsers import FormParser, MultiPartParser
@@ -73,7 +74,30 @@ class UserResourceView(views.APIView):
                  if d.is_file() and d.suffix == '.obj'])
         else:
             return response.Response([])
+    
+class DefaultGeometryView(views.APIView):
+    """
+    Moves a default geometry to the user directoy
+    """
+    
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    def post(self, request, format=None):
+        print("START")
+        
+        src = os.path.join(RENDERER_DATA_DIR, "default", request.data["type"] + ".obj")
+        path = pathlib.Path(src)
+        if path.is_file():
+            dst = os.path.join(RENDERER_DATA_DIR, request.user.username, request.data["type"] + ".obj")
+            pathUser= pathlib.Path(dst)
 
+            if not pathUser.is_file():
+                # copy the file to the user directoy
+                shutil.copyfile(src, dst)
+                return response.Response(status=201)
+            else:
+                return response.Response(status=200)
+        else:
+            return response.Response(status=400)
 
 class RenderView(views.APIView):
     """

@@ -1,12 +1,17 @@
 /* app css stylesheet */
 
-.xmlInput {
-	width: 650px;
-	height:500px;
-
+.CodeMirror {
+  position: absolute; top: 0;  bottom: 0; left: 0; right: 0;
+  height: auto;
 }
+.CodeMirror-scroll {
+  height: auto;
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+
 .my-drop-zone { 
-	border: dotted 3px lightgray; 
+	border: dotted 3px lightgray; height: 99%;
 }
 /* Default class applied to drop zones on over */
 .nv-file-over { 
@@ -21,4 +26,131 @@
 
 .progress-bar { 
   transition: width 1s ease-in-out; 
+}
+
+.slideleft {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+.slideleft.ng-enter,.slide.ng-leave {
+    -webkit-transition: all 1s ease;
+    transition: all 1s ease;
+}
+.slideleft.ng-enter {
+    left: 100%;
+}
+.slideleft.ng-enter-active {
+    left: 0;
+}
+.slideleft.ng-leave {
+    left: 0;
+}
+.slideleft.ng-leave-active {
+    left: -100%;
+}
+.slideright {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+.slideright.ng-enter,.slide.ng-leave {
+    -webkit-transition: all 1s ease;
+    transition: all 1s ease;
+}
+.slideright.ng-enter {
+    left: -100%;
+}
+.slideright.ng-enter-active {
+    left: 0;
+}
+.slideright.ng-leave {
+    left: 0;
+}
+.slideright.ng-leave-active {
+    left: 100%;
+}
+.slidedown {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.slidedown.ng-enter,
+.slidedown.ng-leave {
+    -webkit-transition: all 1s ease;
+    transition: all 1s ease;
+}
+.slidedown.ng-enter {
+    top: -100%;
+}
+.slidedown.ng-enter-active {
+    top: 0;
+}
+.slidedown.ng-leave {
+    top: 0;
+}
+.slidedown.ng-leave-active {
+    top: 100%;
+}
+
+.slideup {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+}
+.slideup.ng-enter,
+.slideup.ng-leave {
+    -webkit-transition: all 1s ease;
+    transition: all 1s ease;
+}
+.slideup.ng-enter {
+    top: 100%;
+}
+.slideup.ng-enter-active {
+    top: 0;
+}
+.slideup.ng-leave {
+    top: 0;
+}
+.slideup.ng-leave-active {
+    top: -100%;
+}
+
+.fade {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    opacity: 1;
+}
+.fade.ng-enter,
+.fade.ng-leave {
+    -webkit-transition: all 1s ease;
+    transition: all 1s ease;
+}
+.fade.ng-enter {
+    opacity: 0;
+}
+.fade.ng-enter-active {
+    opacity: 1;
+}
+.fade.ng-leave {
+    opacity: 1;
+}
+.fade.ng-leave-active {
+    opacity: 0;
+}
+
+
+.ngdialog {
+    overflow: hidden!important;
 }
