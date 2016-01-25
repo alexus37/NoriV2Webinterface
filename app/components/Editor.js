@@ -8,15 +8,7 @@ var Editor = function () {
 
 	this.signals = {
 
-		// script
-
-		editScript: new SIGNALS.Signal(),
-
-		// player
-
-		startPlayer: new SIGNALS.Signal(),
-		stopPlayer: new SIGNALS.Signal(),
-
+	
 		// actions
 
 		showModal: new SIGNALS.Signal(),
@@ -52,10 +44,6 @@ var Editor = function () {
 		helperRemoved: new SIGNALS.Signal(),
 
 		materialChanged: new SIGNALS.Signal(),
-
-		scriptAdded: new SIGNALS.Signal(),
-		scriptChanged: new SIGNALS.Signal(),
-		scriptRemoved: new SIGNALS.Signal(),
 
 		fogTypeChanged: new SIGNALS.Signal(),
 		fogColorChanged: new SIGNALS.Signal(),
@@ -125,7 +113,6 @@ var Editor = function () {
 };
 
 Editor.prototype = {
-
 	setTheme: function ( value ) {
 
 		document.getElementById( 'theme' ).href = value;
@@ -133,6 +120,7 @@ Editor.prototype = {
 		this.signals.themeChanged.dispatch( value );
 
 	},
+
 
 	//
 
@@ -778,12 +766,6 @@ Editor.prototype = {
 
 	},
 
-	addTexture: function ( texture ) {
-
-		this.textures[ texture.uuid ] = texture;
-
-	},
-
 	//
 
 	addHelper: function () {
@@ -852,38 +834,6 @@ Editor.prototype = {
 			this.signals.helperRemoved.dispatch( helper );
 
 		}
-
-	},
-
-	//
-
-	addScript: function ( object, script ) {
-
-		if ( this.scripts[ object.uuid ] === undefined ) {
-
-			this.scripts[ object.uuid ] = [];
-
-		}
-
-		this.scripts[ object.uuid ].push( script );
-
-		this.signals.scriptAdded.dispatch( script );
-
-	},
-
-	removeScript: function ( object, script ) {
-
-		if ( this.scripts[ object.uuid ] === undefined ) return;
-
-		var index = this.scripts[ object.uuid ].indexOf( script );
-
-		if ( index !== - 1 ) {
-
-			this.scripts[ object.uuid ].splice( index, 1 );
-
-		}
-
-		this.signals.scriptRemoved.dispatch( script );
 
 	},
 

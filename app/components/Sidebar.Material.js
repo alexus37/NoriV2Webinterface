@@ -406,6 +406,14 @@ Sidebar.Material = function ( editor ) {
             RoughnessAlpha.setValue(material.alpha);
         }
 
+        if(material.emitter) {
+            materialEmitter.setValue(true);
+            radianceR.setValue(material.radiance.red);
+            radianceG.setValue(material.radiance.green);
+            radianceB.setValue(material.radiance.blue);
+        } else {
+            materialEmitter.setValue(false);
+        }   
 
 
 		if ( material.wireframe !== undefined ) {

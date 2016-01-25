@@ -42,8 +42,6 @@ angular.module("tjsEditor", [])
 					var viewport = new Viewport( editor );
 					elem[0].appendChild( viewport.dom );
 
-					var script = new Script( editor );
-					elem[0].appendChild( script.dom );
 					var toolbar = new Toolbar( editor );
 					elem[0].appendChild( toolbar.dom );
 					var menubar = new Menubar( editor );
@@ -90,7 +88,6 @@ angular.module("tjsEditor", [])
 						signals.objectRemoved.add( saveState );
 						signals.materialChanged.add( saveState );
 						signals.sceneGraphChanged.add( saveState );
-						signals.scriptChanged.add( saveState );
 						signals.showModal.add( function ( content ) {
 							modal.show( content );
 						} );
@@ -123,22 +120,7 @@ angular.module("tjsEditor", [])
 					}
 					window.addEventListener( 'resize', onWindowResize, false );
 					onWindowResize();
-					//
-					var file = null;
-					var hash = window.location.hash;
-					if ( hash.substr( 1, 4 ) === 'app=' ) file = hash.substr( 5 );
-					if ( hash.substr( 1, 6 ) === 'scene=' ) file = hash.substr( 7 );
-					if ( file !== null ) {
-						if ( confirm( 'Any unsaved data will be lost. Are you sure?' ) ) {
-							var loader = new THREE.XHRLoader();
-							loader.crossOrigin = '';
-							loader.load( file, function ( text ) {
-								var json = JSON.parse( text );
-								editor.clear();
-								editor.fromJSON( json );
-							} );
-						}
-					}
+					
 					window.addEventListener( 'message', function ( event ) {
 						editor.clear();
 						editor.fromJSON( event.data );
