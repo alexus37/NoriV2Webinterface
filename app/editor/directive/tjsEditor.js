@@ -13,7 +13,8 @@ angular.module("tjsEditor", [])
                     loadxmlFkt: "&loadxmlFunction",
                     defaultobjFkt: "&defaultobjFunction",
                     loadmodelFkt: "&loadmodelFunction",
-                    savesceneFkt: "&savesceneFunction"
+                    savesceneFkt: "&savesceneFunction",
+                    updatesceneFkt: "&updatesceneFunction"
 				},
 				link: function (scope, elem, attr) {
 
@@ -35,6 +36,7 @@ angular.module("tjsEditor", [])
 					editor.loadxmlFunction = scope.loadxmlFkt;
 					editor.loadmodelFunction = scope.loadmodelFkt;
 					editor.savesceneFunction = scope.savesceneFkt;
+					editor.updatesceneFunction = scope.updatesceneFkt;
 
                     editor.setxmlFunction = scope.setxmlFkt;
 					var viewport = new Viewport( editor );

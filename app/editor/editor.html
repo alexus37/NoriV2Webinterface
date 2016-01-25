@@ -50,7 +50,7 @@
             ng-class="{success: confirmValue == f.url}">
             <td ng-click="select(f)">{{ f.title }}</td>
             <td >
-              <button type="button" class="btn btn-sm btn-danger" ng-click="deletescene(f)">
+              <button type="button" class="btn btn-xs btn-danger" ng-click="deletescene(f)">
                 <span class="glyphicon glyphicon-remove"></span>
               </button>
             </td>
@@ -110,7 +110,8 @@
                     loadmodel-function = "loadmodelFkt(callback, model, transform, bsdf, emitter)"
                     defaultobj-function = "defaultobjFkt(callback, geometry)"
                     setxml-function="setxmlFkt(xml)" 
-                    savescene-function="savesceneFkt()"
+                    savescene-function="savesceneFkt(callback, editor)"
+                    updatescene-function="updatesceneFkt(target)"
                     class="Editor">
         </tjs-editor>
     </div>

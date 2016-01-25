@@ -89,6 +89,7 @@ var Editor = function () {
 	this.loadxmlFunction = null;
 	this.loadmodelFunction = null;
 	this.savesceneFunction = null;
+	this.updatesceneFunction = null;
 	this.sampler = "independent";
 	this.samplerProps = {sampleCount: 64};
 	this.integrator = "av";
@@ -103,6 +104,7 @@ var Editor = function () {
 	this.thinLensCam = false;
 	this.focusPoint = new THREE.Vector3(0, 0, 0);
 	this.aperture = 0.05;
+	this.currentSceneUrl = "";
 
 	//AX end
 	this.camera = new THREE.PerspectiveCamera( 50, 1, 1, 100000 );
@@ -507,7 +509,9 @@ Editor.prototype = {
 		}
 	},
 
-	setSceneXML: function(scene) {
+	setSceneXML: function(scene, url) {
+		this.setCurrentSceneUrl.call(this, url);		
+
 		//set the camera
 		if("camera" in scene) {
 			this.setCamera(scene.camera)
@@ -571,10 +575,21 @@ Editor.prototype = {
 	changeView: function(viewName) {
 		this.changeFunction({name: viewName});
 	},
+	setCurrentSceneUrl: function(url) {
+		if(url != "") {
+			this.currentSceneUrl = url;
+			this.config.setKey( 'project/currentSceneUrl', url );
+		}
+	},
 	saveScene: function() {
 		var xmlOutPut = this.getSceneXML();
 		this.setxmlFunction({xml: xmlOutPut});
-		this.savesceneFunction();
+		this.savesceneFunction({callback: this.setCurrentSceneUrl, editor: this});
+	},
+	updateScene: function() {
+		var xmlOutPut = this.getSceneXML();
+		this.setxmlFunction({xml: xmlOutPut});
+		this.updatesceneFunction({target: this.currentSceneUrl});
 	},
 	importobj : function() {
 		this.importobjFunction({callback: this.loader.loadObj});
@@ -939,6 +954,7 @@ Editor.prototype = {
 
 		this.history.clear();
 		this.storage.clear();
+		this.currentSceneUrl = "";
 
 		this.camera.position.set( 500, 250, 500 );
 		this.camera.lookAt( new THREE.Vector3() );
@@ -969,13 +985,16 @@ Editor.prototype = {
 		var loader = new THREE.ObjectLoader();
 
 		// backwards
-
+		if(this.config.getKey( 'project/currentSceneUrl') !== undefined) {
+			this.currentSceneUrl = this.config.getKey( 'project/currentSceneUrl');
+		}
 		if ( json.scene === undefined ) {
 
 			this.setScene( loader.parse( json ) );
 			return;
 
 		}
+
 
 		// TODO: Clean this up somehow
 

@@ -31,12 +31,25 @@ Menubar.File = function ( editor ) {
 
 	} );
 	options.add( option );
-
 	// SAVE
 
 	var option = new UI.Panel();
 	option.setClass( 'option' );
 	option.setTextContent( 'Save scene' );
+	option.onClick( function () {
+		if(editor.currentSceneUrl == '') {
+			editor.saveScene();		
+		} else {
+			editor.updateScene();
+		}
+	} );
+	options.add( option );
+
+	// SAVE as
+
+	var option = new UI.Panel();
+	option.setClass( 'option' );
+	option.setTextContent( 'Save scene as' );
 	option.onClick( function () {
 			editor.saveScene();		
 	} );

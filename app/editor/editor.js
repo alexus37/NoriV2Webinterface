@@ -51,7 +51,18 @@ angular.module('myApp.editor')
                     });
                 }                
             }
-            $scope.savesceneFkt = function(){
+            $scope.updatesceneFkt = function(target) {
+                if(target == "") {
+                    return;
+                }
+                $http.get(target).success(function(response){
+                    response["content"] = $scope.$parent.xmlInput;
+                    $http.put(target, response).success(function() {
+                        growl.success("Scene successfully updated!", {});
+                    });
+                });
+            }
+            $scope.savesceneFkt = function(callback, editor){
                 ngDialog.openConfirm({
                     template: 'saveSceneDialog',
                     overlay: true
@@ -63,6 +74,7 @@ angular.module('myApp.editor')
                         }
                         var url = '../scenes/';
                         $http.post(url, query).success(function(response){
+                            callback.call(editor, response.url);
                             growl.success("Scene successfully saved!", {});
                         })
                     }, function (reason) {
@@ -191,7 +203,7 @@ angular.module('myApp.editor')
                     return aftCnv;
                 }
                   }).success(function(response) {
-                        callback.call(editor, response.scene)
+                        callback.call(editor, response.scene, url)
                 });
             }
             $scope.loadxmlFkt = function(callback, editor) {
