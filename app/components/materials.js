@@ -293,8 +293,8 @@ THREE.mirror.prototype.copy = function ( source ) {
 
 };
 
-//roughconductor MATERIAL
-THREE.roughconductor = function(bsdfParameters, emitterParameters) {
+//roughConductor MATERIAL
+THREE.roughConductor = function(bsdfParameters, emitterParameters) {
     THREE.ShaderMaterial.call(this, {
 
         vertexShader: THREE.ShaderLib['lambert'].vertexShader,
@@ -302,7 +302,7 @@ THREE.roughconductor = function(bsdfParameters, emitterParameters) {
         uniforms: THREE.ShaderLib['lambert'].uniforms,
         lights: true
     });
-    this.type = 'roughconductor';
+    this.type = 'roughConductor';
     this.conductorType = 'Au';
     this.alpha = 0.3;
     this.emitter = false;
@@ -327,9 +327,9 @@ THREE.roughconductor = function(bsdfParameters, emitterParameters) {
     this.setValues();
 };
 
-THREE.roughconductor.prototype = Object.create( THREE.Material.prototype );
-THREE.roughconductor.prototype.constructor = THREE.roughconductor;
-THREE.roughconductor.prototype.copy = function ( source ) {
+THREE.roughConductor.prototype = Object.create( THREE.Material.prototype );
+THREE.roughConductor.prototype.constructor = THREE.roughConductor;
+THREE.roughConductor.prototype.copy = function ( source ) {
 
     THREE.Material.prototype.copy.call( this, source );
     this.conductorType = source.conductorType;

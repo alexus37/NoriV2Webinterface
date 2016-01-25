@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scene>
+<integrator type="path_mis">
+</integrator>
+<sampler type="independent">
+    <integer name="sampleCount" value="64"/>
+</sampler>
+<camera type="thinlens">
+     <float name="fov" value="79.58019739441227"/>
+     <float name="nearClip" value="1"/>
+     <float name="farClip" value="100000"/>
+     <float name="apertureRadius" value="0.16"/>
+     <float name="focusDistance" value="23.238536283038144"/>
+     <integer name="width" value="1620"/>
+     <integer name="height" value="907"/>
+     <transform name="toWorld">
+         <scale value="1.0 1.0 -1.0"/> 
+         <matrix value="-0.7640721201896667, -0.20283673703670502, 0.6124141216278076, 19.566118240356445, 2.8628399650898473e-9, 0.949286699295044, 0.31441178917884827, 7.953124523162842, -0.6451308727264404, 0.24023327231407166, -0.725323498249054, -9.692493438720703, 0, 0, 0, 1"/>
+     </transform>
+</camera>
+<mesh type="obj">
+     <transform name="toWorld">
+         <matrix value="1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 22.294607162475586, 0, 0, 0, 1"/>
+     </transform>
+    <string name="filename" value="dragonSmall.obj"/>
+    <bsdf type="diffuse">
+         <color name="albedo" value="0, 1.24, 0.52"/>
+     </bsdf>
+</mesh>
+<mesh type="obj">
+     <transform name="toWorld">
+         <matrix value="1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 49.75300216674805, 0, 0, 0, 1"/>
+     </transform>
+    <string name="filename" value="dragonSmall.obj"/>
+    <bsdf type="diffuse">
+         <color name="albedo" value="0.8, 0.8, 2.38"/>
+     </bsdf>
+</mesh>
+<mesh type="obj">
+     <transform name="toWorld">
+         <matrix value="1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 99.69667053222656, 0, 0, 0, 1"/>
+     </transform>
+    <string name="filename" value="dragonSmall.obj"/>
+    <bsdf type="diffuse">
+         <color name="albedo" value="0.8, 0.8, 0.8"/>
+     </bsdf>
+</mesh>
+<mesh type="obj">
+     <transform name="toWorld">
+         <matrix value="1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 77.4388427734375, 0, 0, 0, 1"/>
+     </transform>
+    <string name="filename" value="dragonSmall.obj"/>
+    <bsdf type="diffuse">
+         <color name="albedo" value="1.64, 1.38, 0.8"/>
+     </bsdf>
+</mesh>
+<mesh type="obj">
+     <transform name="toWorld">
+         <matrix value="1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1"/>
+     </transform>
+    <string name="filename" value="dragonSmall.obj"/>
+    <bsdf type="diffuse">
+         <color name="albedo" value="1.16, 0.8, 0.8"/>
+     </bsdf>
+</mesh>
+<mesh type="obj">
+     <transform name="toWorld">
+         <matrix value="1.531381368637085, 0, 0, 0, 0, 1, 0, 0, 0, 0, 3.8917441368103027, 0, 0, 0, 0, 1"/>
+     </transform>
+    <string name="filename" value="bigPlane.obj"/>
+    <bsdf type="diffuse">
+         <color name="albedo" value="0.8, 0.8, 0.8"/>
+     </bsdf>
+</mesh>
+<mesh type="obj">
+     <transform name="toWorld">
+         <matrix value="-0.48215848207473755, -0.87608402967453, 0, 54.185890197753906, 0.87608402967453, -0.48215848207473755, 0, 28.16704559326172, 0, 0, 1, 58.01484680175781, 0, 0, 0, 1"/>
+     </transform>
+    <string name="filename" value="bigPlane.obj"/>
+    <bsdf type="diffuse">
+         <color name="albedo" value="0.8, 0.8, 0.8"/>
+     </bsdf>
+    <emitter type="area">
+         <color name="radiance" value="1, 1, 1"/>
+    </emitter>
+</mesh>
+</scene>

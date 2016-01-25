@@ -16,6 +16,8 @@ urlpatterns = [
         views.SceneDetail.as_view(), name='scene-detail'),
     url(r'^render/$',
         views.RenderView.as_view(), name='render'),
+    url(r'^examples/$',
+        views.ExampleSceneView.as_view(), name='render examples'),
     url(r'^celery/settings.js$',
         views.get_settings, name='settings'),
 ]

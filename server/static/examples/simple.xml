@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scene>
+<integrator type="path_mis">
+</integrator>
+<sampler type="independent">
+    <integer name="sampleCount" value="32"/>
+</sampler>
+<camera type="perspective">
+     <float name="fov" value="79.58019739441227"/>
+     <float name="nearClip" value="1"/>
+     <float name="farClip" value="100000"/>
+     <integer name="width" value="1620"/>
+     <integer name="height" value="907"/>
+     <transform name="toWorld">
+         <scale value="1.0 1.0 -1.0"/> 
+         <matrix value="0.7683104276657104, 0.47909826040267944, -0.4244571626186371, -1.2641078233718872, 1.3479215521527976e-9, 0.6631341576576233, 0.7485005259513855, 2.8537683486938477, 0.6400773525238037, -0.5750808119773865, 0.5094929337501526, 1.973548173904419, 0, 0, 0, 1"/>
+     </transform>
+</camera>
+<mesh type="obj">
+     <transform name="toWorld">
+         <matrix value="1, 0, 0, 0.700499951839447, 0, 1, 0, -0.024980347603559494, 0, 0, 1, -0.21047022938728333, 0, 0, 0, 1"/>
+     </transform>
+    <string name="filename" value="plane.obj"/>
+    <bsdf type="diffuse">
+         <color name="albedo" value="0, 0, 0.9"/>
+     </bsdf>
+</mesh>
+<mesh type="obj">
+     <transform name="toWorld">
+         <matrix value="1, 0, 0, 0, 0, 1, 0, 0.003947670105844736, 0, 0, 1, 0, 0, 0, 0, 1"/>
+     </transform>
+    <string name="filename" value="sphere.obj"/>
+    <bsdf type="diffuse">
+         <color name="albedo" value="0, 0.9, 0"/>
+     </bsdf>
+</mesh>
+    <emitter type="point">
+        <point name="position" value="0, 1.1021431121189678, 1.3244227300635802"/>
+        <color name="power" value="255, 255, 255"/>
+    </emitter>
+<mesh type="obj">
+     <transform name="toWorld">
+         <matrix value="1, 0, 0, -0.3167497217655182, 0, 1, 0, 1.2293704748153687, 0, 0, 1, 1.2425464391708374, 0, 0, 0, 1"/>
+     </transform>
+    <string name="filename" value="torus.obj"/>
+    <bsdf type="diffuse">
+         <color name="albedo" value="0.7, 0, 0"/>
+     </bsdf>
+</mesh>
+    <emitter type="point">
+        <point name="position" value="-1.11, 3.56, -0.85"/>
+        <color name="power" value="45, 205, 120"/>
+    </emitter>
+</scene>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scene>
+<integrator type="path_mis">
+</integrator>
+<sampler type="independent">
+    <integer name="sampleCount" value="32"/>
+</sampler>
+<camera type="perspective">
+     <float name="fov" value="79.58019739441227"/>
+     <float name="nearClip" value="1"/>
+     <float name="farClip" value="100000"/>
+     <integer name="width" value="0"/>
+     <integer name="height" value="0"/>
+     <transform name="toWorld">
+         <scale value="1.0 1.0 -1.0"/> 
+         <matrix value="-0.9985527992248535, 0.032110005617141724, -0.04314177483320236, -0.5715035796165466, 8.505173232364882e-10, 0.8021931648254395, 0.5970645546913147, 7.909376621246338, 0.053779784590005875, 0.5962005257606506, -0.8010322451591492, -10.611357688903809, 0, 0, 0, 1"/>
+     </transform>
+</camera>
+<mesh type="obj">
+     <transform name="toWorld">
+         <matrix value="1, 0, 0, 0, 0, 1, 0, 0.008305450901389122, 0, 0, 1, 0, 0, 0, 0, 1"/>
+     </transform>
+    <string name="filename" value="bigPlane.obj"/>
+    <bsdf type="diffuse">
+         <color name="albedo" value="0.8, 0.8, 0.8"/>
+     </bsdf>
+</mesh>
+<mesh type="obj">
+     <transform name="toWorld">
+         <matrix value="1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1"/>
+     </transform>
+    <string name="filename" value="teapot.obj"/>
+    <bsdf type="roughConductor">
+         <float name="alpha" value="0.3"/>
+         <string name="materialName" value="Au"/>
+     </bsdf>
+</mesh>
+<mesh type="obj">
+     <transform name="toWorld">
+         <matrix value="-0.9642128944396973, 0.26512911915779114, 0, -5.838954448699951, -0.26512911915779114, -0.9642128944396973, 0, 7.654148578643799, 0, 0, 1, -7.669922828674316, 0, 0, 0, 1"/>
+     </transform>
+    <string name="filename" value="plane.obj"/>
+    <bsdf type="diffuse">
+         <color name="albedo" value="0.8, 0.8, 0.8"/>
+     </bsdf>
+    <emitter type="area">
+         <color name="radiance" value="30, 30, 30"/>
+    </emitter>
+</mesh>
+</scene>

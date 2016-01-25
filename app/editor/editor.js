@@ -206,49 +206,52 @@ angular.module('myApp.editor')
                         callback.call(editor, response.scene, url)
                 });
             }
-            $scope.loadxmlFkt = function(callback, editor) {
-                var sceneURL = "../scenes/";
-                $http.get(sceneURL).success(function(response){
-                    var data = [response];
-                    if(response.length != 0) {
-                        data = response;
-                    }
-                    if(response.length == 0) {
-                        growl.error("No scenes found, please save a scene!", {});
-                        return;
-                    }
+            $scope.loadxmlFkt = function(callback, editor, url) {
+                if(url !== undefined) {
+                    $scope.loadScene(url, editor, callback);
+                } else {
+                    var sceneURL = "../scenes/";                    
+                    $http.get(sceneURL).success(function(response){
+                        var data = [response];
+                        if(response.length != 0) {
+                            data = response;
+                        }
+                        if(response.length == 0) {
+                            growl.error("No scenes found, please save a scene!", {});
+                            return;
+                        }
 
-                    ngDialog.openConfirm({
-                        template: 'scenePickerDialog',
-                        overlay: true,
-                        data: {userScenes: data},
-                        controller: ['$scope', '$http', function($scope) {
-                            // controller logic
-                            $scope.confirmValue = "";
-                            $scope.select = function(scene) {
-                                $scope.confirmValue = scene.url;
-                            }
-                            $scope.deletescene = function(f){
-                            
-                            $http.delete(f.url).
-                            then(function(r) {
-                                var i = $scope.ngDialogData.userScenes.indexOf(f);
-                                $scope.ngDialogData.userScenes.splice(i, 1);
-                                if($scope.confirmValue == f.url) {
-                                    $scope.confirmValue = "";
-                                }                                
-                            }, function(r) {
+                        ngDialog.openConfirm({
+                            template: 'scenePickerDialog',
+                            overlay: true,
+                            data: {userScenes: data},
+                            controller: ['$scope', '$http', function($scope) {
+                                // controller logic
+                                $scope.confirmValue = "";
+                                $scope.select = function(scene) {
+                                    $scope.confirmValue = scene.url;
+                                }
+                                $scope.deletescene = function(f){
+                                
+                                    $http.delete(f.url).
+                                    then(function(r) {
+                                        var i = $scope.ngDialogData.userScenes.indexOf(f);
+                                        $scope.ngDialogData.userScenes.splice(i, 1);
+                                        if($scope.confirmValue == f.url) {
+                                            $scope.confirmValue = "";
+                                        }                                
+                                    }, function(r) {
 
+                                    });
+                                };
+                            }]
+                        }).then(function (url) {
+                                $scope.loadScene(url, editor, callback);
+                            }, function (reason) {
+                                console.log('Modal promise rejected. Reason: ', reason);
                             });
-                        };
-                        }]
-                    }).then(function (url) {
-                            $scope.loadScene(url, editor, callback);
-                        }, function (reason) {
-                        console.log('Modal promise rejected. Reason: ', reason);
                     });
-                });
-                            
+                }     
             }
 
 

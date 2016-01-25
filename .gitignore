@@ -11,6 +11,7 @@ app/.idea/*
 node_modules/
 server/static/*
 !server/static/default/
+!server/static/examples/
 .ropeproject/
 .PIDServer
 logs/

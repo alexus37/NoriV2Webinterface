@@ -45,7 +45,7 @@ Sidebar.Material = function ( editor ) {
 		'diffuse': 'Diffuse',
 		'microfacetBRDF': 'Microfacet',
 		'mirror': 'Mirror',
-		'roughconductor': 'Roughconductor'
+		'roughConductor': 'Roughconductor'
 	} ).setWidth( '150px' ).setFontSize( '12px' ).onChange( update );
 
 	materialClassRow.add( new UI.Text( 'Type' ).setWidth( '90px' ) );
@@ -283,7 +283,7 @@ Sidebar.Material = function ( editor ) {
 
             }
 
-            if ( material.type == 'roughconductor') {
+            if ( material.type == 'roughConductor') {
                 material.conductorType = conductorTypeOpt.getValue();
                 material.alpha = RoughnessAlpha.getValue();
             }
@@ -346,7 +346,7 @@ Sidebar.Material = function ( editor ) {
             Roughness.setDisplay('');
         } else if (material["type" ] == 'mirror') {
 
-        } else if (material["type" ] == 'roughconductor') {
+        } else if (material["type" ] == 'roughConductor') {
             Roughness.setDisplay('');
             conductorType.setDisplay('');
         }
@@ -401,7 +401,7 @@ Sidebar.Material = function ( editor ) {
 
         }
 
-        if ( material.type == 'roughconductor') {
+        if ( material.type == 'roughConductor') {
             conductorTypeOpt.setValue(material.conductorType);
             RoughnessAlpha.setValue(material.alpha);
         }

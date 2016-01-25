@@ -241,7 +241,7 @@ Sidebar.Project = function ( editor ) {
 	//INTEGRATOR
 	var integratorTypes = {
 		'path_mis': 'Path tracer MIS',
-		'path_mats': 'Path tracer Matrial',
+		'path_mats': 'Path tracer Material',
 		'direct': 'Direct',
 		'direct_mis': 'Direct MIS',
 		'direct_ems': 'Direct EMS',

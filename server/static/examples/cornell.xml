@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scene>
+<integrator type="path_mis">
+</integrator>
+<sampler type="independent">
+    <integer name="sampleCount" value="32"/>
+</sampler>
+<camera type="perspective">
+     <float name="fov" value="79.58019739441227"/>
+     <float name="nearClip" value="1"/>
+     <float name="farClip" value="100000"/>
+     <integer name="width" value="1620"/>
+     <integer name="height" value="907"/>
+     <transform name="toWorld">
+         <scale value="1.0 1.0 -1.0"/> 
+         <matrix value="0.9998934268951416, 0.0007272624061442912, -0.014581219293177128, -0.0307172741740942, -1.7212928998810995e-11, 0.9987584948539734, 0.049814727157354355, 0.8002205491065979, 0.014599344693124294, -0.04980941861867905, 0.9986520409584045, 3.340496063232422, 0, 0, 0, 1"/>
+     </transform>
+</camera>
+<mesh type="obj">
+     <transform name="toWorld">
+         <matrix value="1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1"/>
+     </transform>
+    <string name="filename" value="walls.obj"/>
+    <bsdf type="diffuse">
+         <color name="albedo" value="0.8, 0.8, 0.8"/>
+     </bsdf>
+</mesh>
+<mesh type="obj">
+     <transform name="toWorld">
+         <matrix value="1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1"/>
+     </transform>
+    <string name="filename" value="leftwall.obj"/>
+    <bsdf type="diffuse">
+         <color name="albedo" value="1.42, 0, 0"/>
+     </bsdf>
+</mesh>
+<mesh type="obj">
+     <transform name="toWorld">
+         <matrix value="1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1"/>
+     </transform>
+    <string name="filename" value="rightwall.obj"/>
+    <bsdf type="diffuse">
+         <color name="albedo" value="0, 1.52, 0"/>
+     </bsdf>
+</mesh>
+<mesh type="obj">
+     <transform name="toWorld">
+         <matrix value="1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1"/>
+     </transform>
+    <string name="filename" value="light.obj"/>
+    <bsdf type="diffuse">
+         <color name="albedo" value="0.8, 0.8, 0.8"/>
+     </bsdf>
+    <emitter type="area">
+         <color name="radiance" value="15, 15, 15"/>
+    </emitter>
+</mesh>
+<mesh type="obj">
+     <transform name="toWorld">
+         <matrix value="1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1"/>
+     </transform>
+    <string name="filename" value="sphere1.obj"/>
+    <bsdf type="diffuse">
+         <color name="albedo" value="0.8, 0.8, 0.8"/>
+     </bsdf>
+</mesh>
+<mesh type="obj">
+     <transform name="toWorld">
+         <matrix value="1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1"/>
+     </transform>
+    <string name="filename" value="sphere2.obj"/>
+    <bsdf type="diffuse">
+         <color name="albedo" value="0.8, 0.8, 0.8"/>
+     </bsdf>
+</mesh>
+</scene>

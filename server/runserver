@@ -1,4 +1,12 @@
 #!/bin/bash
+redisTest="$(redis-cli ping)"
+expected="PONG"
+if [ "$redisTest" != "$expected" ]
+then
+	echo "Please run redis before starting the server"
+	exit 0
+fi
+
 
 celery -A noriv2apiserver worker -l info > logs/celery 2>&1 &
 echo $! > .PIDServer

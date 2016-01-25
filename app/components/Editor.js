@@ -395,7 +395,7 @@ Editor.prototype = {
 	            case 'mirror':
 	            	cBSDF["type"] = 'mirror';
 	                break;
-	            case 'roughconductor':
+	            case 'roughConductor':
             		cBSDF["materialName"] = "Au";
             		if("string" in bsdf && bsdf.string._name == "materialName"){
 						cBSDF["materialName"] = bsdf.string._value;
@@ -549,6 +549,11 @@ Editor.prototype = {
 		this.loadxmlFunction({callback: this.setSceneXML, editor: this})
 	},
 
+	getExample: function(exampleFile) {
+		var exampleURL = "../examples/?type=" + exampleFile;
+		this.loadxmlFunction({callback: this.setSceneXML, editor: this, url: exampleURL});
+	},
+
 	moveObject: function ( object, parent, before ) {
 
 		if ( parent === undefined ) {
@@ -677,7 +682,7 @@ Editor.prototype = {
 	                    bsdfType = "mirror";
 	                }
 
-	                if ( material.type == 'roughconductor') {
+	                if ( material.type == 'roughConductor') {
 	                    bsdfType = "roughConductor";
 	                    bsdfParameters = {
 	                        materialName: material.conductorType,

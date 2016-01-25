@@ -82,7 +82,6 @@ class DefaultGeometryView(views.APIView):
     
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     def post(self, request, format=None):
-        print("START")
         
         src = os.path.join(RENDERER_DATA_DIR, "default", request.data["type"] + ".obj")
         path = pathlib.Path(src)
@@ -98,6 +97,57 @@ class DefaultGeometryView(views.APIView):
                 return response.Response(status=200)
         else:
             return response.Response(status=400)
+
+class ExampleSceneView(views.APIView):
+    """
+    Load a example scene and copy all used geometry to the user directoy
+    """
+    
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    def get(self, request, format=None):
+        example_type = request.GET.get('type', '')
+        scene_src = os.path.join(RENDERER_DATA_DIR, "examples", example_type + ".xml")
+        path = pathlib.Path(scene_src)
+        if path.is_file():
+            example_obj_files = []
+            if example_type == "simple":
+                # copy sphere and plane
+                example_obj_files.append("plane")
+                example_obj_files.append("sphere")
+                example_obj_files.append("torus")
+            if example_type == "teapot":
+                # copy sphere and plane
+                example_obj_files.append("teapot")
+                example_obj_files.append("bigPlane")
+                example_obj_files.append("plane")
+            if example_type == "cornell":
+                example_obj_files.append("walls")
+                example_obj_files.append("sphere2")
+                example_obj_files.append("sphere1")
+                example_obj_files.append("rightwall")
+                example_obj_files.append("leftwall")
+                example_obj_files.append("light")
+            if example_type == "dragons":
+                example_obj_files.append("bigPlane")
+                example_obj_files.append("dragonSmall")
+                
+
+            for f in example_obj_files:                
+                src = os.path.join(RENDERER_DATA_DIR, "default", f + ".obj")
+                dst = os.path.join(RENDERER_DATA_DIR, request.user.username, f + ".obj")
+                
+                pathUser= pathlib.Path(dst)
+                if not pathUser.is_file():
+                    # copy the file to the user directoy
+                    shutil.copyfile(src, dst)
+            
+            example_file = open(scene_src, 'r')
+
+            return response.Response({'content': example_file.read()})
+ 
+        else:
+            return response.Response(status=400)
+        
 
 class RenderView(views.APIView):
     """
