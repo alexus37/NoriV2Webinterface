@@ -38,15 +38,22 @@
         <tr>
           <td>
             File name
-          </td>        
+          </td>  
+          <td>
+            Action
+          </td>       
         </tr>
       </thead>
       
       <tbody>
-        <tr ng-repeat="f in ngDialogData.userScenes | filter:searchScene" 
-            ng-click="select(f)"
+        <tr ng-repeat="f in ngDialogData.userScenes | filter:searchScene"             
             ng-class="{success: confirmValue == f.url}">
-            <td >{{ f.title }}</td>
+            <td ng-click="select(f)">{{ f.title }}</td>
+            <td >
+              <button type="button" class="btn btn-sm btn-danger" ng-click="deletescene(f)">
+                <span class="glyphicon glyphicon-remove"></span>
+              </button>
+            </td>
         </tr>
       </tbody>
       

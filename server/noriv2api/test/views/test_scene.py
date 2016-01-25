@@ -99,6 +99,7 @@ class SceneTest(APITestCase):
 
         # delete scene
         url = reverse('scene-detail', kwargs={'pk': self.scene.id})
+        print(url)
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 

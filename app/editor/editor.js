@@ -75,12 +75,12 @@ angular.module('myApp.editor')
                     template: 'firstDialogId',
                     overlay: true,
                     data: {objFiles: $scope.uploadedFiles},
-                    controller: ['$scope', function($scope) {
+                    controller: ['$scope',  function($scope, $http) {
                         // controller logic
                         $scope.confirmValue = "Nothing selected";
                         $scope.select = function(objFile) {
                             $scope.confirmValue = objFile;
-                        }
+                        };                        
                     }]
                 }).then(function (model) {
                         $scope.loadmodelFkt(callback, model, []);
@@ -195,25 +195,43 @@ angular.module('myApp.editor')
                 });
             }
             $scope.loadxmlFkt = function(callback, editor) {
-                if($scope.$parent.user.user_scenes.length == 0) {
-                    growl.error("No scenes found, please save a scene!", {});
-                    return;
-                }
                 var sceneURL = "../scenes/";
                 $http.get(sceneURL).success(function(response){
+                    var data = [response];
+                    if(response.length != 0) {
+                        data = response;
+                    }
+                    if(response.length == 0) {
+                        growl.error("No scenes found, please save a scene!", {});
+                        return;
+                    }
+
                     ngDialog.openConfirm({
                         template: 'scenePickerDialog',
                         overlay: true,
-                        data: {userScenes: response},
-                        controller: ['$scope', function($scope) {
+                        data: {userScenes: data},
+                        controller: ['$scope', '$http', function($scope) {
                             // controller logic
                             $scope.confirmValue = "";
                             $scope.select = function(scene) {
                                 $scope.confirmValue = scene.url;
                             }
+                            $scope.deletescene = function(f){
+                            
+                            $http.delete(f.url).
+                            then(function(r) {
+                                var i = $scope.ngDialogData.userScenes.indexOf(f);
+                                $scope.ngDialogData.userScenes.splice(i, 1);
+                                if($scope.confirmValue == f.url) {
+                                    $scope.confirmValue = "";
+                                }                                
+                            }, function(r) {
+
+                            });
+                        };
                         }]
                     }).then(function (url) {
-                            $scope.loadScene(url,editor, callback);
+                            $scope.loadScene(url, editor, callback);
                         }, function (reason) {
                         console.log('Modal promise rejected. Reason: ', reason);
                     });
