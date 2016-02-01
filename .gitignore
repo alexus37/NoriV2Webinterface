@@ -1,0 +1,20 @@
+# git ignore
+*.*~
+*.pyc
+*.log
+app/bower_components/*
+app/data/*
+nori/build/*
+.idea/*
+app/.idea/*
+/build
+node_modules/
+server/static/*
+!server/static/default/
+!server/static/examples/
+.ropeproject/
+.PIDServer
+logs/
+celerybeat-schedule
+NoriV2/
+server/
