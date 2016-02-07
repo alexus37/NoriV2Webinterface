@@ -67,6 +67,9 @@ var Editor = function () {
 
 	this.sceneHelpers = new THREE.Scene();
 	//AX
+	var light = new THREE.AmbientLight( 0x404040 ); // soft white light
+	this.scene.add( light );
+
 	this.currentXML = "";
 	this.setxmlFunction = null;
 	this.showresultFunction = null;
@@ -129,6 +132,8 @@ Editor.prototype = {
 		this.scene.uuid = scene.uuid;
 		this.scene.name = scene.name;
 		this.scene.userData = JSON.parse( JSON.stringify( scene.userData ) );
+		var light = new THREE.AmbientLight( 0x404040 ); // soft white light
+		this.scene.add( light );
 
 		// avoid render per object
 
@@ -530,6 +535,9 @@ Editor.prototype = {
 		if("sampler" in scene) {
 			this.setSampler(scene.sampler)
 		}
+		var light = new THREE.AmbientLight( 0x404040 ); // soft white light
+		
+		this.scene.add( light );
 		this.signals.sceneGraphChanged.dispatch();
 	},
 
