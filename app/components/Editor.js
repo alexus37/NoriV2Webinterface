@@ -70,6 +70,10 @@ var Editor = function () {
 	var light = new THREE.AmbientLight( 0x404040 ); // soft white light
 	this.scene.add( light );
 
+	var spotLight = new THREE.SpotLight( 0xffffff, 1.5 );
+	spotLight.position.set( 0, 500, 2000 );
+	this.scene.add( spotLight );
+
 	this.currentXML = "";
 	this.setxmlFunction = null;
 	this.showresultFunction = null;
@@ -134,6 +138,11 @@ Editor.prototype = {
 		this.scene.userData = JSON.parse( JSON.stringify( scene.userData ) );
 		var light = new THREE.AmbientLight( 0x404040 ); // soft white light
 		this.scene.add( light );
+
+
+		var spotLight = new THREE.SpotLight( 0xffffff, 1.5 );
+		spotLight.position.set( 0, 500, 2000 );
+		this.scene.add( spotLight );
 
 		// avoid render per object
 
@@ -536,6 +545,10 @@ Editor.prototype = {
 			this.setSampler(scene.sampler)
 		}
 		var light = new THREE.AmbientLight( 0x404040 ); // soft white light
+		var spotLight = new THREE.SpotLight( 0xffffff, 1.5 );
+		spotLight.position.set( 0, 500, 2000 );
+		this.scene.add( spotLight );
+
 		
 		this.scene.add( light );
 		this.signals.sceneGraphChanged.dispatch();
