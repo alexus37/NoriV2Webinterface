@@ -173,7 +173,7 @@ Sidebar.Project = function ( editor ) {
 
 		}
 
-		var renderer = new rendererTypes[ type ]( { antialias: antialias } );
+		var renderer = new rendererTypes[ type ]( { antialias: antialias, preserveDrawingBuffer: true } );
 		if ( shadows && renderer.shadowMap ) renderer.shadowMap.enabled = true;
 		signals.rendererChanged.dispatch( renderer );
 
