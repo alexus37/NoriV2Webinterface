@@ -17,12 +17,14 @@ function tonemap(r,g,b, gamma) {
 }
 //diffuse MATERIAL
 THREE.diffuse = function(bsdfParameters, emitterParameters) {
+    var uniforms = THREE.UniformsUtils.clone(THREE.ShaderLib['lambert'].uniforms);
 
     THREE.ShaderMaterial.call(this, {
 
         vertexShader: THREE.ShaderLib['lambert'].vertexShader,
         fragmentShader: THREE.ShaderLib['lambert'].fragmentShader,
-        uniforms: THREE.ShaderLib['lambert'].uniforms,
+
+        uniforms: uniforms,
         lights: true
     });
 
@@ -57,7 +59,7 @@ THREE.diffuse = function(bsdfParameters, emitterParameters) {
                                             this.albedo.blue,
                                             2.2
                                             ));
-    
+
     this.setValues();
 };
 
@@ -80,7 +82,7 @@ THREE.diffuse.prototype.copy = function ( source ) {
                                             this.albedo.blue,
                                             2.2
                                             ));
-    
+
     this.emitter = source.emitter;
 
     return this;
@@ -103,10 +105,10 @@ THREE.conductor = function(bsdfParameters, emitterParameters) {
             'red': 15,
             'green': 15,
             'blue': 15
-        }; 
+        };
 
     if(bsdfParameters !== undefined) {
-        this.conductorType = bsdfParameters.materialName;        
+        this.conductorType = bsdfParameters.materialName;
     }
 
     if(emitterParameters !== undefined) {
@@ -115,7 +117,7 @@ THREE.conductor = function(bsdfParameters, emitterParameters) {
         this.radiance.green = emitterParameters.radiance[1];
         this.radiance.blue = emitterParameters.radiance[2];
     }
-    
+
 
     this.setValues();
 };
@@ -130,7 +132,7 @@ THREE.conductor.prototype.copy = function ( source ) {
     this.radiance['red'] = source.radiance['red'];
     this.radiance['green'] = source.radiance['green'];
     this.radiance['blue'] = source.radiance['blue'];
-    
+
     this.emitter = source.emitter;
 
     return this;
@@ -155,7 +157,7 @@ THREE.dielectric = function(bsdfParameters, emitterParameters) {
             'red': 15,
             'green': 15,
             'blue': 15
-        }; 
+        };
     if(bsdfParameters !== undefined) {
         this.intIor = bsdfParameters.intIor;
         this.extIor = bsdfParameters.extIor;
@@ -182,7 +184,7 @@ THREE.dielectric.prototype.copy = function ( source ) {
     this.radiance['red'] = source.radiance['red'];
     this.radiance['green'] = source.radiance['green'];
     this.radiance['blue'] = source.radiance['blue'];
-    
+
     this.emitter = source.emitter;
 
     return this;
@@ -197,7 +199,7 @@ THREE.microfacetBRDF = function(bsdfParameters, emitterParameters) {
         fragmentShader: THREE.ShaderLib['lambert'].fragmentShader,
         uniforms: THREE.ShaderLib['lambert'].uniforms,
         lights: true
-    });    
+    });
     this.type = 'microfacetBRDF';
     this.albedo = {
         'red': 0.8,
@@ -211,7 +213,7 @@ THREE.microfacetBRDF = function(bsdfParameters, emitterParameters) {
             'red': 15,
             'green': 15,
             'blue': 15
-        }; 
+        };
     if(bsdfParameters !== undefined) {
         this.alpha = bsdfParameters.alpha;
         this.albedo.red = bsdfParameters.albedo[0];
@@ -243,7 +245,7 @@ THREE.microfacetBRDF.prototype.copy = function ( source ) {
     this.radiance['red'] = source.radiance['red'];
     this.radiance['green'] = source.radiance['green'];
     this.radiance['blue'] = source.radiance['blue'];
-    
+
     this.emitter = source.emitter;
 
     return this;
@@ -265,7 +267,7 @@ THREE.mirror = function(bsdfParameters, emitterParameters) {
             'red': 15,
             'green': 15,
             'blue': 15
-        }; 
+        };
 
     if(emitterParameters !== undefined) {
         this.emitter = true;
@@ -286,9 +288,9 @@ THREE.mirror.prototype.copy = function ( source ) {
     this.radiance['red'] = source.radiance['red'];
     this.radiance['green'] = source.radiance['green'];
     this.radiance['blue'] = source.radiance['blue'];
-    
+
     this.emitter = source.emitter;
-    
+
     return this;
 
 };
@@ -310,7 +312,7 @@ THREE.roughConductor = function(bsdfParameters, emitterParameters) {
             'red': 15,
             'green': 15,
             'blue': 15
-        }; 
+        };
 
     if(bsdfParameters !== undefined) {
         this.conductorType = bsdfParameters.materialName;
@@ -338,7 +340,7 @@ THREE.roughConductor.prototype.copy = function ( source ) {
     this.radiance['red'] = source.radiance['red'];
     this.radiance['green'] = source.radiance['green'];
     this.radiance['blue'] = source.radiance['blue'];
-    
+
     this.emitter = source.emitter;
 
     return this;
