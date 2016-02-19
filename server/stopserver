@@ -2,7 +2,7 @@
 
 if [ ! -f .PIDServer ]; then
     echo ":PIDServer file not found. Server maybe not running?"
-    exit 0
+    exit 1
 fi
 
 while IFS='' read -r line || [[ -n "$line" ]]; do

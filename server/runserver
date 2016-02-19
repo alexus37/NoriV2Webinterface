@@ -1,10 +1,15 @@
 #!/bin/bash
+
+if [ -f .PIDServer ]; then
+    echo ":PIDServer file found. Please kill first before rerun"
+    exit 1
+fi
 redisTest="$(redis-cli ping)"
 expected="PONG"
 if [ "$redisTest" != "$expected" ]
 then
 	echo "Please run redis before starting the server"
-	exit 0
+	exit 1
 fi
 
 
@@ -12,5 +17,5 @@ celery -A noriv2apiserver worker -l info > logs/celery 2>&1 &
 echo $! > .PIDServer
 ./wsserver.py > logs/wsserver 2>&1 &
 echo $! >> .PIDServer
-./manage.py runserver > logs/django 2>&1 &
+./manage.py runserver | tail logs/django &
 echo $! >> .PIDServer
