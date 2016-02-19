@@ -40,7 +40,7 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
+    #'django.contrib.staticfiles',
     'rest_framework',
     'noriv2api',
     'swampdragon',
@@ -107,13 +107,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "static"),
-    FRONTEND_DIR,
-    RENDERER_DATA_DIR
-)
-STATIC_ROOT = ''
-STATIC_URL = '/static/'
+# STATICFILES_DIRS = (
+#     FRONTEND_DIR,
+#     RENDERER_DATA_DIR
+# )
+STATIC_ROOT = FRONTEND_DIR
+STATIC_URL = '/'
 
 
 

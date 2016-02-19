@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
 
-from django.conf.urls import include, url
+from django.conf.urls import include, url, patterns
 from django.contrib import admin
 from noriv2apiserver import settings, auth
 
@@ -27,13 +27,23 @@ urlpatterns = [
 ]
 
 if settings.DEBUG:
+
+    urlpatterns += url(
+        r'^$', 'django.views.static.serve', kwargs={
+            'path': 'index.html', 'document_root': settings.FRONTEND_DIR}),
+
+    # WORKAROUND, not very clean..
+    urlpatterns += patterns('',
+             (r'^(?P<path>[^/]+/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\.png)$',
+              'django.views.static.serve',
+              {'document_root': settings.RENDERER_DATA_DIR}))
+
+    urlpatterns += patterns('',
+             (r'^(?P<path>.*)$',
+              'django.views.static.serve',
+              {'document_root': settings.FRONTEND_DIR}))
+
+
     urlpatterns.extend([
         url(r'^api-auth/', include('rest_framework.urls',
-                                   namespace='rest_framework')),
-        # patterns('django.contrib.staticfiles.views',
-        #         url(r'', 'serve', {
-        #             'document_root': settings.FRONTEND_DIR,
-        #             'path': '/index.html'}
-        #         ),
-        # )
-    ])
+                                   namespace='rest_framework'))])
