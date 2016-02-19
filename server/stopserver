@@ -7,9 +7,14 @@ fi
 
 while IFS='' read -r line || [[ -n "$line" ]]; do
 	if ps -p $line > /dev/null
-	then    
+	then
 		kill $line
 	fi
 done < ".PIDServer"
 
 rm .PIDServer
+
+# In my Arch it doesn't kill manage.py properly (two processes spawn, only one is being killed):
+
+pkill -f "/usr/bin/python3 ./manage.py runserver"
+
